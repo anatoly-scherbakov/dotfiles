@@ -10,6 +10,10 @@
         relink: true
         force: true
         path: xcompose/XCompose
+    ~/.config/i3/config:
+        relink: true
+        create: true
+        path: i3/config
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
