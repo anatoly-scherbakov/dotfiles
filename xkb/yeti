@@ -1,0 +1,47 @@
+xkb_symbols "yeti" {
+    include "pc+us+ru:2+inet(evdev)+capslock(grouplock)+compose(menu)"
+    include "level3(modifier_mapping)"
+
+    // Left Alt is the third-level Latch modifier
+    key <LALT> {
+        type[Group1]="THREE_LEVEL",
+        symbols[Group1] = [ ISO_Level3_Latch, ISO_Level3_Latch, ISO_Level3_Latch ]
+    };
+
+    key <TLDE> { [ grave, asciitilde, 0x1002248 ] };  // ≈
+
+    // Logical and set theory operations
+    key <AE01> { [ exclam,    1,         0x10000ac, 0x1002201] };    // ¬, ∁
+    key <BKSL> { [ bar,       backslash, 0x1002228, 0x100222a] };    // ∨, ∪
+    key <AE07> { [ ampersand, 7,         0x1002227, 0x1002229] };    // ∧, ∩
+
+    // Logical truth and falsity (top and bottom)
+    key <AD05> { [ t,         T,         0x10022a4, 0x10022a4] }; // t T ⊤ ⊤
+    key <AC04> { [ f,         F,         0x10022a5, 0x10022a5] }; // f F ⊥ ⊥
+
+    // Numbers
+    key <AE08> { [ asterisk, 8, 0x100221e, 0x1002a1d ] }; // ∞, ⨝
+
+    // Logic
+    key <AC01> { [ a,         A,        0x1002200, 0x10003b1 ] };    // ∀ α
+    key <AD03> { [ e,         E,        0x1002203, 0x100212f ] };    // ∃ ℯ
+
+    // Sets of numbers
+    key <AB06> { [ n,         N,        0x1002115, 0x1002115 ] };    // ℕ ℕ
+    key <AB01> { [ z,        Z,         0x1002124, 0x1002124 ] };    // ℤ ℤ
+    key <AD01> { [ q,        Q,         0x100211a, 0x100211a ] };    // ℚ ℚ
+    key <AD04> { [ r,         R,        0x100211d, 0x100211d ] };    // ℝ ℝ
+
+    // Hardware braces block
+    key <KPEQ> { [ 0x1002260, KP_Equal, 0x10021ce, 0x10021d4 ] };    // =, ≠, ⇎, ⇔ - the order is reversed purposefully
+
+    // Numpad
+    key <KPMU> { [ KP_Multiply, KP_Multiply, 0x10000d7, 0x1002218]  }; // ×, ∘
+
+    // Arrow characters without Compose
+    // Problem! they do not work with my i3 keybindings.
+    // key <KP4>  { [ 0x1002190, KP_4,      0x10021d0, 0x1002b05 ] };    // ←, ⇐, ⬅
+    // key <KP8>  { [ 0x1002191, KP_8,      0x10021d1, 0x1002b06 ] };    // ↑, ⇑, ⬆
+    // key <KP6>  { [ 0x1002192, KP_6,      0x10021d2, 0x10027a1 ] };    // →, ⇒, ➡
+    // key <KP2>  { [ 0x1002193, KP_2,      0x10021d3, 0x1002b07 ] };    // ↓, ⇓, ⬇
+};

@@ -1,3 +1,16 @@
 - clean: []
-- link: {}
-- shell: []
+
+- link:
+    ~/.config/xkb/symbols/yeti:
+        create: true
+        relink: true
+        path: xkb/yeti
+    ~/.XCompose:
+        create: true
+        relink: true
+        force: true
+        path: xcompose/XCompose
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
+    - ['setxkbmap -symbols yeti -print | xkbcomp -I"$HOME/.config/xkb" - "${DISPLAY%%.*}"', Setting up keyboard layout]
