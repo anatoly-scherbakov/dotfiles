@@ -14,6 +14,11 @@
         relink: true
         create: true
         path: i3/config
+    "~/.config/JetBrains/PyCharm2020.2/idea.properties":
+        relink: true
+        create: true
+        force: true
+        path: pycharm/idea.properties
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
