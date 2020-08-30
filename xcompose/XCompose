@@ -2,9 +2,21 @@
 # http://unicode.org/emoji/charts/full-emoji-list.html
 
 
-<Multi_key> <|> <⇒>              : "⤇"
+<Multi_key> <|> <⇒>                  : "⤇"
 <Multi_key> <≈> <slash>              : "≉"
 <Multi_key> <q> <e> <d>              : "∎"
+
+# Nicer greater/less than equal signs
+<Multi_key> <greater> <equal> : "⩾"
+<Multi_key> <less>    <equal> : "⩽"
+
+# Empty set
+<Multi_key> <KP_0> <slash> : "∅"
+<Multi_key> <slash> <KP_0> : "∅"
+
+# Plus Minus
+<Multi_key> <KP_Add> <KP_Subtract> : "±"
+<Multi_key> <KP_Subtract> <KP_Add> : "∓"
 
 # <Multi_key> <=> <slash>              : "≠"
 

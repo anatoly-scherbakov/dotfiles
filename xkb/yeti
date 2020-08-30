@@ -33,7 +33,12 @@ xkb_symbols "yeti" {
     key <AD04> { [ r,         R,        0x100211d, 0x100211d ] };    // ℝ ℝ
 
     // Hardware braces block
-    key <KPEQ> { [ 0x1002260, KP_Equal, 0x10021ce, 0x10021d4 ] };    // =, ≠, ⇎, ⇔ - the order is reversed purposefully
+    // Note that the order of <Shift> is reversed
+    key <KPEQ> { [ 0x1002260, KP_Equal,  0x10021ce, 0x10021d4 ] };    // =, ≠, ⇎, ⇔
+
+    # Consider remapping ⊂ to Alt + <.
+    key <I187> { [ parenleft, 0x1002282, 0x100220a, 0x100227a ] };    // (, ⊂, ∊, ≺
+    key <I188> { [ parenright, 0x1002283, 0x100220d, 0x100227b ] };   // ), ⊃, ∍, ≻
 
     // Numpad
     key <KPMU> { [ KP_Multiply, KP_Multiply, 0x10000d7, 0x1002218]  }; // ×, ∘
