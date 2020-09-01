@@ -10,8 +10,10 @@ xkb_symbols "yeti" {
 
     key <TLDE> { [ grave, asciitilde, 0x1002248 ] };  // ≈
 
-    // Logical and set theory operations
+    // Operations on the top keyboard row
     key <AE01> { [ exclam,    1,         0x10000ac, 0x1002201] };    // ¬, ∁
+    key <AE02> { [ at,        0x10025cb ]};  // @, ○
+
     key <BKSL> { [ bar,       backslash, 0x1002228, 0x100222a] };    // ∨, ∪
     key <AE07> { [ ampersand, 7,         0x1002227, 0x1002229] };    // ∧, ∩
 
