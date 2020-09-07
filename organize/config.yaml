@@ -1,0 +1,9 @@
+rules:
+  # move screenshots older than 7 days to a separate Archive directory
+  - folders: ~/Pictures/Screenshots
+    filters:
+      - lastmodified:
+          days: 7
+          mode: older
+    actions:
+      - move: ~/Pictures/Screenshots/archive/
