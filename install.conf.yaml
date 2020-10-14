@@ -19,6 +19,11 @@
         create: true
         force: true
         path: pycharm/idea.properties
+    "~/.config/JetBrains/PyCharm2020.2/codestyles/Default.xml":
+        relink: true
+        create: true
+        force: true
+        path: pycharm/Default.xml
     "~/.config/organize/config.yaml":
         relink: true
         create: true

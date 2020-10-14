@@ -11,18 +11,18 @@ xkb_symbols "yeti" {
     key <TLDE> { [ grave, asciitilde, 0x1002248 ] };  // ≈
 
     // Operations on the top keyboard row
-    key <AE01> { [ exclam,    1,         0x10000ac, 0x1002201] };    // ¬, ∁
-    key <AE02> { [ at,        0x10025cb ]};  // @, ○
+    // key <AE01> { [ exclam,    1,         0x10000ac, 0x1002201] };    // ¬, ∁
+    // key <AE02> { [ at,        0x10025cb ]};  // @, ○
 
     key <BKSL> { [ bar,       backslash, 0x1002228, 0x100222a] };    // ∨, ∪
-    key <AE07> { [ ampersand, 7,         0x1002227, 0x1002229] };    // ∧, ∩
+    // key <AE07> { [ ampersand, 7,         0x1002227, 0x1002229] };    // ∧, ∩
 
     // Logical truth and falsity (top and bottom)
     key <AD05> { [ t,         T,         0x10022a4, 0x10022a4] }; // t T ⊤ ⊤
     key <AC04> { [ f,         F,         0x10022a5, 0x10022a5] }; // f F ⊥ ⊥
 
     // Numbers
-    key <AE08> { [ asterisk, 8, 0x100221e, 0x1002a1d ] }; // ∞, ⨝
+    // key <AE08> { [ asterisk, 8, 0x100221e, 0x1002a1d ] }; // ∞, ⨝
 
     // Logic
     key <AC01> { [ a,         A,        0x1002200, 0x10003b1 ] };    // ∀ α
