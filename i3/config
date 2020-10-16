@@ -88,7 +88,7 @@ bindsym $mod+Home layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+# bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+PageUp focus parent
@@ -205,16 +205,21 @@ assign [class="TogglDesktop"] 2
 assign [class="Telegram"] 2
 
 # Starting up: background apps
+exec numlockx
+exec organize run
 exec rescuetime
 exec flameshot
+
+# https://www.reddit.com/r/i3wm/comments/8zj0jl/passwords_are_not_saved_in_google_chrome_in_i3/
+exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets
 
 # Starting up: rm
 exec "pycharm-professional"
 exec slack
-exec "google-chrome --profile-directory='Profile 1'"
+exec "google-chrome --profile-directory='Profile 1' --password-store=gnome"
 
 # Starting up: communications
-exec "google-chrome"
+exec "google-chrome --password-store=gnome"
 exec "/home/anatoly/Telegram/Telegram"
 exec "/opt/toggldesktop/TogglDesktop"
 
@@ -223,3 +228,5 @@ bindsym $mod+p [class="jetbrains-pycharm"] focus
 bindsym $mod+k [class=Slack] focus
 bindsym $mod+m [class="Gnome-terminal"] focus
 bindsym $mod+i [class="Google-chrome"] focus
+
+bindsym $mod+Control_L+Shift_L+ISO_Level3_Latch+space [class="Google-chrome"] focus

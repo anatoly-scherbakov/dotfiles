@@ -29,6 +29,11 @@
         create: true
         force: true
         path: organize/config.yaml
+    "~/bin/pushto":
+        relink: true
+        create: true
+        force: true
+        path: bin/pushto.sh
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
