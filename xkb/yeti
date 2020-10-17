@@ -2,8 +2,8 @@ xkb_symbols "yeti" {
     include "pc+us+ru:2+inet(evdev)+capslock(grouplock)+compose(menu)"
     include "level3(modifier_mapping)"
 
-    // Left Alt is the third-level Latch modifier
-    key <LALT> {
+    // AltGr is the third-level Latch modifier
+    key <RALT> {
         type[Group1]="THREE_LEVEL",
         symbols[Group1] = [ ISO_Level3_Latch, ISO_Level3_Latch, ISO_Level3_Latch ]
     };
