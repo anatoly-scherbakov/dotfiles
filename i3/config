@@ -229,4 +229,6 @@ bindsym $mod+k [class=Slack] focus
 bindsym $mod+m [class="Gnome-terminal"] focus
 bindsym $mod+i [class="Google-chrome"] focus
 
+bindsym Print exec flameshot gui
+
 bindsym $mod+Control_L+Shift_L+ISO_Level3_Latch+space [class="Google-chrome"] focus
