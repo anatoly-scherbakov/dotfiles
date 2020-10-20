@@ -35,6 +35,12 @@
         force: true
         path: bin/pushto.sh
 
+    "~/bin/pushup":
+        relink: true
+        create: true
+        force: true
+        path: bin/pushup.sh
+
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
     - ['setxkbmap -symbols yeti -print | xkbcomp -I"$HOME/.config/xkb" - "${DISPLAY%%.*}"', Setting up keyboard layout]

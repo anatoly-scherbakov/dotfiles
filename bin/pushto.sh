@@ -14,4 +14,4 @@ git push
 
 git checkout $source_branch
 
-echo "✔️Done."
+echo "✔ ️Done."
