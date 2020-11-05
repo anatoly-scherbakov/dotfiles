@@ -228,6 +228,7 @@ bindsym $mod+p [class="jetbrains-pycharm"] focus
 bindsym $mod+k [class=Slack] focus
 bindsym $mod+m [class="Gnome-terminal"] focus
 bindsym $mod+i [class="Google-chrome"] focus
+bindsym $mod+o exec discord
 
 bindsym Print exec flameshot gui
 
