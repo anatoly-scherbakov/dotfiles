@@ -44,3 +44,6 @@
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
     - ['setxkbmap -symbols yeti -print | xkbcomp -I"$HOME/.config/xkb" - "${DISPLAY%%.*}"', Setting up keyboard layout]
+
+    # https://www.reddit.com/r/i3wm/comments/f9r6mr/disable_notifysend_sending_notifications/
+    - ['killall -SIGUSR1 dunst', "Stopping the i3 notifications service"]
