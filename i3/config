@@ -202,7 +202,6 @@ focus_follows_mouse no
 # To get class: run `xprop | grep CLASS` and click on the window in question
 assign [class="slack"] 1
 assign [class="TogglDesktop"] 2
-assign [class="Telegram"] 2
 
 # Starting up: background apps
 exec numlockx
