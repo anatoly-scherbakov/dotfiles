@@ -100,9 +100,9 @@ bindsym $mod+PageDown focus child
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:rm"
 set $ws2 "2:comm"
-set $ws3 "3:research"
-set $ws4 "4:foo"
-set $ws5 "5:bar"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
