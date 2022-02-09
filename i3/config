@@ -98,8 +98,8 @@ bindsym $mod+PageDown focus child
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:rm"
-set $ws2 "2:comm"
+set $ws1 "1"
+set $ws2 "2"
 set $ws3 "3"
 set $ws4 "4"
 set $ws5 "5"
@@ -212,10 +212,9 @@ exec flameshot
 # https://www.reddit.com/r/i3wm/comments/8zj0jl/passwords_are_not_saved_in_google_chrome_in_i3/
 exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets
 
-# Starting up: rm
+# Starting up: work
 exec "pycharm-professional"
 exec slack
-exec "google-chrome --profile-directory='Profile 1' --password-store=gnome"
 
 # Starting up: communications
 exec "google-chrome --password-store=gnome"
@@ -227,7 +226,6 @@ bindsym $mod+p [class="jetbrains-pycharm"] focus
 bindsym $mod+k [class=Slack] focus
 bindsym $mod+m [class="Gnome-terminal"] focus
 bindsym $mod+i [class="Google-chrome"] focus
-bindsym $mod+o exec discord
 
 bindsym Print exec flameshot gui
 
