@@ -1,6 +1,10 @@
 - clean: []
 
 - link:
+    ~/.vimrc:
+        create: true
+        relink: true
+        path: vim/vimrc
     ~/.config/xkb/symbols/yeti:
         create: true
         relink: true
