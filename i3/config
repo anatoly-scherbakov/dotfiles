@@ -223,10 +223,10 @@ exec "/home/anatoly/Telegram/Telegram"
 exec "/opt/toggldesktop/TogglDesktop"
 
 # Shortcuts to switch to application windows
-bindsym $mod+p [class="jetbrains-pycharm"] focus
+bindsym $mod+p [class="jetbrains-pycharm" workspace="__focused__"] focus
 bindsym $mod+k [class=Slack] focus
-bindsym $mod+m [class="Gnome-terminal"] focus
-bindsym $mod+i [class="Google-chrome"] focus
+bindsym $mod+m [class="Gnome-terminal" workspace="__focused__"] focus
+bindsym $mod+i [class="Google-chrome" workspace="__focused__"] focus
 
 bindsym Print exec flameshot gui
 
