@@ -20,6 +20,7 @@
 <Multi_key> <U2282> <slash> : "⊄"
 <Multi_key> <U2282> <KP_Divide> : "⊄"
 
+<Multi_key> <equal> <equal> : "⇔"
 <Multi_key> <colon> <equal> : "≔"
 # <Multi_key> <colon> <colon> <equal> : "⩴"
 # <Multi_key> <d> <e> <f> : "≝"
