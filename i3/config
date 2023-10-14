@@ -203,10 +203,14 @@ focus_follows_mouse no
 assign [class="slack"] 1
 assign [class="TogglDesktop"] 2
 
+# Screen settings
+exec --no-startup-id xrandr --output HDMI-1-0 --mode 3840x2160
+# exec --no-startup-id xrandr --output eDP-1 --off
+
+
 # Starting up: background apps
 exec numlockx
 exec organize run
-exec rescuetime
 exec flameshot
 
 # https://www.reddit.com/r/i3wm/comments/8zj0jl/passwords_are_not_saved_in_google_chrome_in_i3/
@@ -230,3 +234,4 @@ bindsym $mod+i [class="Google-chrome" workspace="__focused__"] focus
 bindsym Print exec flameshot gui
 
 bindsym $mod+Control_L+Shift_L+ISO_Level3_Latch+space [class="Google-chrome"] focus
+
