@@ -8,6 +8,13 @@ xkb_symbols "yeti" {
         symbols[Group1] = [ ISO_Level3_Latch, ISO_Level3_Latch, ISO_Level3_Latch ]
     };
 
+
+    // Romanian diacritics
+    key <AC01> { [ a, A, 0x1000103, 0x1000102 ] }; // ă, Ă
+    key <AD08> { [ i, I, 0x10000ee, 0x10000ce ] }; // î, Î
+    key <AC02> { [ s, S, 0x1000219, 0x1000218 ] }; // ș, Ș
+    key <AD05> { [ t, T, 0x100021b, 0x100021a ] }; // ț, Ț
+
     key <TLDE> { [ grave, asciitilde, 0x1002248 ] };  // ≈
 
     // Operations on the top keyboard row
@@ -18,14 +25,14 @@ xkb_symbols "yeti" {
     // key <AE07> { [ ampersand, 7,         0x1002227, 0x1002229] };    // ∧, ∩
 
     // Logical truth and falsity (top and bottom)
-    key <AD05> { [ t,         T,         0x10022a4, 0x10022a4] }; // t T ⊤ ⊤
+    // key <AD05> { [ t,         T,         0x10022a4, 0x10022a4] }; // t T ⊤ ⊤
     key <AC04> { [ f,         F,         0x10022a5, 0x10022a5] }; // f F ⊥ ⊥
 
     // Numbers
     // key <AE08> { [ asterisk, 8, 0x100221e, 0x1002a1d ] }; // ∞, ⨝
 
     // Logic
-    key <AC01> { [ a,         A,        0x1002200, 0x10003b1 ] };    // ∀ α
+    // key <AC01> { [ a,         A,        0x1002200, 0x10003b1 ] };    // ∀ α
     key <AD03> { [ e,         E,        0x1002203, 0x100212f ] };    // ∃ ℯ
 
     // Sets of numbers
