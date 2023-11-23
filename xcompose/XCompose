@@ -103,3 +103,19 @@
 <Multi_key> <g> <q> <p> : "ψ"    U03C8    # GREEK SMALL LETTER PSI
 <Multi_key> <g> <q> <s> : "ς"    U03C2    # GREEK SMALL LETTER FINAL SIGMA
 <Multi_key> <g> <q> <x> : "ξ"    U03BE    # GREEK SMALL LETTER XI
+
+# Emoji for Git commits
+<Multi_key> <s> <c> <i> <s> <s> <o> <r> <s> :  "✀"   U2700	# BLACK SAFETY SCISSORS
+<Multi_key> <KP_Subtract> <KP_Subtract> : "➖"   U2796  # Remove something
+<Multi_key> <KP_Add> <KP_Add> : "➕"   U2795  # Add something
+<Multi_key> <g> <e> <a> <r> : "⚙️"   U2699  # Automated refactorings
+<Multi_key> <at> <g> <r> <e> <e> <n> : "🟢"   U1F7E2  # Unit test is now passing
+<Multi_key> <at> <r> <e> <d> : "🔴"   U1F534  # Unit test is now broken
+<Multi_key> <at> <y> <e> <l> <l> <o> <w> : "🟡"   U1F7E1  # Unit test is now skipped
+
+# Emoji for desktop labels
+<Multi_key> <t> <r> <a> <s> <h> : "🗑️"   U1F5D1  # Trash Bin
+<Multi_key> <b> <r> <a> <i> <n> : "🧠"   U1F9E0  # Brain
+<Multi_key> <c> <h> <a> <t> : "💬"   U1F4AC  # Communication (Chat Bubble)
+<Multi_key> <v> <i> <d> <e> <o> : "▶️"   U25B6   # Video Playback (Play Button)
+<Multi_key> <l> <i> <n> <k> : "🔗"   U1F517  # Link
