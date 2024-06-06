@@ -1,13 +1,17 @@
 xkb_symbols "yeti" {
-    include "pc+us+ru:2+inet(evdev)+capslock(grouplock)+compose(menu)"
-    include "level3(modifier_mapping)"
+    include "pc+us+ru:2+inet(evdev)+compose(menu)"
+
+    // Set Caps Lock as group lock
+    key <CAPS> {
+        type="ONE_LEVEL",
+        symbols[Group1] = [ ISO_Next_Group ]
+    };
 
     // AltGr is the third-level Latch modifier
     key <RALT> {
         type[Group1]="THREE_LEVEL",
         symbols[Group1] = [ ISO_Level3_Latch, ISO_Level3_Latch, ISO_Level3_Latch ]
     };
-
 
     // Romanian diacritics
     key <AC01> { [ a, A, 0x1000103, 0x1000102 ] }; // ă, Ă
