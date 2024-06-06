@@ -91,10 +91,10 @@ bindsym $mod+Shift+space floating toggle
 # bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+PageUp focus parent
+# bindsym $mod+PageUp focus parent
 
 # focus the child container
-bindsym $mod+PageDown focus child
+# bindsym $mod+PageDown focus child
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -160,9 +160,9 @@ bindsym $mod+Shift+Mod2+KP_Prior move container to workspace number $ws9
 bindsym $mod+Shift+Mod2+KP_Insert move container to workspace number $ws10
 
 # reload the configuration file
-bindsym $mod+ScrollLock reload
+# bindsym $mod+ScrollLock reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Pause restart
+# bindsym $mod+Pause restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
@@ -203,11 +203,6 @@ focus_follows_mouse no
 assign [class="slack"] 1
 assign [class="TogglDesktop"] 2
 
-# Screen settings
-exec --no-startup-id xrandr --output HDMI-1-0 --mode 3840x2160
-# exec --no-startup-id xrandr --output eDP-1 --off
-
-
 # Starting up: background apps
 exec numlockx
 exec organize run
@@ -221,7 +216,7 @@ exec "pycharm-professional"
 exec slack
 
 # Starting up: communications
-exec "google-chrome --password-store=gnome"
+exec "google-chrome --password-store=gnome-libsecret"
 exec "/home/anatoly/Telegram/Telegram"
 exec "/opt/toggldesktop/TogglDesktop"
 
@@ -229,6 +224,7 @@ exec "/opt/toggldesktop/TogglDesktop"
 bindsym $mod+p [class="jetbrains-pycharm" workspace="__focused__"] focus
 bindsym $mod+k [class=Slack] focus
 bindsym $mod+m [class="Gnome-terminal" workspace="__focused__"] focus
+exec --no-startup-id picom
 bindsym $mod+i [class="Google-chrome" workspace="__focused__"] focus
 
 bindsym Print exec flameshot gui
