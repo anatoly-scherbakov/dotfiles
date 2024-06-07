@@ -223,6 +223,7 @@ exec "/opt/toggldesktop/TogglDesktop"
 # Shortcuts to switch to application windows
 bindsym $mod+p [class="jetbrains-pycharm" workspace="__focused__"] focus
 bindsym $mod+k [class=Slack] focus
+bindsym $mod+y [class=Typora] focus
 bindsym $mod+m [class="Gnome-terminal" workspace="__focused__"] focus
 exec --no-startup-id picom
 bindsym $mod+i [class="Google-chrome" workspace="__focused__"] focus
