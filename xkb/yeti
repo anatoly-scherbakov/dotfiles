@@ -3,8 +3,8 @@ xkb_symbols "yeti" {
 
     // Set Caps Lock as group lock
     key <CAPS> {
-        type="ONE_LEVEL",
-        symbols[Group1] = [ ISO_Next_Group ]
+        type="TWO_LEVEL",
+        symbols[Group1] = [ ISO_Next_Group, Caps_Lock ]
     };
 
     // AltGr is the third-level Latch modifier
