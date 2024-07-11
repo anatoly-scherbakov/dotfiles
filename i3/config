@@ -204,16 +204,15 @@ assign [class="slack"] 1
 assign [class="TogglDesktop"] 2
 
 # Starting up: background apps
-exec numlockx
-exec organize run
-exec flameshot
+exec --no-startup-id numlockx
+exec --no-startup-id flameshot
 
 # https://www.reddit.com/r/i3wm/comments/8zj0jl/passwords_are_not_saved_in_google_chrome_in_i3/
 exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets
 
 # Starting up: work
-exec "pycharm-professional"
-exec slack
+exec --no-startup-id "pycharm-professional"
+exec --no-startup-id slack
 
 # Starting up: communications
 exec "google-chrome --password-store=gnome-libsecret"
