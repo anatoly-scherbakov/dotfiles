@@ -203,6 +203,9 @@ focus_follows_mouse no
 assign [class="slack"] 1
 assign [class="TogglDesktop"] 2
 
+exec --no-startup-id xset s off
+exec --no-startup-id xset -dpms
+
 # Starting up: background apps
 exec --no-startup-id numlockx
 exec --no-startup-id flameshot
