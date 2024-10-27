@@ -18,6 +18,7 @@ xkb_symbols "yeti" {
     key <AD08> { [ i, I, 0x10000ee, 0x10000ce ] }; // î, Î
     key <AC02> { [ s, S, 0x1000219, 0x1000218 ] }; // ș, Ș
     key <AD05> { [ t, T, 0x100021b, 0x100021a ] }; // ț, Ț
+    key <AE06> { [ 6, asciicircum, 0x10000e2, 0x10000c2 ] }; // 6, ^, â, Â
 
     key <TLDE> { [ grave, asciitilde, 0x1002248 ] };  // ≈
 
