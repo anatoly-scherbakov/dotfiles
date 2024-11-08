@@ -77,7 +77,7 @@ bindsym $mod+h split h
 bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
-bindsym $mod+KP_Add fullscreen toggle
+bindsym $mod+space fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking   # I do not use this mode much
@@ -108,6 +108,8 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
+set $ws11 "11:➕"
+set $ws12 "12:➖"
 
 # Switch to workspace
 # Using numbers in the top keyboard row or keypad on the mouse
@@ -133,6 +135,8 @@ bindsym $mod+Mod2+KP_7 workspace number $ws7
 bindsym $mod+Mod2+KP_8 workspace number $ws8
 bindsym $mod+Mod2+KP_9 workspace number $ws9
 bindsym $mod+Mod2+KP_0 workspace number $ws10
+bindsym $mod+Mod2+KP_Add workspace number $ws11
+bindsym $mod+Mod2+KP_Subtract workspace number $ws12
 
 
 # move focused container to workspace
@@ -158,6 +162,8 @@ bindsym $mod+Shift+Mod2+KP_Home move container to workspace number $ws7
 bindsym $mod+Shift+Mod2+KP_Up move container to workspace number $ws8
 bindsym $mod+Shift+Mod2+KP_Prior move container to workspace number $ws9
 bindsym $mod+Shift+Mod2+KP_Insert move container to workspace number $ws10
+bindsym $mod+Shift+Mod2+KP_Add move container to workspace number $ws11
+bindsym $mod+Shift+Mod2+KP_Subtract move container to workspace number $ws12
 
 # reload the configuration file
 # bindsym $mod+ScrollLock reload
