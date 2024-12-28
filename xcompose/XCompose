@@ -1,3 +1,14 @@
+# GTK has rewritten this file to add the line:
+
+include "%L"
+
+# This is necessary to add your own Compose sequences
+# in addition to the builtin sequences of GTK. If this
+# is not what you want, just remove that line.
+#
+# A backup of the previous file contents has been made.
+
+
 # Mathematical symbols
 
 <Multi_key> <KP_8> <KP_8>                             : "∞"   U221e   # 8 8 INFINITY
@@ -125,3 +136,4 @@
 <Multi_key> <m> <d> : "🇲🇩"   U1F1F2 U1F1E9  # Flag for Moldova
 <Multi_key> <a> <m> : "🇦🇲"   U1F1E6 U1F1F2  # Flag for Armenia
 <Multi_key> <e> <u> : "🇪🇺"   U1F1EA U1F1FA  # European Union Flag
+<Multi_key> <m> <o> <p> : "🧹"   # Mop Emoji
