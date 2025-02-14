@@ -8,6 +8,11 @@
 # i3 config file (v4)
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
+# To find out the class of a window, do:
+#
+# ```
+# xprop | grep CLASS
+# ```
 
 # Windows key.
 # On Microsoft ergonomic keyboards, it is on the left. Thus, every key we press
@@ -245,3 +250,6 @@ bindsym $mod+Control_L+Shift_L+ISO_Level3_Latch+space [class="Google-chrome"] fo
 
 bindsym $mod+f [class="Nemo" workspace="__focused__"] focus
 bindsym $mod+Shift+f [class="Nemo"] focus
+
+bindsym $mod+a [class="Alacritty" workspace="__focused__"] focus
+bindsym $mod+Shift+a [class="Alacritty"] focus
