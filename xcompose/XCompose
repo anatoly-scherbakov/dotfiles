@@ -123,6 +123,7 @@ include "%L"
 <Multi_key> <at> <g> <r> <e> <e> <n> : "🟢"   U1F7E2  # Unit test is now passing
 <Multi_key> <at> <r> <e> <d> : "🔴"   U1F534  # Unit test is now broken
 <Multi_key> <at> <y> <e> <l> <l> <o> <w> : "🟡"   U1F7E1  # Unit test is now skipped
+<Multi_key> <at> <b> <l> <u> <e> : "🔵"   U1F535   # Blue circle
 
 # Emoji for desktop labels
 <Multi_key> <t> <r> <a> <s> <h> : "🗑️"   U1F5D1  # Trash Bin
@@ -136,4 +137,4 @@ include "%L"
 <Multi_key> <m> <d> : "🇲🇩"   U1F1F2 U1F1E9  # Flag for Moldova
 <Multi_key> <a> <m> : "🇦🇲"   U1F1E6 U1F1F2  # Flag for Armenia
 <Multi_key> <e> <u> : "🇪🇺"   U1F1EA U1F1FA  # European Union Flag
-<Multi_key> <m> <o> <p> : "🧹"   # Mop Emoji
+<Multi_key> <m> <o> <p> : "🧹"   U1F9F9  # Mop Emoji
