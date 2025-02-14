@@ -133,11 +133,11 @@ include "%L"
 <Multi_key> <l> <i> <n> <k> : "🔗"   U1F517  # Link
 
 # Country Flags
-<Multi_key> <r> <o> : "🇷🇴"   U1F1F7 U1F1F4  # Flag for Romania
-<Multi_key> <m> <d> : "🇲🇩"   U1F1F2 U1F1E9  # Flag for Moldova
-<Multi_key> <a> <m> : "🇦🇲"   U1F1E6 U1F1F2  # Flag for Armenia
-<Multi_key> <e> <u> : "🇪🇺"   U1F1EA U1F1FA  # European Union Flag
-<Multi_key> <m> <o> <p> : "🧹"   U1F9F9  # Mop Emoji
+<Multi_key> <r> <o> : "🇷🇴"
+<Multi_key> <m> <d> : "🇲🇩"
+<Multi_key> <a> <m> : "🇦🇲"
+<Multi_key> <e> <u> : "🇪🇺"
+<Multi_key> <m> <o> <p> : "🧹"  # Mop Emoji
 
 <Multi_key> <dollar> <a> <m> <d> : "֏"   U058F   # Armenian Dram
 <Multi_key> <dollar> <e> <u> <r> : "€"   U20AC   # Euro
