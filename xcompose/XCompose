@@ -138,3 +138,7 @@ include "%L"
 <Multi_key> <a> <m> : "🇦🇲"   U1F1E6 U1F1F2  # Flag for Armenia
 <Multi_key> <e> <u> : "🇪🇺"   U1F1EA U1F1FA  # European Union Flag
 <Multi_key> <m> <o> <p> : "🧹"   U1F9F9  # Mop Emoji
+
+<Multi_key> <dollar> <a> <m> <d> : "֏"   U058F   # Armenian Dram
+<Multi_key> <dollar> <e> <u> <r> : "€"   U20AC   # Euro
+<Multi_key> <dollar> <r> <u> <b> : "₽"   U20BD   # Russian Ruble
