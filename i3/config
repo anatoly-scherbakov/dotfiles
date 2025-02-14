@@ -243,3 +243,5 @@ bindsym Print exec flameshot gui
 
 bindsym $mod+Control_L+Shift_L+ISO_Level3_Latch+space [class="Google-chrome"] focus
 
+bindsym $mod+f [class="Nemo" workspace="__focused__"] focus
+bindsym $mod+Shift+f [class="Nemo"] focus
