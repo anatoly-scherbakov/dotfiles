@@ -277,3 +277,9 @@ bindsym $mod+Shift+n unmark
 
 # Go to marked windows
 bindsym $mod+g [con_mark="🟢"] focus
+
+# Mark AI Chat windows
+for_window [title="ChatGPT - Google Chrome"] mark "AI"
+
+# Insert selection into an AI chat window
+bindsym --release $mod+l exec --no-startup-id selection_to_chat
