@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Check if any window is marked "AI"
+if ! i3-msg -t get_tree | jq -e '.. | objects | select(.marks | index("AI"))' > /dev/null; then
+    exit 1  # No AI window found, exit the script
+fi
+
 # Copy primary selection to clipboard
 xclip -o -selection primary | xclip -selection clipboard
 
