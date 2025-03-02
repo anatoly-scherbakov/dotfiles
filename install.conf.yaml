@@ -51,6 +51,18 @@
         force: true
         path: bin/irene.sh
 
+    "~/bin/scan":
+        relink: true
+        create: true
+        force: true
+        path: bin/scan.sh
+
+    "~/.config/epsonscan2/settings.sf2":
+        relink: true
+        create: true
+        force: true
+        path: epsonscan2/settings.sf2
+
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
     - ['setxkbmap -symbols yeti -print | xkbcomp -I"$HOME/.config/xkb" - "${DISPLAY%%.*}"', Setting up keyboard layout]
