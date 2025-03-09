@@ -117,6 +117,7 @@ set $ws11 "11:➕"
 set $ws12 "12:➖"
 set $ws13 "13:✖"
 set $ws14 "14:➗"
+set $ws_zoom "zoom"
 
 # Switch to workspace
 # Using numbers in the top keyboard row or keypad on the mouse
@@ -146,7 +147,7 @@ bindsym $mod+Mod2+KP_Add workspace number $ws11
 bindsym $mod+Mod2+KP_Subtract workspace number $ws12
 bindsym $mod+Mod2+KP_Multiply workspace number $ws13
 bindsym $mod+Mod2+KP_Divide workspace number $ws14
-
+bindsym $mod+z workspace $ws_zoom
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -283,3 +284,7 @@ for_window [title="ChatGPT - Google Chrome"] mark "AI"
 
 # Insert selection into an AI chat window
 bindsym --release Ctrl+Shift+apostrophe exec --no-startup-id selection_to_chat
+
+# Move all Zoom windows to the assigned workspace
+assign [class="zoom"] $ws_zoom
+/
