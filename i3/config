@@ -147,7 +147,7 @@ bindsym $mod+Mod2+KP_Add workspace number $ws11
 bindsym $mod+Mod2+KP_Subtract workspace number $ws12
 bindsym $mod+Mod2+KP_Multiply workspace number $ws13
 bindsym $mod+Mod2+KP_Divide workspace number $ws14
-bindsym $mod+z workspace $ws_zoom
+bindsym $mod+Mod2+KP_Decimal workspace $ws_zoom
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
