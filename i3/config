@@ -287,3 +287,4 @@ bindsym --release Ctrl+Shift+apostrophe exec --no-startup-id selection_to_chat
 
 # Move all Zoom windows to the assigned workspace
 assign [class="zoom"] $ws_zoom
+for_window [class="zoom"] move to workspace $ws_zoom
