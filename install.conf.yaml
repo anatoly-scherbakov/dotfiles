@@ -65,7 +65,13 @@
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
-    - ['setxkbmap -symbols yeti -print | xkbcomp -I"$HOME/.config/xkb" - "${DISPLAY%%.*}"', Setting up keyboard layout]
+    - >
+      setxkbmap -layout yeti,ru,am -variant ,,phonetic -option '' -option compose:menu -print | xkbcomp -I"$HOME/.config/xkb" - "${DISPLAY%%.*}"
+
+    - >
+      gsettings set org.gnome.desktop.input-sources xkb-options "['compose:menu']"
+    - >
+      gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'yeti'), ('xkb', 'ru'), ('xkb', 'am(phonetic)')]"
 
     # https://www.reddit.com/r/i3wm/comments/f9r6mr/disable_notifysend_sending_notifications/
     # - ['killall -SIGUSR1 dunst', "Stopping the i3 notifications service"]
