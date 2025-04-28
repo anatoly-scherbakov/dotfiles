@@ -57,6 +57,12 @@
         force: true
         path: bin/scan.sh
 
+    "~/bin/reset_usb_bus":
+        relink: true
+        create: true
+        force: true
+        path: bin/reset_usb_bus.sh
+
     "~/.config/epsonscan2/settings.sf2":
         relink: true
         create: true
