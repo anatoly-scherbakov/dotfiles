@@ -293,6 +293,9 @@ for_window [class="zoom"] move to workspace $ws_zoom
 bindsym $mod+u [class="jetbrains-rustrover" workspace="__focused__"] focus
 bindsym $mod+Shift+u [class="jetbrains-rustrover"] focus
 
+exec_always --no-startup-id ~/bin/setup-displays.sh
+
+
 # Find mouse cursor
 bindsym $mod+semicolon exec --no-startup-id xfce4-find-cursor
 
