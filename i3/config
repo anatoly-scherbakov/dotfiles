@@ -292,3 +292,7 @@ for_window [class="zoom"] move to workspace $ws_zoom
 # Call RustRover
 bindsym $mod+u [class="jetbrains-rustrover" workspace="__focused__"] focus
 bindsym $mod+Shift+u [class="jetbrains-rustrover"] focus
+
+# Find mouse cursor
+bindsym $mod+semicolon exec --no-startup-id xfce4-find-cursor
+
