@@ -63,6 +63,12 @@
         force: true
         path: bin/reset_usb_bus.sh
 
+    "~/bin/synology":
+        relink: true
+        create: true
+        force: true
+        path: bin/synology.sh
+
     "~/.config/epsonscan2/settings.sf2":
         relink: true
         create: true
