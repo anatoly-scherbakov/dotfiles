@@ -9,4 +9,4 @@ MOUNT_POINT="$HOME/synology"
 mkdir -p "$MOUNT_POINT"
 
 # Mount Synology
-sshfs synology.local:/ ~/synology -o idmap=user
+echo "$SYNOLOGY_PASSWORD" | sshfs -o password_stdin synology.local:/ ~/synology -o idmap=user

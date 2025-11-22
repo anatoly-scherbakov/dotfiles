@@ -69,6 +69,12 @@
         force: true
         path: bin/synology.sh
 
+    "~/bin/backup":
+        relink: true
+        create: true
+        force: true
+        path: bin/backup.sh
+
     "~/.config/epsonscan2/settings.sf2":
         relink: true
         create: true
