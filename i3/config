@@ -272,8 +272,8 @@ bindsym $mod+Control_L+Shift_L+ISO_Level3_Latch+space [class="Google-chrome"] fo
 bindsym $mod+f [class="Nemo" workspace="__focused__"] focus
 bindsym $mod+Shift+f [class="Nemo"] focus
 
-bindsym $mod+a [class="Alacritty" workspace="__focused__"] focus
-bindsym $mod+Shift+a [class="Alacritty"] focus
+bindsym $mod+a [class="kitty" workspace="__focused__"] focus
+bindsym $mod+Shift+a [class="kitty"] focus
 
 # Mark
 bindsym $mod+Shift+g mark "🟢"
@@ -301,4 +301,3 @@ exec_always --no-startup-id ~/bin/setup-displays.sh
 
 # Find mouse cursor
 bindsym $mod+semicolon exec --no-startup-id xfce4-find-cursor
-
