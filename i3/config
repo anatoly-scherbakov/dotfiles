@@ -236,6 +236,8 @@ exec --no-startup-id xset -dpms
 # Starting up: background apps
 exec --no-startup-id numlockx
 exec --no-startup-id flameshot
+# Map touchscreen to laptop display (fixes offset when external monitor connected)
+exec --no-startup-id xinput map-to-output "Weida Hi-Tech CoolTouch System" eDP-1 2>/dev/null
 
 # https://www.reddit.com/r/i3wm/comments/8zj0jl/passwords_are_not_saved_in_google_chrome_in_i3/
 exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets
