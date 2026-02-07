@@ -112,6 +112,7 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
+# Numpad-operator workspaces: number prefix keeps keybindings working after irene rename
 set $ws11 "11:➕"
 set $ws12 "12:➖"
 set $ws13 "13:✖"
@@ -207,6 +208,7 @@ bindsym $mod+r mode "resize"
 
 bar {
     output primary
+    strip_workspace_numbers yes
     status_command i3blocks
     font pango:DejaVu Sans Mono 24
     colors {
