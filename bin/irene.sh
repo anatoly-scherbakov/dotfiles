@@ -12,16 +12,28 @@ num=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).num')
 current_name=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).name')
 
 if [[ "$num" == "-1" || -z "$num" ]]; then
-  # Named workspace (no numeric id): keep current name as prefix
+  # Named workspace (no numeric id)
+  # Special case: never rename the dedicated "zoom" workspace.
+  if [[ "$current_name" == "zoom" ]]; then
+    exit 0
+  fi
+
+  # Default: keep current name as prefix
   desired_name="${current_name}: ${title}"
 else
-  case "$num" in
-    11) desired_name="11: ➕ ${title}" ;;
-    12) desired_name="12: ➖ ${title}" ;;
-    13) desired_name="13: ✖ ${title}" ;;
-    14) desired_name="14: ➗ ${title}" ;;
-    *)  desired_name="${num}: ${title}" ;;
-  esac
+  # Symbol prefixes for workspaces 0–14. Index is the workspace num.
+  prefixes=("🄌" "❶" "❷" "❸" "❹" "❺" "❻" "❼" "❽" "❾" "❿" "➕" "➖" "✖" "➗")
+  prefix="${prefixes[$num]}"
+
+  if [[ -n "$prefix" ]]; then
+    # Keep numeric prefix so `workspace number N` continues to target this
+    # workspace; i3bar (with strip_workspace_numbers yes) will hide "N:"
+    # and only show the symbol+title like `❶foo` or `➕bar`.
+    desired_name="${num}:${prefix}${title}"
+  else
+    # Fallback: numeric prefix plus raw title
+    desired_name="${num}: ${title}"
+  fi
 fi
 
 i3-msg rename workspace "$current_name" to "$desired_name"
