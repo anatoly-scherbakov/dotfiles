@@ -12,6 +12,19 @@ This repo contains my personal settings and configurations for a number of softw
 
 Forking this config is pointless because your preferences are going to be very different from mine. But you might be interested to copy-paste something. Enjoy!
 
+## Hardware setup
+
+### SDINNOVATION SIDE-KEYBOARD
+
+To configure the keyboard via its web configurator at https://www.huali-tech.com (WebUSB), the udev rules in `udev/99-sdinnovation-keyboard.rules` must be installed once after a fresh OS installation:
+
+```shell
+sudo cp udev/99-sdinnovation-keyboard.rules /etc/udev/rules.d/
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+
+Also ensure your user is in the `plugdev` group (it is by default on Ubuntu).
+
 ## Prerequisites
 
 ```shell script
