@@ -1,0 +1,5 @@
+# SDINNOVATION SIDE-KEYBOARD (VID: 0818, PID: d18a)
+# Grants plugdev group access to the USB device and its hidraw interfaces,
+# enabling WebUSB access from Chrome/Edge at https://www.huali-tech.com
+SUBSYSTEM=="usb", ATTR{idVendor}=="0818", ATTR{idProduct}=="d18a", MODE="0664", GROUP="plugdev"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="0818", ATTRS{idProduct}=="d18a", MODE="0664", GROUP="plugdev"
