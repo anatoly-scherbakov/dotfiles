@@ -18,6 +18,10 @@
         relink: true
         create: true
         path: i3/config
+    ~/.config/i3blocks/config:
+        relink: true
+        create: true
+        path: i3blocks/config
     "~/.config/JetBrains/PyCharm2020.2/idea.properties":
         relink: true
         create: true
@@ -74,6 +78,11 @@
         create: true
         force: true
         path: bin/backup.sh
+    "~/bin/todo_toggl":
+        relink: true
+        create: true
+        force: true
+        path: bin/todo_toggl.py
 
     "~/.config/epsonscan2/settings.sf2":
         relink: true
