@@ -90,6 +90,18 @@
         force: true
         path: epsonscan2/settings.sf2
 
+    "~/.cursor/skills/commit":
+        relink: true
+        create: true
+        force: true
+        path: skills/commit
+
+    "~/.claude/skills/commit":
+        relink: true
+        create: true
+        force: true
+        path: skills/commit
+
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
     - >
