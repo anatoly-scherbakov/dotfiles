@@ -19,6 +19,8 @@ Commits all uncommitted changes on the current branch. One file per commit; one-
 1. **User provided an issue ID** (e.g. "commit for issue 42", "commit #123") — use it.
 2. **Otherwise** — run `git branch --show-current` and try to derive a number from the branch name (e.g. `171-remove-spec-folder`, `issue-123`, `42-fix-bug` → use `171`, `123`, `42`). If the branch does not clearly contain an issue ID, do not add a prefix.
 
+**NEVER** infer the issue ID from `git log`, recent commit messages, or PR numbers in merge commits. Those belong to unrelated work. The only valid sources are the user's explicit instruction and the current branch name.
+
 Use the resolved issue ID as `{issue_id}` in the commit message when applicable.
 
 ## Workflow
