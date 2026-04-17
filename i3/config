@@ -310,6 +310,7 @@ bindsym $mod+u [class="jetbrains-rustrover" workspace="__focused__"] focus
 bindsym $mod+Shift+u [class="jetbrains-rustrover"] focus
 
 exec_always --no-startup-id ~/bin/setup-displays.sh
+exec_always --no-startup-id startup
 
 
 # Find mouse cursor
