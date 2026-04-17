@@ -67,6 +67,12 @@
         force: true
         path: bin/reset_usb_bus.sh
 
+    "~/.local/bin/startup":
+        relink: true
+        create: true
+        force: true
+        path: bin/startup.sh
+
     "~/bin/synology":
         relink: true
         create: true
