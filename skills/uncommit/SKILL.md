@@ -5,46 +5,47 @@ description: Cancel all commits on the current branch while keeping the changes 
 
 # Uncommit
 
-Resets the current branch back to its base, discarding commit history but **keeping every change** in the working tree. The resulting state looks as if the user had made all the changes locally but never committed them.
+Squashes every commit on the current branch into a single staged diff on top of the latest default branch, **keeping every change** in the working tree. The resulting state looks as if the user had made all the changes locally but never committed them.
 
 Use this when a branch has too many noisy back-and-forth commits and the user wants to start the commit history over (typically followed by `/commit` to recreate clean, one-file-per-commit history).
 
-## Rules
+## How to invoke
 
-- **Never lose changes.** Always use `git reset --soft` (or `--mixed`), never `--hard`. The working tree and the union of all uncommitted diffs must be preserved.
-- **Refuse on the default branch.** If the current branch is `master` or `main`, stop and ask the user — uncommitting on the default branch is almost never what they want.
-- **Refuse with a dirty working tree unless the user confirms.** If `git status` shows uncommitted changes before the reset, surface them and ask before proceeding: the reset will mix them together with the previously-committed changes.
-- **Do not push.** Never run `git push` (especially not `--force`). The user will push themselves once they are happy with the new history.
+Just run the accompanying script — it does the whole thing deterministically:
 
-## Workflow
+```bash
+bash "$(dirname "$0")/uncommit.sh"
+```
 
-1. **Identify the current branch:**
-   `git branch --show-current`. If it is `master` or `main`, stop and ask the user what they actually want.
+…or, from the agent, call `bash <skill-dir>/uncommit.sh`. The script takes no arguments.
 
-2. **Identify the base commit to reset to.** In order of preference:
-   - The upstream tracking branch, if set: `git rev-parse --abbrev-ref --symbolic-full-name @{u}`.
-   - Otherwise the merge-base with the default branch: `git merge-base HEAD origin/master` (or `origin/main`, whichever exists).
-   - If neither resolves, ask the user for the base ref.
+## What the script does
 
-3. **Check for a dirty tree:**
-   `git status --porcelain`. If non-empty, show the output to the user and confirm before continuing.
+1. Refuses to run on the default branch (`master`/`main`) or on detached `HEAD`.
+2. Refuses to run on a dirty working tree (so the staged result is unambiguously "branch's net commits").
+3. Asks `gh repo view --json defaultBranchRef` for the repo's default branch (authoritative — no guessing from `origin/HEAD`, which is often stale).
+4. `git fetch origin <default>`.
+5. **Rebases** the current branch onto `origin/<default>` first. This is essential: it makes the merge-base equal to `origin/<default>`, so the soft-reset diff is exactly what the branch contributes and contains **no spurious reverts** of changes the default branch made after the branch point. On rebase conflicts, aborts and exits non-zero so the user can resolve manually.
+6. `git reset --soft origin/<default>` — branch commits become staged changes; working tree untouched.
+7. Prints a one-line report.
 
-4. **Count what will be uncommitted** (for the report):
-   `git rev-list --count <base>..HEAD`. If the count is `0`, stop — there is nothing to uncommit.
+## Rules (for the agent)
 
-5. **Reset:**
-   `git reset --soft <base>`. This moves `HEAD` back to `<base>` while leaving the index and working tree untouched, so every change from the uncommitted commits shows up as staged.
-
-6. **Report:**
-   Print one short line: how many commits were uncommitted, the base they were reset to, and a reminder that the changes are now staged (run `git status` to see them, or `/commit` to recreate history).
+- **Never lose changes.** The script only ever uses `git reset --soft` and `git rebase` (which it aborts on conflict). Never substitute `--hard` or `--mixed`.
+- **Never push.** Especially not `--force`. The user will push themselves once they're happy with the new history. They will need to force-push afterwards because the branch has been rebased.
+- If the script exits with code `2` (refused) or `3` (rebase conflicts), surface its stderr to the user and stop. Do not try to "work around" the refusal — the conditions exist for a reason.
+- If the user explicitly requests a non-default base (e.g. "uncommit back to `origin/release-1.2`"), don't use this skill — just do `git reset --soft <ref>` directly after warning them.
 
 ## Examples
 
-- Branch `171-remove-spec-folder` with 12 commits on top of `origin/master`:
-  → `git reset --soft origin/master` → "Uncommitted 12 commits back to `origin/master`. All changes are staged; run `/commit` to recreate history."
+- Branch `171-remove-spec-folder` with 12 commits on top of `origin/master`, clean tree:
+  → `bash uncommit.sh` → rebases onto latest `origin/master`, soft-resets, reports "squashed 12 commit(s)".
 
-- Branch `master`:
-  → Refuse. Ask the user to confirm or switch branches first.
+- Branch `master` or `main`:
+  → Script refuses with exit code 2. Tell the user to switch branches.
 
-- Branch with a tracking upstream `origin/feature-x` that is 3 commits behind HEAD:
-  → `git reset --soft origin/feature-x` → "Uncommitted 3 commits back to `origin/feature-x`."
+- Dirty working tree:
+  → Script refuses with exit code 2. Tell the user to commit, stash, or discard their working changes first.
+
+- Rebase hits conflicts:
+  → Script aborts the rebase and exits with code 3. Surface the conflict message; the user must rebase manually before retrying.
