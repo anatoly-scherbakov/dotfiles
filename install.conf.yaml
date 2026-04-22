@@ -120,6 +120,18 @@
         force: true
         path: skills/retro
 
+    "~/.cursor/skills/uncommit":
+        relink: true
+        create: true
+        force: true
+        path: skills/uncommit
+
+    "~/.claude/skills/uncommit":
+        relink: true
+        create: true
+        force: true
+        path: skills/uncommit
+
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
     - >
