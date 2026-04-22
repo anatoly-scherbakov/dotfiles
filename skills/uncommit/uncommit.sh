@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
-# uncommit.sh — squash all commits on the current branch into a single staged
-# diff on top of the latest default branch.
+# uncommit.sh — squash all commits on the current branch into a single
+# unstaged diff on top of the latest default branch.
 #
 # Steps:
 #   1. Refuse on detached HEAD or on the default branch itself.
 #   2. Refuse on a dirty working tree.
 #   3. Ask `gh` for the repo's default branch (authoritative — no guessing).
 #   4. Fetch the default branch from origin.
-#   5. Rebase the current branch onto origin/<default> so the soft-reset diff
-#      is exactly the branch's net contribution. On conflict, abort the rebase
+#   5. Rebase the current branch onto origin/<default> so the reset diff is
+#      exactly the branch's net contribution. On conflict, abort the rebase
 #      and exit non-zero so the caller can resolve manually.
-#   6. `git reset --soft origin/<default>` — branch's commits become staged
-#      changes; the working tree is untouched.
+#   6. `git reset origin/<default>` (mixed) — branch's commits become
+#      unstaged changes in the working tree, so a follow-up `/commit` can
+#      stage and commit them one file at a time.
 #
 # Exit codes:
 #   0  success (or nothing to uncommit)
@@ -72,7 +73,7 @@ if [ "$count" = "0" ]; then
   exit 0
 fi
 
-git reset --soft "$base"
+git reset "$base"
 
-echo "uncommit: squashed $count commit(s) from '$current' onto $base. All changes are staged."
-echo "         Run 'git status' to see them, or '/commit' to recreate history."
+echo "uncommit: squashed $count commit(s) from '$current' onto $base. All changes are unstaged."
+echo "         Run 'git status' to see them, or '/commit' to recreate history file-by-file."
