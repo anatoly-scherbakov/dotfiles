@@ -108,6 +108,12 @@
         force: true
         path: skills/commit
 
+    "~/.codex/skills/commit":
+        relink: true
+        create: true
+        force: true
+        path: skills/commit
+
     "~/.cursor/skills/retro":
         relink: true
         create: true
@@ -131,6 +137,12 @@
         create: true
         force: true
         path: skills/uncommit
+
+    "~/.codex/skills/retro":
+        relink: true
+        create: true
+        force: true
+        path: skills/retro
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
