@@ -29,6 +29,7 @@ Also ensure your user is in the `plugdev` group (it is by default on Ubuntu).
 ## Prerequisites
 
 ```shell script
+xargs -a requirements.apt.txt sudo apt install -y
 sudo pip3 install -r requirements.txt
 ```
 
