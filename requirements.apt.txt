@@ -1,2 +1,5 @@
 numlockx
 httpie
+polybar
+fonts-noto-core
+fonts-noto-color-emoji
