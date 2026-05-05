@@ -18,10 +18,15 @@
         relink: true
         create: true
         path: i3/config
-    ~/.config/i3blocks/config:
+    ~/.config/polybar/config.ini:
         relink: true
         create: true
-        path: i3blocks/config
+        path: polybar/config.ini
+    "~/bin/launch-polybar":
+        relink: true
+        create: true
+        force: true
+        path: bin/launch-polybar.sh
     "~/.config/JetBrains/PyCharm2020.2/idea.properties":
         relink: true
         create: true
