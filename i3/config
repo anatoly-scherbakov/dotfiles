@@ -217,59 +217,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-bar {
-    id workspaces
-    output primary
-    position top
-    mode dock
-    tray_output primary
-    strip_workspace_numbers yes
-    font pango:DejaVu Sans Mono 24
-    colors {
-        background #1e1e2e
-        statusline #cdd6f4
-        separator #89b4fa
-
-        # Colors: background border text
-        focused_workspace #89b4fa #89b4fa #1e1e2e
-        active_workspace #1e1e2e #1e1e2e #cba6f7
-        inactive_workspace #1e1e2e #1e1e2e #6c7086
-        urgent_workspace #f38ba8 #f38ba8 #1e1e2e
-    }
-}
-
-bar {
-    id bottom-spacer
-    output primary
-    position bottom
-    mode dock
-    tray_output none
-    workspace_buttons no
-    binding_mode_indicator no
-    height 253
-    colors {
-        background #1e1e2e
-        statusline #1e1e2e
-        separator #1e1e2e
-    }
-}
-
-bar {
-    id status
-    output primary
-    position bottom
-    mode dock
-    tray_output none
-    workspace_buttons no
-    status_command i3blocks
-    font pango:DejaVu Sans Mono 36
-    colors {
-        background #1e1e2e
-        statusline #cdd6f4
-        separator #89b4fa
-    }
-}
-
+# Bars are rendered by polybar; see polybar/config.ini and bin/launch-polybar.sh.
+exec_always --no-startup-id ~/bin/launch-polybar
 
 focus_follows_mouse no
 
