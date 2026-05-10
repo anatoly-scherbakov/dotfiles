@@ -50,17 +50,11 @@ Show a summary table:
 | 1 | ... | mistake | `skills/example/SKILL.md` |
 | 2 | ... | convention | `AGENTS.md` |
 
-Then walk through each learning individually. For each one, show:
-- **Summary** and **detail**
-- **Proposed target**: which `AGENTS.md` or skill file it would go into
+For each learning, show **summary**, **detail**, and **proposed target** (which `AGENTS.md` or skill file it would go into) so the user has enough context to decide.
 
-The user can respond:
-- **keep** — approve as proposed
-- **skip** — discard
-- **edit** — reword before writing
-- **move** — change the target file or directory
+Then ask **one multi-select question** with all learnings as options. Use the host's structured-question tool with multi-select enabled when available (e.g. `AskQuestion` with `allow_multiple: true`); otherwise fall back to asking the user to list the numbers to keep in plain text. The only choice is keep-or-skip — do not offer per-item edit or move actions.
 
-Accumulate approved learnings grouped by target file.
+Accumulate the approved (checked) learnings grouped by target file. Discard the rest.
 
 ### Step 4 — Write approved learnings into target files
 
