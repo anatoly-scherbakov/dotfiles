@@ -149,6 +149,24 @@
         force: true
         path: skills/retro
 
+    "~/.cursor/skills/adr":
+        relink: true
+        create: true
+        force: true
+        path: skills/adr
+
+    "~/.claude/skills/adr":
+        relink: true
+        create: true
+        force: true
+        path: skills/adr
+
+    "~/.codex/skills/adr":
+        relink: true
+        create: true
+        force: true
+        path: skills/adr
+
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
     - >
