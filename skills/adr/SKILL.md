@@ -62,16 +62,20 @@ When the user says the list is complete, read it back and ask whether anything e
 
 ### Stage 2 — option exclusion
 
-Walk through the options **one at a time** in the order the user gave them. For each:
+Drive the elimination — propose exclusions actively rather than surveying each option. For each option you'd reject, ask:
 
-> [Option name] — keep, drop, or undecided?
+> I propose to exclude **[option name]** because [one-line reason]. Do you agree?
+
+Frame as a two-option structured question: a "Yes, exclude" path plus a free-text path so the user can push back with a reason. Batch multiple obvious exclusions into one prompt when you can; don't drip-feed.
+
+Do **not** ask "keep / drop / undecided?" for every option — that's a survey, not facilitation. Take a position on each option you can defend; let the user push back on the ones you got wrong.
 
 If the user asks for a Socratic or directed-question method, switch from broad option dumping to one concise question at a time. Each question should expose one constraint, priority, or tradeoff needed to classify the alternatives, then use the answer to narrow or revise the ADR.
 
-**If "drop":**
-- Ask for a one-line reason.
-- Tabs mode: this becomes a `:x:` tab with the reason as its body.
-- Table mode: this becomes a `❌` row with the reason in the Description column.
+**If excluded:**
+- Capture the user's accepted reason (or your proposed reason if they accepted it as-is).
+- Tabs mode: becomes a `:x:` tab with the reason as its body, **and** a bullet in `### Alternatives Considered` (Context).
+- Table mode: does **not** appear in the Decision table. Goes only into `### Alternatives Considered` (Context) as a bullet.
 
 **If "keep" or "undecided", tabs mode:**
 - Ask for one-line **Pro** and one-line **Contra**. (Multiple bullets are fine; one each is the floor.)
@@ -99,6 +103,8 @@ For multi-select (table) decisions involving cost, add a budget rollup row at th
 
 Pick the matching template (A, B, or C below), fill it in, and write to `<resolved-directory>/<slug>.md` using the Write tool.
 
+Resolve frontmatter `date` to today (YYYY-MM-DD) and `author` from `git config user.name` (fallback: ask the user if detection fails). No need to ask the user about either unless detection fails — these are metadata, not decisions.
+
 **Print only the relative file path** of the new file and stop. Do not stage, do not commit, do not open an editor.
 
 ## Templates
@@ -109,6 +115,8 @@ Pick the matching template (A, B, or C below), fill it in, and write to `<resolv
 ---
 title: <Verb-leading title>
 status: draft
+date: <YYYY-MM-DD, today>
+author: <Author name, from `git config user.name`>
 tags: [decision]
 ---
 
@@ -134,6 +142,8 @@ tags: [decision]
 ---
 title: <Verb-leading title>
 status: undecided
+date: <YYYY-MM-DD, today>
+author: <Author name>
 tags: [decision]
 hide:
   - toc
@@ -205,12 +215,16 @@ hide:
 
 ### Template C — Multi-select subset (table, R23)
 
+Like Template B, rejected alternatives live in `### Alternatives Considered` under Context; the Decision table shows only `✅` and `❓` rows.
+
 Budget / shopping decisions:
 
 ```markdown
 ---
 title: <Verb-leading title>
 status: undecided
+date: <YYYY-MM-DD, today>
+author: <Author name>
 tags: [decision]
 ---
 
@@ -220,13 +234,17 @@ tags: [decision]
 
 <Context paragraph(s).>
 
+### Alternatives Considered
+
+- **<Rejected alt 1>.** Rejected: <one-line reason>.
+- **<Rejected alt 2>.** Rejected: <one-line reason>.
+
 ## Decision
 
 | Status | Item | Cost | $ | Description |
 |--------|------|------|---|-------------|
 | ✅ | [<Item>](<link>) | 2,000֏ | $5 | <description> |
 | ❓ | [<Item>](<link>) |        | $25 | <description> |
-| ❌ | <Item>           |        |     | <reason for exclusion> |
 | **Total** | | | **$5** | **Decided expenses** |
 
 ## Consequences
@@ -258,9 +276,14 @@ These are baked in — apply them without asking:
 - **R12** — never enumerate headings (no `## 1. Foo`, no `## A. Foo`).
 - **R21** — implementation steps as task lists (`- [ ]`), not numbered lists.
 - **R22** — `hide: toc` frontmatter when the ADR uses tabs (Template B). Omit it for Templates A and C.
-- **R23** — table form for multi-select; `✅` / `❓` / `❌` icons; group headers as bold-text rows; budget rollup as `**Total**` row.
+- **R23** — table form for multi-select; Decision table shows only `✅` and `❓` rows. Rejected alternatives live in `### Alternatives Considered` under Context, never in the Decision table. Group headers as bold-text rows; budget rollup as `**Total**` row.
 - **R24** — put ADR metadata such as status in frontmatter (e.g. `status: draft`, `status: undecided`, `status: decided`); do not add a visible `??? info "Metadata"` body block.
 - **R25** — never add a `References` heading to ADRs. Put source links at the first relevant mention in the body, table, or decision text.
+- **R26** — use Mermaid diagrams to express call relations, data flow, or software architecture when they clarify the problem. The natural home is Context (so readers see the shape before reading the alternatives), but Decision or Consequences are fine when the diagram lives downstream of the choice.
+- **R27** — in Mermaid diagrams, use semantic node names (e.g. `CLIImportFiles`, `AgentTool`, `ImportHelper`), never opaque single letters like `A` / `B` / `Z`. The Mermaid source is part of the document; a reader scanning it should understand the shape without rendering it.
+- **R28** — every ADR carries `date: <last-modification YYYY-MM-DD>` and `author: <name>` in frontmatter. Set `date` to today on every write (new file or edit). Resolve `author` from `git config user.name`; ask the user only if detection fails.
+- **R29** — when an ADR transitions from `status: undecided` to `status: decided`, flip the title from neutral / deliberative (`Choose X`, `Decide between A and B`) to an outcome-stating verb-leading title that describes what was chosen. Update both the frontmatter `title:` and the H1 heading. The filename stays as-is unless the user asks to rename — file slugs are URLs.
+- **R30** — keep the ADR scoped to its one decision. Do not drift into implementation planning (mechanism, default values, edge-case handling, file-path-laden step checklists), and do not bundle adjacent concerns into Consequences as if they were settled. When other important decisions surface during drafting, recommend a separate ADR for each rather than inlining sub-decisions; cross-link them per R01/R11.
 
 ## Constraints
 
