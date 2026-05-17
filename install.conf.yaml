@@ -185,6 +185,24 @@
         force: true
         path: skills/address-issue
 
+    "~/.cursor/skills/pr":
+        relink: true
+        create: true
+        force: true
+        path: skills/pr
+
+    "~/.claude/skills/pr":
+        relink: true
+        create: true
+        force: true
+        path: skills/pr
+
+    "~/.codex/skills/pr":
+        relink: true
+        create: true
+        force: true
+        path: skills/pr
+
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
     - >
