@@ -1,0 +1,4 @@
+interface:
+  display_name: "Address Issue"
+  short_description: "Fix GitHub issues from checkout"
+  default_prompt: "Address GitHub issue #<number> in the current repository."
