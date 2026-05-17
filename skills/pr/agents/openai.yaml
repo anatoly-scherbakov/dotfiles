@@ -1,0 +1,4 @@
+interface:
+  display_name: "PR"
+  short_description: "Create PRs and investigate CI"
+  default_prompt: "Create a PR for the current branch and watch CI."
