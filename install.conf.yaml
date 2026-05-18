@@ -203,6 +203,24 @@
         force: true
         path: skills/pr
 
+    "~/.cursor/skills/address-pr-feedback":
+        relink: true
+        create: true
+        force: true
+        path: skills/address-pr-feedback
+
+    "~/.claude/skills/address-pr-feedback":
+        relink: true
+        create: true
+        force: true
+        path: skills/address-pr-feedback
+
+    "~/.codex/skills/address-pr-feedback":
+        relink: true
+        create: true
+        force: true
+        path: skills/address-pr-feedback
+
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
     - >
