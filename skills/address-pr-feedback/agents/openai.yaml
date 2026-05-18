@@ -1,0 +1,4 @@
+interface:
+  display_name: "Address PR Feedback"
+  short_description: "Fix and resolve PR feedback"
+  default_prompt: "Address review feedback on the current pull request."
