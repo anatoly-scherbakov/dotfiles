@@ -119,6 +119,12 @@
         force: true
         path: skills/commit
 
+    "~/.codex/AGENTS.md":
+        relink: true
+        create: true
+        force: true
+        path: agents/AGENTS.md
+
     "~/.cursor/skills/retro":
         relink: true
         create: true
