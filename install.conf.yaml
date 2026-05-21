@@ -5,6 +5,10 @@
         create: true
         relink: true
         path: vim/vimrc
+    ~/.npmrc:
+        create: true
+        relink: true
+        path: npm/npmrc
     ~/.config/xkb/symbols/yeti:
         create: true
         relink: true
