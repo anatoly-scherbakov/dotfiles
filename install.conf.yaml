@@ -9,6 +9,11 @@
         create: true
         relink: true
         path: npm/npmrc
+    ~/.zshrc:
+        create: true
+        relink: true
+        force: true
+        path: zsh/zshrc
     ~/.config/xkb/symbols/yeti:
         create: true
         relink: true
