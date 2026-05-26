@@ -31,6 +31,7 @@ Do **not** invoke this skill for general note-taking, README updates, or post-mo
    - Must be **neutral** — does not presuppose which alternative wins.
    - No `Decision:` prefix.
    - If the final title should state the chosen outcome but the choice is still open, preserve the outcome-shaped title with a placeholder for the unknown part (e.g. `Publish visualization information for ontologies on …`) instead of replacing it with an abstract "Choose …" title.
+   - When an ADR changes from undecided to decided, update the frontmatter title and Markdown H1 so they state the chosen outcome rather than a neutral "Choose …" question.
 
    If the user's draft title presupposes the outcome (e.g. "Use Stripe for payments"), suggest a neutral rewrite ("Choose payment provider") and confirm before continuing.
 
@@ -45,6 +46,8 @@ Do **not** invoke this skill for general note-taking, README updates, or post-mo
    - "One" → use the **tabs** template (Template B).
    - "Subset" → use the **table** template (Template C).
    - The user may answer "just one option, no real alternatives" — use the **simple** template (Template A) and skip Stages 1–2.
+
+6. **Write an initial draft immediately.** Once the file location, title, filename, context, and selection mode are stable enough, create the ADR file with frontmatter, Context, and placeholder Decision/Consequences sections. Continue option discovery, exclusions, research, costs, and final choice by editing that file in place instead of holding the evolving ADR only in chat.
 
 ### Stage 1 — option discovery
 
@@ -99,9 +102,9 @@ Ask: **what changes after this decision lands?** Capture as a bullet list. If th
 
 For multi-select (table) decisions involving cost, add a budget rollup row at the bottom of the table summing USD of all `✅` rows.
 
-### Stage 4 — write the file
+### Stage 4 — finalize the file
 
-Pick the matching template (A, B, or C below), fill it in, and write to `<resolved-directory>/<slug>.md` using the Write tool.
+Pick the matching template (A, B, or C below), fill it in, and write or update `<resolved-directory>/<slug>.md` using the Write tool. If an initial draft already exists from Stage 0, edit that file in place.
 
 Resolve frontmatter `date` to today (YYYY-MM-DD) and `author` from `git config user.name` (fallback: ask the user if detection fails). No need to ask the user about either unless detection fails — these are metadata, not decisions.
 
@@ -212,6 +215,8 @@ hide:
 **Tab ordering** (R10): chosen first, undecided in the middle, rejected last. If there's no chosen alternative yet, undecided come first, then rejected.
 
 **Status flip when a decision lands**: change frontmatter `status: undecided` → `status: decided` and the chosen tab's icon from `:question:` to `:white_check_mark:`.
+
+When flipping status to `decided`, also update the title and H1 to express the chosen outcome. A neutral title such as `Choose payment provider` is appropriate while open; a decided ADR should read like `Adopt Stripe for payments`.
 
 ### Template C — Multi-select subset (table, R23)
 
