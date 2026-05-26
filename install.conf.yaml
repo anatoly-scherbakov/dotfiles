@@ -236,6 +236,24 @@
         force: true
         path: skills/address-pr-feedback
 
+    "~/.cursor/skills/make-venv":
+        relink: true
+        create: true
+        force: true
+        path: skills/make-venv
+
+    "~/.claude/skills/make-venv":
+        relink: true
+        create: true
+        force: true
+        path: skills/make-venv
+
+    "~/.codex/skills/make-venv":
+        relink: true
+        create: true
+        force: true
+        path: skills/make-venv
+
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
     - >
