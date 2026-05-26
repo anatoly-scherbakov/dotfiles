@@ -263,7 +263,7 @@ bindsym $mod+i [class="Google-chrome" workspace="__focused__"] focus
 bindsym Print exec flameshot gui
 
 # Lock screen manually with xscreensaver
-bindsym $mod+Shift+x exec xscreensaver-command -lock
+bindsym $mod+l exec xscreensaver-command -lock
 
 bindsym $mod+Control_L+Shift_L+ISO_Level3_Latch+space [class="Google-chrome"] focus
 
