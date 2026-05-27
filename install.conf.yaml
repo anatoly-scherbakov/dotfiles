@@ -51,12 +51,6 @@
         create: true
         force: true
         path: organize/config.yaml
-    "~/bin/selection_to_chat":
-        relink: true
-        create: true
-        force: true
-        path: bin/selection_to_chat.sh
-
     "~/bin/pushup":
         relink: true
         create: true
