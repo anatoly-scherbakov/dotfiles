@@ -265,6 +265,9 @@ bindsym Print exec flameshot gui
 # Lock screen manually with xscreensaver
 bindsym $mod+l exec xscreensaver-command -lock
 
+# Lock, then suspend
+bindsym $mod+Shift+s exec --no-startup-id sh -c 'xscreensaver-command -lock; systemctl suspend'
+
 bindsym $mod+Control_L+Shift_L+ISO_Level3_Latch+space [class="Google-chrome"] focus
 
 bindsym $mod+f [class="Nemo" workspace="__focused__"] focus
@@ -279,12 +282,6 @@ bindsym $mod+Shift+n unmark
 
 # Go to marked windows
 bindsym $mod+g [con_mark="🟢"] focus
-
-# Mark AI Chat windows
-for_window [title="ChatGPT - Google Chrome"] mark "AI"
-
-# Insert selection into an AI chat window
-bindsym --release Ctrl+Shift+apostrophe exec --no-startup-id selection_to_chat
 
 # Move all Zoom windows to the assigned workspace
 assign [class="zoom"] $ws_zoom
