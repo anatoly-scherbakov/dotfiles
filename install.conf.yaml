@@ -92,6 +92,12 @@
         create: true
         force: true
         path: bin/backup.sh
+
+    "~/bin/reMarkable":
+        relink: true
+        create: true
+        force: true
+        path: bin/reMarkable.sh
     "~/bin/todo_toggl":
         relink: true
         create: true
@@ -247,6 +253,24 @@
         create: true
         force: true
         path: skills/make-venv
+
+    "~/.cursor/skills/concise":
+        relink: true
+        create: true
+        force: true
+        path: skills/concise
+
+    "~/.claude/skills/concise":
+        relink: true
+        create: true
+        force: true
+        path: skills/concise
+
+    "~/.codex/skills/concise":
+        relink: true
+        create: true
+        force: true
+        path: skills/concise
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
