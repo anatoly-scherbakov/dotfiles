@@ -232,9 +232,11 @@ exec --no-startup-id xset -dpms
 # Starting up: background apps
 exec --no-startup-id numlockx
 exec --no-startup-id flameshot
-# Map touchscreen and stylus to laptop display (fixes offset when external monitor connected)
-exec --no-startup-id xinput map-to-output "Weida Hi-Tech CoolTouch System" eDP-1 2>/dev/null
-exec --no-startup-id xinput map-to-output "WCOM0143:00 2D1F:0101 Stylus Pen (0)" eDP-1 2>/dev/null
+# Map touchscreen and stylus to laptop display (fixes offset when external monitor connected).
+# exec_always so an i3 reload re-maps after monitors are plugged/unplugged — the matrix
+# is computed against the virtual desktop size and goes stale when it changes.
+exec_always --no-startup-id xinput map-to-output "Weida Hi-Tech CoolTouch System" eDP-1 2>/dev/null
+exec_always --no-startup-id xinput map-to-output "WCOM0143:00 2D1F:0101 Stylus Pen (0)" eDP-1 2>/dev/null
 
 # https://www.reddit.com/r/i3wm/comments/8zj0jl/passwords_are_not_saved_in_google_chrome_in_i3/
 exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets
