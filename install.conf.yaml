@@ -274,6 +274,9 @@
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
+    - [npx skills add https://github.com/iolanta-tech/nanopublishing --skill '*' -a codex -g, Installing nanopublishing skills for Codex]
+    - [npx skills add https://github.com/iolanta-tech/nanopublishing --skill '*' -a claude-code -g, Installing nanopublishing skills for Claude Code]
+    - [npx skills add https://github.com/iolanta-tech/nanopublishing --skill '*' -a cursor -g, Installing nanopublishing skills for Cursor]
     - >
       setxkbmap -layout yeti,ru,am -variant ,,phonetic -option '' -option compose:menu -print | xkbcomp -I"$HOME/.config/xkb" - "${DISPLAY%%.*}"
 
