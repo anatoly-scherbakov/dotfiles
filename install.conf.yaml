@@ -272,11 +272,80 @@
         force: true
         path: skills/concise
 
+    "~/.cursor/skills/find-url-for":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/find-url-for
+
+    "~/.claude/skills/find-url-for":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/find-url-for
+
+    "~/.codex/skills/find-url-for":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/find-url-for
+
+    "~/.agents/skills/find-url-for":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/find-url-for
+
+    "~/.cursor/skills/nanopublish":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/nanopublish
+
+    "~/.claude/skills/nanopublish":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/nanopublish
+
+    "~/.codex/skills/nanopublish":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/nanopublish
+
+    "~/.agents/skills/nanopublish":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/nanopublish
+
+    "~/.cursor/skills/semantify":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/semantify
+
+    "~/.claude/skills/semantify":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/semantify
+
+    "~/.codex/skills/semantify":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/semantify
+
+    "~/.agents/skills/semantify":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/semantify
+
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
-    - [npx skills add https://github.com/iolanta-tech/nanopublishing --skill '*' -a codex -g, Installing nanopublishing skills for Codex]
-    - [npx skills add https://github.com/iolanta-tech/nanopublishing --skill '*' -a claude-code -g, Installing nanopublishing skills for Claude Code]
-    - [npx skills add https://github.com/iolanta-tech/nanopublishing --skill '*' -a cursor -g, Installing nanopublishing skills for Cursor]
     - >
       setxkbmap -layout yeti,ru,am -variant ,,phonetic -option '' -option compose:menu -print | xkbcomp -I"$HOME/.config/xkb" - "${DISPLAY%%.*}"
 
