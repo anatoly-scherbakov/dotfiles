@@ -5,3 +5,7 @@
 [submodule "pointless-xcompose"]
 	path = pointless-xcompose
 	url = git@github.com:rrthomas/pointless-xcompose.git
+[submodule "nanopublishing"]
+	path = nanopublishing
+	url = git@github.com:iolanta-tech/nanopublishing.git
+	branch = main
