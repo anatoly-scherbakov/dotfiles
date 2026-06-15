@@ -31,6 +31,11 @@
         relink: true
         create: true
         path: polybar/config.ini
+    ~/.config/kitty/kitty.conf:
+        relink: true
+        create: true
+        force: true
+        path: kitty/kitty.conf
     "~/bin/launch-polybar":
         relink: true
         create: true
