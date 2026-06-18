@@ -6,6 +6,12 @@ plugins=(git)
 
 source "$ZSH/oh-my-zsh.sh"
 
+# Per-terminal history: persist commands to disk, but don't merge other
+# sessions' commands into this shell's up-arrow recall (overrides oh-my-zsh's
+# share_history).
+unsetopt share_history
+setopt inc_append_history
+
 export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 
 if command -v direnv >/dev/null; then
