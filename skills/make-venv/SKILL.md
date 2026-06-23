@@ -48,20 +48,27 @@ When unsure, prefer creating and activating `.venv` first, then stop before chan
 
 For Poetry projects:
 
-1. Create `.venv` with `uv venv`.
-2. If `poetry` is not on PATH and `.venv/bin/poetry` does not exist, install Poetry into the venv:
+1. Create or repair `.venv` with `uv venv .venv --python python3`.
+2. Confirm the interpreter works — a present `.venv/` directory is not enough. Run `.venv/bin/python --version`, or check that `readlink -f .venv/bin/python` exists. A dead symlink (for example after removing pyenv) means repair the venv before installing dependencies.
+3. If `poetry` is not on PATH and `.venv/bin/poetry` does not exist, install Poetry into the venv:
 
    ```sh
-   uv pip install poetry
+   uv pip install --python .venv/bin/python poetry
    ```
 
-3. Verify Poetry uses the in-project venv:
+4. Install `pip` into the venv before `poetry install` — `uv venv` does not ship with pip, and Poetry needs it:
+
+   ```sh
+   uv pip install --python .venv/bin/python pip
+   ```
+
+5. Verify Poetry uses the in-project venv:
 
    ```sh
    .venv/bin/poetry env info
    ```
 
-4. Install dependencies from the lock file:
+6. Install dependencies from the lock file:
 
    ```sh
    .venv/bin/poetry install --with dev
@@ -76,7 +83,7 @@ Use `.venv/bin/poetry`, not a global `poetry`, when Poetry was installed into th
 At the end, run focused checks:
 
 - `git status --short` to verify no unintended tracked changes.
-- `.venv/bin/python --version`.
+- `.venv/bin/python --version` — and confirm `readlink -f .venv/bin/python` resolves to an existing interpreter, not a broken symlink.
 - Dependency-manager env info when available, such as `.venv/bin/poetry env info`.
 - An obvious project CLI or smoke command when one is declared, such as a console script with `--help`.
 
