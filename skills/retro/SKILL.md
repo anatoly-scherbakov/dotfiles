@@ -54,6 +54,10 @@ For each learning, show **summary**, **detail**, and **proposed target** (which 
 
 Then ask **one multi-select question** with all learnings as options. Use the host's structured-question tool with multi-select enabled when available (e.g. `AskQuestion` with `allow_multiple: true`); otherwise fall back to asking the user to list the numbers to keep in plain text. The only choice is keep-or-skip — do not offer per-item edit or move actions.
 
+**If the user declines, dismisses, or skips the approval question** (including closing the prompt without selecting anything): treat that as **reject all** — persist nothing, skip Steps 4–5, and go straight to Step 6 reporting zero approved learnings. Do not re-ask in plain text, do not write any files, and do not assume implicit approval.
+
+If no learnings were extracted, skip the question and report "no clusters found" / zero learnings.
+
 Accumulate the approved (checked) learnings grouped by target file. Discard the rest.
 
 ### Step 4 — Write approved learnings into target files
@@ -105,15 +109,55 @@ See [AGENTS.md](AGENTS.md) for project-specific agent guidance.
 
 Print a brief summary:
 
-- N learnings extracted, M approved, K skipped
-- Files created / updated (list them)
+- N learnings extracted, M approved, K skipped (if approval was declined, M = 0 and note "user declined to persist")
+- Files created / updated (list them, or "none" when approval was declined)
 - Any files now near the 80-line limit
 
 ## Constraints
 
-- **Never write silently.** Every write is preceded by user approval in Step 3.
+- **Never write silently.** Every write is preceded by explicit user approval in Step 3. Declining or skipping the approval question means persist nothing.
 - **Size guard.** Flag any `AGENTS.md` exceeding ~80 lines and offer consolidation; always ask before pruning.
 - **Minimal `CLAUDE.md`.** Only ensure the single reference line exists — never accumulate other content there.
 - **Idempotent.** Re-running `/retro` must not duplicate the `## Subdirectory guidance` section or any entries within it.
 - **Skill targeting.** Do not force skill-specific learnings into `AGENTS.md`; propose skill file targets when the learning improves a reusable skill workflow.
 - **No JSONL parsing.** The conversation is already in context; never try to read session transcript files from disk.
+
+## AGENTS.md layout and splitting
+
+When retro surfaces growth pressure, a split request, or any `AGENTS.md` file exceeds **~80 lines**, apply this layout before adding more rules to root.
+
+### What stays in root `AGENTS.md`
+
+- Rules that apply repo-wide (environment, linting, git workflow pointers)
+- `## Subdirectory guidance` — an index linking to every other `AGENTS.md` in the tree
+- Pointers to dedicated skills (e.g. commit formatting → `commit` skill), not duplicated skill content
+
+### Where to move rules
+
+Move rules to the `AGENTS.md` in the directory that **owns** the code or content:
+
+| Scope | Target |
+|-------|--------|
+| `docs/` authoring, MkDocs, prose | `docs/AGENTS.md` |
+| Jeeves commands under `jeeves/` | `jeeves/AGENTS.md` |
+| Tests under `tests/` | `tests/AGENTS.md` |
+| Deep howto enclaves | that howto's `AGENTS.md` |
+
+Assign by **who defines or runs the command**, not by which page you happen to be editing (e.g. `j serve` → `jeeves/AGENTS.md`, not `docs/AGENTS.md`).
+
+### Splitting rules
+
+- Keep existing rule IDs (F, D, A, …) when moving blocks; change file location only, do not renumber.
+- Delete rules superseded by a skill; do not copy them into a subdirectory file.
+- After creating or moving subdirectory files, update root `## Subdirectory guidance` to list **every** `AGENTS.md` under the repo (scan the tree; no duplicates).
+- If a file is still over ~80 lines after a split, flag it and propose a follow-up split — do not prune without asking.
+
+### `AGENTS.md` under `docs/` (MkDocs)
+
+MkDocs publishes every `*.md` in `docs_dir` unless excluded. For projects using MkDocs:
+
+- Prefer the standard filename `AGENTS.md` (not dotfiles) for agent discovery via root links.
+- Add `**/AGENTS.md` to `exclude_docs` in `mkdocs.yml` so guidance never ships as site pages.
+- Document the exclusion in `docs/AGENTS.md` once configured.
+
+When retro creates `docs/AGENTS.md`, verify `exclude_docs` includes `**/AGENTS.md` before finishing Step 5.
