@@ -21,3 +21,9 @@
 - After creating or changing `.envrc`, run `direnv allow <project-path>` and
   verify with `direnv export bash` or by checking that `python` resolves to
   `<project>/.venv/bin/python`.
+
+## Browser Validation
+
+- After changing anything web-served, validate the rendered result in Chromium
+  via Playwright MCP. Do not substitute Chrome, naked Playwright, raw HTTP
+  output, or source inspection for browser validation.
