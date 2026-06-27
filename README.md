@@ -1,5 +1,12 @@
 # Anatoly Scherbakov's dotfiles
 
+## Goal
+
+The same Linux workflow problem should rarely happen twice.
+
+This repository turns repeated workstation, development, and agent-workflow
+friction into durable configuration, automation, or guidance. Once a problem is
+understood, future encounters should be prevented, shortened, or made routine.
 
 ## Features
 
