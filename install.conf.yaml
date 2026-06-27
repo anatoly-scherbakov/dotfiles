@@ -1,4 +1,7 @@
-- clean: []
+- clean:
+    - ~/.cursor/skills
+    - ~/.claude/skills
+    - ~/.codex/skills
 
 - link:
     ~/.vimrc:
@@ -139,17 +142,17 @@
         force: true
         path: agents/AGENTS.md
 
-    "~/.cursor/skills/retro":
+    "~/.cursor/skills/evolve":
         relink: true
         create: true
         force: true
-        path: skills/retro
+        path: skills/evolve
 
-    "~/.claude/skills/retro":
+    "~/.claude/skills/evolve":
         relink: true
         create: true
         force: true
-        path: skills/retro
+        path: skills/evolve
 
     "~/.cursor/skills/uncommit":
         relink: true
@@ -163,11 +166,11 @@
         force: true
         path: skills/uncommit
 
-    "~/.codex/skills/retro":
+    "~/.codex/skills/evolve":
         relink: true
         create: true
         force: true
-        path: skills/retro
+        path: skills/evolve
 
     "~/.cursor/skills/adr":
         relink: true
