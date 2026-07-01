@@ -5,7 +5,11 @@ description: Use when the user invokes /adr or asks to draft, brainstorm, or doc
 
 # ADR
 
-Guides the user through writing an Architecture Decision Record. The output is a single Markdown file targeting **MkDocs Material**, with ADR metadata in frontmatter and either tabs (mutually exclusive alternatives) or a status table (multi-select alternatives), depending on the decision shape.
+## Goal
+
+Goal of this skill is to facilitate rational, data-driven decision making via the framework of Architecture Decision Records.
+
+Guides the user through writing an Architecture Decision Record. The output is a single Markdown file targeting **MkDocs Material**, with ADR metadata in frontmatter and a decision shape chosen from the templates in [templates/](templates/README.md).
 
 The skill is structured as a **two-stage brainstorm**: first enumerate every option without judgment, then walk the list and exclude. After the file is written, the skill stops — no git staging, no commit. The user reviews and saves manually.
 
@@ -16,6 +20,28 @@ The skill is structured as a **two-stage brainstorm**: first enumerate every opt
 - The user is weighing alternatives and wants the reasoning preserved.
 
 Do **not** invoke this skill for general note-taking, README updates, or post-mortems — only for decisions where alternatives were considered.
+
+## Required resources
+
+Always load these bundled resources before drafting or editing an ADR:
+
+- [rules.md](rules.md) — mandatory ADR style, structure, and formatting rules.
+- [templates/README.md](templates/README.md) — template catalog only; load the chosen template file for everything else.
+- [writer-prompt.md](writer-prompt.md) — instructions for the role that edits the ADR file.
+- [reviewer-prompt.md](reviewer-prompt.md) — instructions for the read-only review role.
+
+## Mandatory two-role workflow
+
+Every ADR file mutation must use two separate roles:
+
+1. **Writer** — reads the target file, `rules.md`, and the chosen template file; edits the ADR Markdown file in place per `writer-prompt.md`.
+2. **Reviewer** — reads the target file, `rules.md`, and the chosen template file; does not edit files, checks every rule per `reviewer-prompt.md`, and reports findings.
+
+When the runtime permits subagents, run the writer and reviewer as separate agents using the bundled prompt files. The writer owns edits to the target ADR file. The reviewer owns no files and must remain read-only.
+
+If the runtime does not permit subagents, do **not** silently fall back to an ordinary single-role ADR write. Stop and tell the user that this skill requires the writer/reviewer workflow and needs subagent authorization or a runtime that supports it.
+
+After every writer pass, run the reviewer. If the reviewer reports blockers, the writer fixes them and the reviewer runs once more. If blockers remain after the second reviewer pass, summarize them and ask the user how to proceed.
 
 ## Workflow
 
@@ -39,15 +65,9 @@ Do **not** invoke this skill for general note-taking, README updates, or post-mo
 
 4. **Context.** Draft 2–4 context sentences from the user's stated goal, then ask the user to accept or revise them. The context must answer: what's the situation, and why is a decision needed now? Keep this scoped to the **one** decision (rule R01 — one page, one idea; cross-link other ADRs instead of inlining their detail).
 
-5. **Selection mode.** Ask the user one question:
+5. **Template.** Show [templates/README.md](templates/README.md) and ask which row fits. Read that template file's `{# ... #}` header comment before continuing — it is the only source for shape, representation, and Stage 2–3 behavior.
 
-   > Are you picking **one** option from a set of alternatives (mutually exclusive), or selecting a **subset** (some yes, some no — e.g. a shopping list, a capability bundle)?
-
-   - "One" → use the **tabs** template (Template B).
-   - "Subset" → use the **table** template (Template C).
-   - The user may answer "just one option, no real alternatives" — use the **simple** template (Template A) and skip Stages 1–2.
-
-6. **Write an initial draft immediately.** Once the file location, title, filename, context, and selection mode are stable enough, create the ADR file with frontmatter, Context, and placeholder Decision/Consequences sections. Continue option discovery, exclusions, research, costs, and final choice by editing that file in place instead of holding the evolving ADR only in chat.
+6. **Write an initial draft immediately.** Once the file location, title, filename, context, and template choice are stable enough, delegate to the **writer** subagent with a concrete edit spec to create the ADR file from the chosen template skeleton. Run the **reviewer** subagent after the writer pass. Continue option discovery, exclusions, research, costs, and final choice by delegating in-place edits to the writer (with reviewer after each pass) instead of holding the evolving ADR only in chat.
 
 ### Stage 1 — option discovery
 
@@ -61,7 +81,7 @@ Keep alternatives at the right level of abstraction. An alternative must be a ca
 
 If the user gives options first, merge them with your inferred options before asking for confirmation. Do not make the user solely responsible for option discovery.
 
-When the user says the list is complete, read it back and ask whether anything else comes to mind. Then move to Stage 2.
+When the user says the list is complete, read it back and ask whether anything else comes to mind. Then delegate a writer pass to add the confirmed option labels to the ADR, run the reviewer, and move to Stage 2.
 
 ### Stage 2 — option exclusion
 
@@ -77,34 +97,27 @@ If the user asks for a Socratic or directed-question method, switch from broad o
 
 **If excluded:**
 - Capture the user's accepted reason (or your proposed reason if they accepted it as-is).
-- Tabs mode: becomes a `:x:` tab with the reason as its body, **and** a bullet in `### Alternatives Considered` (Context).
-- Table mode: does **not** appear in the Decision table. Goes only into `### Alternatives Considered` (Context) as a bullet.
+- Record the exclusion per the chosen template file's `{# ... #}` header comment.
 
-**If "keep" or "undecided", tabs mode:**
-- Ask for one-line **Pro** and one-line **Contra**. (Multiple bullets are fine; one each is the floor.)
-- Mark as `:question:` for now.
-
-**If "keep" or "undecided", table mode:**
-- Ask for a one-line description.
-- If this is a budget decision, ask for cost (local currency and/or USD).
-- Mark as `❓` for now.
+**If keep or undecided:**
+- Follow the chosen template file's `{# ... #}` header comment.
 
 After every option is processed:
-
-- **Tabs mode**: ask "ready to pick one?" — if yes, the user names the chosen option, which becomes `:white_check_mark:`. Other kept options stay `:question:`. If no, all kept options remain `:question:` and status is **UNDECIDED**.
-- **Table mode**: ask which kept rows are decided vs still undecided. Decided rows become `✅`, undecided stay `❓`.
+- Follow the chosen template file's `{# ... #}` header comment for closing open outcomes and frontmatter status.
 
 If zero options remain kept, stop and ask the user to revisit Stage 1 — the exclusion was too aggressive.
 
+After processing options, delegate a writer pass to update the ADR with exclusions, kept alternatives, and status markers. Run the reviewer after the writer pass.
+
 ### Stage 3 — consequences
 
-Ask: **what changes after this decision lands?** Capture as a bullet list. If there are concrete implementation steps, render them as a task list (`- [ ]`) per rule R21.
+Ask: **what changes after this decision lands?** Capture as a bullet list. If there are concrete implementation steps, render them as a task list (`- [ ]`) per rule R21. Follow the chosen template file's `{# ... #}` header comment for any template-specific Consequences requirements.
 
-For multi-select (table) decisions involving cost, add a budget rollup row at the bottom of the table summing USD of all `✅` rows.
+Delegate a writer pass to add consequences. Run the reviewer after the writer pass.
 
 ### Stage 4 — finalize the file
 
-Pick the matching template (A, B, or C below), fill it in, and write or update `<resolved-directory>/<slug>.md` using the Write tool. If an initial draft already exists from Stage 0, edit that file in place.
+Pick the matching template file from [templates/](templates/README.md) and delegate to the **writer** subagent to fill in and update `<resolved-directory>/<slug>.md`. If an initial draft already exists from Stage 0, the writer edits that file in place. Run the **reviewer** subagent after the writer pass.
 
 Resolve frontmatter `date` to today (YYYY-MM-DD) and `author` from `git config user.name` (fallback: ask the user if detection fails). No need to ask the user about either unless detection fails — these are metadata, not decisions.
 
@@ -112,189 +125,17 @@ Resolve frontmatter `date` to today (YYYY-MM-DD) and `author` from `git config u
 
 ## Templates
 
-### Template A — Simple (single decision, no real alternatives)
+Per-template shape and usage live only in `templates/<name>.md` (`{# ... #}` header comment). [templates/README.md](templates/README.md) is the catalog. Do not duplicate template content anywhere else in this skill.
 
-```markdown
----
-title: <Verb-leading title>
-status: draft
-date: <YYYY-MM-DD, today>
-author: <Author name, from `git config user.name`>
-tags: [decision]
----
+## Rules
 
-# <Title>
-
-## Context
-
-<Context paragraph(s).>
-
-## Decision
-
-<Single decision statement. Timeless — no current data, no temporal claims.>
-
-## Consequences
-
-- <Bullet>
-- <Bullet>
-```
-
-### Template B — Mutually exclusive alternatives (tabs, R10)
-
-```markdown
----
-title: <Verb-leading title>
-status: undecided
-date: <YYYY-MM-DD, today>
-author: <Author name>
-tags: [decision]
-hide:
-  - toc
----
-
-# <Title>
-
-## Context
-
-<Context paragraph(s).>
-
-### Alternatives Considered
-
-- <Alt 1>
-- <Alt 2>
-- <Alt 3>
-
-## Decision
-
-=== ":white_check_mark: <Chosen alternative>"
-
-    <One-paragraph rationale.>
-
-    <div class="grid" markdown>
-    <div markdown>
-    #### Pro
-    - <bullet>
-    </div>
-
-    <div markdown>
-    #### Contra
-    - <bullet>
-    </div>
-    </div>
-
-=== ":question: <Undecided alternative>"
-
-    <Description.>
-
-    <div class="grid" markdown>
-    <div markdown>
-    #### Pro
-    - <bullet>
-    </div>
-
-    <div markdown>
-    #### Contra
-    - <bullet>
-    </div>
-    </div>
-
-=== ":x: <Rejected alternative>"
-
-    <One-line reason for rejection.>
-
-## Consequences
-
-- <Bullet>
-
-#### Implementation Steps
-
-- [ ] <Step>
-- [ ] <Step>
-```
-
-**Tab ordering** (R10): chosen first, undecided in the middle, rejected last. If there's no chosen alternative yet, undecided come first, then rejected.
-
-**Status flip when a decision lands**: change frontmatter `status: undecided` → `status: decided` and the chosen tab's icon from `:question:` to `:white_check_mark:`.
-
-When flipping status to `decided`, also update the title and H1 to express the chosen outcome. A neutral title such as `Choose payment provider` is appropriate while open; a decided ADR should read like `Adopt Stripe for payments`.
-
-### Template C — Multi-select subset (table, R23)
-
-Like Template B, rejected alternatives live in `### Alternatives Considered` under Context; the Decision table shows only `✅` and `❓` rows.
-
-Budget / shopping decisions:
-
-```markdown
----
-title: <Verb-leading title>
-status: undecided
-date: <YYYY-MM-DD, today>
-author: <Author name>
-tags: [decision]
----
-
-# <Title>
-
-## Context
-
-<Context paragraph(s).>
-
-### Alternatives Considered
-
-- **<Rejected alt 1>.** Rejected: <one-line reason>.
-- **<Rejected alt 2>.** Rejected: <one-line reason>.
-
-## Decision
-
-| Status | Item | Cost | $ | Description |
-|--------|------|------|---|-------------|
-| ✅ | [<Item>](<link>) | 2,000֏ | $5 | <description> |
-| ❓ | [<Item>](<link>) |        | $25 | <description> |
-| **Total** | | | **$5** | **Decided expenses** |
-
-## Consequences
-
-- <Bullet>
-```
-
-Non-budget multi-select (no money involved): drop the `Cost`, `$`, and `Total` columns; keep `Status | Item | Description`.
-
-**Grouping**: for longer tables, insert bold group headers as rows with empty status/cost cells:
-
-```markdown
-|   | **Books**       |     |   | |
-| ❓ | <Book 1>        |     | $30 | <desc> |
-| ✅ | <Book 2>        |     | $19 | <desc> |
-```
-
-## Style rules (enforce silently while writing)
-
-These are baked in — apply them without asking:
-
-- **R01** — one decision per ADR. Cross-link other ADRs with absolute links instead of inlining their content.
-- **R02** — one blank line before every list (otherwise MkDocs renders it inline).
-- **R06** — write `⩾` and `⩽` (U+2A7E / U+2A7D), never `≥` / `≤`.
-- **R08** — write `≈` for approximation, never `~` (e.g. `≈9 months`, `≈$1000`).
-- **R09** — verb-leading neutral title; no `Decision:` prefix.
-- **R10** — tabs only for mutually exclusive alternatives; chosen → undecided → rejected ordering; `:white_check_mark:` / `:question:` / `:x:` icons; Pro/Contra grid inside each kept tab.
-- **R11** — absolute links (`/decisions/other.md`) for cross-directory references. Relative links only for files in the same directory.
-- **R12** — never enumerate headings (no `## 1. Foo`, no `## A. Foo`).
-- **R21** — implementation steps as task lists (`- [ ]`), not numbered lists.
-- **R22** — `hide: toc` frontmatter when the ADR uses tabs (Template B). Omit it for Templates A and C.
-- **R23** — table form for multi-select; Decision table shows only `✅` and `❓` rows. Rejected alternatives live in `### Alternatives Considered` under Context, never in the Decision table. Group headers as bold-text rows; budget rollup as `**Total**` row.
-- **R24** — put ADR metadata such as status in frontmatter (e.g. `status: draft`, `status: undecided`, `status: decided`); do not add a visible `??? info "Metadata"` body block.
-- **R25** — never add a `References` heading to ADRs. Put source links at the first relevant mention in the body, table, or decision text.
-- **R26** — use Mermaid diagrams to express call relations, data flow, or software architecture when they clarify the problem. The natural home is Context (so readers see the shape before reading the alternatives), but Decision or Consequences are fine when the diagram lives downstream of the choice.
-- **R27** — in Mermaid diagrams, use semantic node names (e.g. `CLIImportFiles`, `AgentTool`, `ImportHelper`), never opaque single letters like `A` / `B` / `Z`. The Mermaid source is part of the document; a reader scanning it should understand the shape without rendering it.
-- **R28** — every ADR carries `date: <last-modification YYYY-MM-DD>` and `author: <name>` in frontmatter. Set `date` to today on every write (new file or edit). Resolve `author` from `git config user.name`; ask the user only if detection fails.
-- **R29** — when an ADR transitions from `status: undecided` to `status: decided`, flip the title from neutral / deliberative (`Choose X`, `Decide between A and B`) to an outcome-stating verb-leading title that describes what was chosen. Update both the frontmatter `title:` and the H1 heading. The filename stays as-is unless the user asks to rename — file slugs are URLs.
-- **R30** — keep the ADR scoped to its one decision. Do not drift into implementation planning (mechanism, default values, edge-case handling, file-path-laden step checklists), and do not bundle adjacent concerns into Consequences as if they were settled. When other important decisions surface during drafting, recommend a separate ADR for each rather than inlining sub-decisions; cross-link them per R01/R11.
+ADR style and structure rules live in [rules.md](rules.md). Enforce them via the writer and reviewer subagents — do not apply them silently in the orchestrator alone.
 
 ## Constraints
 
-- **Two stages, in order.** Never ask for Pros/Contras during option discovery (Stage 1). Discovery is breadth-only; judgment lives in Stage 2.
+- **Writer/reviewer for every file mutation.** The orchestrator facilitates Stages 0–3 with the user; all ADR file edits go through the writer, followed by the reviewer. Do not edit ADR files directly when subagents are available.
+- **Two stages, in order.** Never add judgment commentary during option discovery (Stage 1). Discovery is breadth-only; judgment lives in Stage 2 per the chosen template.
 - **No date in filenames.** The user's naming is final — never insert `YYYY-MM-DD.` prefixes.
 - **Stop after writing.** Do not run `git add`, do not run `git commit`, do not invoke `/commit`. Print the file path and exit the workflow.
-- **Don't fabricate alternatives.** If the user only has one option, use Template A — don't invent rejected options to fill out tabs.
-- **Never decide for the user.** When alternatives are still open, keep the ADR `status: undecided` and mark kept alternatives as undecided until the user explicitly chooses or approves the selected subset.
+- **Never decide for the user.** Keep `status: undecided` until the user explicitly chooses or approves — per the chosen template file.
 - **One ADR, one file.** If the user starts describing two unrelated decisions, stop and ask which one this ADR is about. The other becomes a separate `/adr` invocation.
