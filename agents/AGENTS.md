@@ -24,6 +24,11 @@
 
 ## Browser Validation
 
-- After changing anything web-served, validate the rendered result in Chromium
-  via Playwright MCP. Do not substitute Chrome, naked Playwright, raw HTTP
-  output, or source inspection for browser validation.
+- After changing anything web-served, you **must** validate the rendered result
+  in **Chromium via Playwright MCP only**.
+- **Always** use Playwright MCP (`browser_navigate`, `browser_snapshot`,
+  `browser_click`, `browser_wait_for`, `browser_run_code_unsafe`). Never launch
+  Google Chrome, `chromium-browser`, or any other browser yourself — including
+  for CDP on port 9223.
+- **Never** substitute Chrome, naked Playwright, raw HTTP output, HTML/source
+  inspection, or `curl` for browser validation.
