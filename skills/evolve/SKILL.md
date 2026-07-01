@@ -6,10 +6,10 @@ description: Evolve a project from the current session by discovering the projec
 # Evolve
 
 Evolves the current project by turning useful session learnings into durable
-guidance. First understand the project's goal, then extract only learnings that
-help the project better achieve that goal. Ask which learnings to keep, then
-write approved learnings into the right `AGENTS.md` files or relevant skill
-files.
+guidance. First understand the project's goal (and any relevant skill goals),
+then extract only learnings that help better achieve those goals. Ask which
+learnings to keep, then write approved learnings into the right `AGENTS.md`
+files or relevant skill files.
 
 Run at the end of any working session where the agent made non-obvious
 mistakes, learned something about the project, or the user wants to prevent
@@ -29,11 +29,16 @@ statements over inference:
    - root `AGENTS.md`
    - any subdirectory `AGENTS.md` that owns files likely to be updated
    - any guidance files explicitly referenced by those files
+4. For each skill that was active in the session or is likely to receive
+   learnings — invoked via `/skill`, edited under `skills/<name>/`, or referenced
+   in the conversation — read its `SKILL.md` and look for a `## Goal` section.
 
 If multiple goal statements exist, treat the most specific relevant statement as
-primary and use broader statements as context. If no explicit goal exists, infer
-a provisional goal from the README and project structure, and label it as
-inferred when presenting learnings.
+primary and use broader statements as context. When a learning targets a skill
+file, that skill's `## Goal` (if present) is more specific than the project goal
+for goal_fit filtering. If no explicit goal exists, infer a provisional goal from
+the README and project structure, and label it as inferred when presenting
+learnings.
 
 Use the goal as a filter:
 
@@ -65,7 +70,9 @@ For each learning, build a record:
 ```
 summary:        one-line description
 detail:         what happened and why it matters for future agents
-goal_fit:       how this helps the project achieve its discovered goal
+goal_fit:       how this helps achieve the discovered goal — use the target
+                skill's `## Goal` when the learning maps to a skill file;
+                otherwise use the project goal
 relevant_paths: files or directories this learning applies to (empty = whole project)
 type:           mistake | convention | discovery | confirmation | friction
 ```
@@ -86,11 +93,15 @@ Skip learnings that are already documented in existing `AGENTS.md` files,
 
 Prefer updating a skill over `AGENTS.md` when the learning only matters while
 that skill is active. Do not assume auxiliary skill filenames exist; inspect the
-skill directory first. If the skill only has `SKILL.md`, target `SKILL.md`.
+skill directory first. If the skill only has `SKILL.md`, target `SKILL.md`. When
+inspecting a skill directory, read its `## Goal` section if not already
+captured in Step 1.
 
 ### Step 4 — Present learnings for approval
 
-Show the discovered project goal first. If it was inferred, say so clearly.
+Show the discovered project goal first. If it was inferred, say so clearly. If
+any relevant skills have a `## Goal` section, show those too (name the skill and
+quote the goal text).
 
 Then show a summary table:
 
@@ -182,7 +193,8 @@ See [AGENTS.md](AGENTS.md) for project-specific agent guidance.
 
 Print a brief summary:
 
-- Discovered goal source(s), or "goal inferred" if no explicit goal existed
+- Discovered goal source(s), including any skill `## Goal` sections read; or
+  "goal inferred" if no explicit goal existed
 - N learnings extracted, M approved, K skipped (if approval was declined, M = 0
   and note "user declined to persist")
 - Files created / updated (list them, or "none" when approval was declined)
@@ -193,7 +205,8 @@ Print a brief summary:
 - **Never write silently.** Every write is preceded by explicit user approval in
   Step 4. Declining or skipping the approval question means persist nothing.
 - **Goal-aware, not project-specific.** Discover each project's goal from local
-  files at runtime. Do not hardcode one project's goal into this skill.
+  files at runtime — including `## Goal` sections in relevant `SKILL.md` files.
+  Do not hardcode one project's goal into this skill.
 - **Size guard.** Flag any `AGENTS.md` exceeding ~80 lines and offer
   consolidation; always ask before pruning.
 - **Minimal `CLAUDE.md`.** Only ensure the single reference line exists -- never
