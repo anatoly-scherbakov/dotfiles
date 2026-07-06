@@ -39,6 +39,11 @@
         create: true
         force: true
         path: kitty/kitty.conf
+    "~/.config/sublime-text/Packages/User/Preferences.sublime-settings":
+        relink: true
+        create: true
+        force: true
+        path: sublime-text/Preferences.sublime-settings
     "~/bin/launch-polybar":
         relink: true
         create: true
