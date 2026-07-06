@@ -97,6 +97,13 @@ skill directory first. If the skill only has `SKILL.md`, target `SKILL.md`. When
 inspecting a skill directory, read its `## Goal` section if not already
 captured in Step 1.
 
+When a learning targets a subdirectory `AGENTS.md`, also inspect root
+`AGENTS.md` for existing guidance about that same scope. Propose one of two
+scoping actions with the learning: append only, when the root guidance is truly
+repo-wide; or split/move the related root guidance into the subdirectory file,
+when that directory owns the rule. Do not treat target selection as complete
+until this scope decision is explicit.
+
 ### Step 4 — Present learnings for approval
 
 Show the discovered project goal first. If it was inferred, say so clearly. If
@@ -110,8 +117,10 @@ Then show a summary table:
 | 1 | ... | mistake | `skills/example/SKILL.md` | ... |
 | 2 | ... | convention | `AGENTS.md` | ... |
 
-For each learning, show **summary**, **detail**, **goal fit**, and **proposed
-target** so the user has enough context to decide.
+For each learning, show **summary**, **detail**, **goal fit**, **proposed
+target**, and any **scope change** such as appending only or moving existing
+related guidance. The user must be able to approve the learning and its scope
+change together.
 
 Then ask **one multi-select question** with all learnings as options. Use the
 host's structured-question tool with multi-select enabled when available (e.g.
