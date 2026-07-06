@@ -1,0 +1,10 @@
+{
+	"font_size": 30,
+	"translate_tabs_to_spaces": true,
+	"auto_complete": false,
+	"save_on_focus_lost": true,
+	"ignored_packages":
+	[
+		"Vintage",
+	],
+}
