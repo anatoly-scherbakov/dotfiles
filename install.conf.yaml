@@ -171,6 +171,12 @@
         force: true
         path: skills/uncommit
 
+    "~/.codex/skills/uncommit":
+        relink: true
+        create: true
+        force: true
+        path: skills/uncommit
+
     "~/.codex/skills/evolve":
         relink: true
         create: true
