@@ -194,7 +194,7 @@ bindsym $mod+Shift+Mod2+KP_Insert move container to workspace number $ws10
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 # bindsym $mod+Pause restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'bash ~/.local/bin/i3-resurrect-session save && i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -241,13 +241,10 @@ exec_always --no-startup-id xinput map-to-output "WCOM0143:00 2D1F:0101 Stylus P
 # https://www.reddit.com/r/i3wm/comments/8zj0jl/passwords_are_not_saved_in_google_chrome_in_i3/
 exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets
 
-# Starting up: work
-exec --no-startup-id "pycharm-professional"
-exec --no-startup-id slack
-
-# Starting up: communications
-exec "google-chrome --password-store=gnome-libsecret"
-exec "/home/anatoly/Telegram/Telegram"
+# Restore the previous desktop after a fresh i3 start. When no snapshot is
+# available, the helper starts the normal baseline applications instead.
+exec --no-startup-id bash ~/.local/bin/i3-resurrect-session restore
+exec --no-startup-id bash ~/.local/bin/i3-resurrect-session autosave
 
 # Shortcuts to switch to application windows
 bindsym $mod+p [class="jetbrains-pycharm" workspace="__focused__"] focus
