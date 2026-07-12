@@ -30,6 +30,11 @@
         relink: true
         create: true
         path: i3/config
+    ~/.config/i3-resurrect/config.json:
+        relink: true
+        create: true
+        force: true
+        path: i3-resurrect/config.json
     ~/.config/polybar/config.ini:
         relink: true
         create: true
@@ -93,6 +98,11 @@
         create: true
         force: true
         path: bin/startup.sh
+    "~/.local/bin/i3-resurrect-session":
+        relink: true
+        create: true
+        force: true
+        path: bin/i3-resurrect-session.sh
 
     "~/bin/synology":
         relink: true
@@ -365,6 +375,13 @@
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
+    - >
+      if command -v uv >/dev/null 2>&1; then
+        uv tool install --upgrade 'i3-resurrect==1.4.5';
+      else
+        echo 'uv is required to install i3-resurrect; install uv first.' >&2;
+        exit 1;
+      fi
     - >
       setxkbmap -layout yeti,ru,am -variant ,,phonetic -option '' -option compose:menu -print | xkbcomp -I"$HOME/.config/xkb" - "${DISPLAY%%.*}"
 
