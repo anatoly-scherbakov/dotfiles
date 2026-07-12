@@ -1,0 +1,19 @@
+{
+  "terminals": [
+    "kitty"
+  ],
+  "window_command_mappings": [
+    {
+      "class": "Cursor"
+    },
+    {
+      "class": "Google-chrome"
+    },
+    {
+      "class": "slack"
+    },
+    {
+      "class": "TelegramDesktop"
+    }
+  ]
+}
