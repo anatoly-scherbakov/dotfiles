@@ -253,10 +253,8 @@ exec "/home/anatoly/Telegram/Telegram"
 bindsym $mod+p [class="jetbrains-pycharm" workspace="__focused__"] focus
 bindsym $mod+Shift+p [class="jetbrains-pycharm"] focus
 
-# Bind the physical C key's symbol in each configured keyboard layout.
-bindsym $mod+c [class="Cursor" workspace="__focused__"] focus
-bindsym $mod+Cyrillic_es [class="Cursor" workspace="__focused__"] focus
-bindsym $mod+Shift+c [class="Cursor"] focus
+bindsym $mod+c [class="Cursor" instance="^cursor$" workspace="__focused__"] focus
+bindsym $mod+Shift+c [class="Cursor" instance="^cursor$"] focus
 
 bindsym $mod+k [class="(?i)slack"] focus
 bindsym $mod+y [class=Typora] focus
