@@ -1,0 +1,4 @@
+// Treat JSON-LD expressed in YAML as YAML source.
+{
+  "extensions": ["yaml", "yml", "yamlld"]
+}
