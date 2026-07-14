@@ -49,6 +49,11 @@
         create: true
         force: true
         path: sublime-text/Preferences.sublime-settings
+    "~/.config/sublime-text/Packages/User/YAML.sublime-settings":
+        relink: true
+        create: true
+        force: true
+        path: sublime-text/YAML.sublime-settings
     "~/bin/launch-polybar":
         relink: true
         create: true
