@@ -3,6 +3,9 @@
 	"translate_tabs_to_spaces": true,
 	"auto_complete": false,
 	"save_on_focus_lost": true,
+	"reload_file_on_change": true,
+	"always_prompt_for_file_reload": false,
+	"reload_file_in_background": true,
 	"ignored_packages":
 	[
 		"Vintage",
