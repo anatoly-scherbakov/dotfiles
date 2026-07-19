@@ -32,3 +32,22 @@
   for CDP on port 9223.
 - **Never** substitute Chrome, naked Playwright, raw HTTP output, HTML/source
   inspection, or `curl` for browser validation.
+
+## Tables and placeholders
+
+- Do not use filler characters (em dash `—`, en dash, hyphen-minus, `n/a`,
+  etc.) to mean “empty” or “not applicable” in table cells.
+- Prefer a genuinely empty cell (empty string). Less visual noise; absence is
+  the signal.
+
+## Naming
+
+- Avoid contractions in path and directory names (e.g. use `images/`, not `img/`;
+  use `documentation/`, not `docs/`, unless an existing project convention
+  already uses the short form).
+
+## Prose
+
+- Never be repetitive. Do not restate in an introduction, summary, or parent
+  section what a following subsection, paragraph, or list already says.
+  Situate or define once; leave the details to the place that owns them.
