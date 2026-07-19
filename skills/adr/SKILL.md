@@ -35,7 +35,7 @@ Always load these bundled resources before drafting or editing an ADR:
 Every ADR file mutation must use two separate roles:
 
 1. **Writer** — reads the target file, `rules.md`, and the chosen template file; edits the ADR Markdown file in place per `writer-prompt.md`.
-2. **Reviewer** — reads the target file, `rules.md`, and the chosen template file; does not edit files, checks every rule per `reviewer-prompt.md`, and reports findings.
+2. **Reviewer** — reads the target file, `rules.md`, and the chosen template file; does not edit files, checks every rule per `reviewer-prompt.md` (including a concise scan of the ADR), and reports findings.
 
 When the runtime permits subagents, run the writer and reviewer as separate agents using the bundled prompt files. The writer owns edits to the target ADR file. The reviewer owns no files and must remain read-only.
 
@@ -52,16 +52,16 @@ After every writer pass, run the reviewer. If the reviewer reports blockers, the
    - Otherwise, if `docs/blog/` contains posts with `tags: [decision]` in frontmatter, default there.
    - Otherwise, ask the user for a directory.
 
-2. **Working title.** Propose a neutral one-line title from the user's stated goal, then ask the user to accept or revise it. Enforce these rules:
-   - Must start with a **verb** (Choose, Adopt, Require, Replace, Drop, Read, Limit, Rely…).
-   - Must be **neutral** — does not presuppose which alternative wins.
+2. **Working title.** Propose an **outcome-shaped** one-line title from the user's stated goal, then ask the user to accept or revise it. Enforce these rules (R09, R29):
+   - Must start with a **verb** that names the decision outcome (Adopt, Require, Replace, Drop, Host, Implement, Publish, Use…).
+   - Must describe the **raw decision**, not the activity of writing the ADR. Reject meta titles such as `Choose where to…`, `Decide between…`, `Pick a…`.
    - No `Decision:` prefix.
-   - If the final title should state the chosen outcome but the choice is still open, preserve the outcome-shaped title with a placeholder for the unknown part (e.g. `Publish visualization information for ontologies on …`) instead of replacing it with an abstract "Choose …" title.
-   - When an ADR changes from undecided to decided, update the frontmatter title and Markdown H1 so they state the chosen outcome rather than a neutral "Choose …" question.
+   - While the choice is open (`status: undecided`), keep the same outcome sentence and put Unicode ellipsis `…` (U+2026) in the unknown slot(s). Example: language still open → `Implement YAML-LD support in …` (not `Choose a programming language for YAML-LD`).
+   - When the ADR becomes `status: decided`, remove every `…` and fill in the factual outcome in both frontmatter `title:` and H1. Example: `Implement YAML-LD support in Rust`.
 
-   If the user's draft title presupposes the outcome (e.g. "Use Stripe for payments"), suggest a neutral rewrite ("Choose payment provider") and confirm before continuing.
+   If the user's draft title is meta (`Choose payment provider`), rewrite it to outcome shape with `…` (`Pay with …` / `Use … for payments`) and confirm before continuing.
 
-3. **Filename.** Propose a kebab-case slug from the title (e.g. `choose-payment-provider.md`), then ask the user to accept or revise it. **Do not impose a date prefix** — naming is the user's call.
+3. **Filename.** Propose a kebab-case slug from the title (e.g. `host-yaml-ld-support-in.md` or `implement-yaml-ld-support-in.md`), then ask the user to accept or revise it. **Do not impose a date prefix** — naming is the user's call. Prefer slugs that match the outcome shape; do not force a `choose-` prefix.
 
 4. **Context.** Draft 2–4 context sentences from the user's stated goal, then ask the user to accept or revise them. The context must answer: what's the situation, and why is a decision needed now? Keep this scoped to the **one** decision (rule R01 — one page, one idea; cross-link other ADRs instead of inlining their detail).
 
