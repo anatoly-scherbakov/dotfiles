@@ -29,9 +29,12 @@ Distinguish these before recommending action:
 | **Lexical** | Same or near-identical text | Yes, if unintentional |
 | **Structural** | Same outline or section pattern | Yes, if unintentional |
 | **Semantic** | Same facts/meaning in different surface form | Yes |
+| **Tautology** | Same fact twice with no new information (often in one phrase) | Yes — always ban |
 | **Pedagogical** | Intentional reuse for teaching (minimal → richer) | Flag only — never auto-delete |
 
-**Semantic** and **structural** overlaps are candidates for reduction by default. **Pedagogical** overlaps must be flagged "possibly intentional" and confirmed with the user.
+**Semantic** and **structural** overlaps are candidates for reduction by default. **Tautologies** are never kept. **Pedagogical** overlaps must be flagged "possibly intentional" and confirmed with the user.
+
+Tautology example: `pyld.jsonld.expand() via digitalbazaar/pyld` → write `pyld.jsonld.expand()`.
 
 For case studies and pattern catalog, see [examples.md](examples.md).
 
@@ -140,6 +143,7 @@ Emit a consolidated markdown plan:
 
 - Never delete or merge without explicit user approval per cluster.
 - Never treat pedagogical overlap as a bug without asking.
+- Never allow tautologies — same fact twice with no new information.
 - Do not auto-commit — user invokes `/commit` separately if desired.
 - Do not fabricate overlap — if documents are distinct, report "no clusters found".
 - Prefer minimal diffs; match existing project conventions.
