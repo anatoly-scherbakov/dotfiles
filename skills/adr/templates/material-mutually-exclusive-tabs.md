@@ -10,7 +10,7 @@ Tab ordering: chosen first, undecided in the middle, rejected last. If there is 
 
 Icons: :white_check_mark: (chosen), :question: (undecided), :x: (rejected). Kept tabs include a Pro/Contra grid.
 
-When a decision lands: change frontmatter status: undecided → status: decided, flip the chosen tab icon from :question: to :white_check_mark:, and update the title and H1 to express the chosen outcome (rule R29).
+When a decision lands: change frontmatter status: undecided → status: decided; flip the chosen tab icon from :question: to :white_check_mark:; apply R29 for title/H1.
 
 Stage 2 — if excluded: becomes a :x: tab with the reason as its body; optionally a bullet or table row under any Context subheading.
 
