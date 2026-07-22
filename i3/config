@@ -102,11 +102,13 @@ bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 # bindsym $mod+space focus mode_toggle
 
-# focus the parent container
-# bindsym $mod+PageUp focus parent
+# focus a specific output: PageUp = left/external (primary), PageDown = right/laptop
+bindsym $mod+Prior focus output primary
+bindsym $mod+Next focus output eDP-1
 
-# focus the child container
-# bindsym $mod+PageDown focus child
+# move the focused container to a specific output (same left/right mapping)
+bindsym $mod+Shift+Prior move container to output primary
+bindsym $mod+Shift+Next move container to output eDP-1
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
