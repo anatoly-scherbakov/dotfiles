@@ -17,3 +17,8 @@ fi
 
 MONITOR="$PRIMARY" polybar --reload top >/tmp/polybar-top.log 2>&1 &
 MONITOR="$PRIMARY" polybar --reload bottom >/tmp/polybar-bottom.log 2>&1 &
+
+# Any other connected output gets a workspace-only bar.
+xrandr --query | awk '/ connected/ && !/ connected primary/ {print $1}' | while read -r OUT; do
+    MONITOR="$OUT" polybar --reload top-secondary >"/tmp/polybar-secondary-$OUT.log" 2>&1 &
+done
