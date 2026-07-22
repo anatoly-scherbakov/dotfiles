@@ -51,3 +51,15 @@
 - Never be repetitive. Do not restate in an introduction, summary, or parent
   section what a following subsection, paragraph, or list already says.
   Situate or define once; leave the details to the place that owns them.
+
+## Comments and documentation
+
+- No "no-dinosaurs comment" (the rhetorical *apophasis*): never document the
+  absence of a property a reader would not already assume is present. Negating
+  an unexpected trait only plants the idea and carries zero signal — you could
+  equally add "no dinosaurs, no global state, no network calls". Describe what
+  the code *is*, not the infinite set of what it isn't.
+- A negative note earns its place only when it corrects a belief a competent
+  reader would otherwise default to and get wrong (e.g. "NOT thread-safe").
+  Rule of thumb: if the negation only makes sense as an echo of a design
+  discussion the reader never saw, cut it.
