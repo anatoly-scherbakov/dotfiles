@@ -162,6 +162,12 @@
         force: true
         path: agents/AGENTS.md
 
+    "~/.claude/CLAUDE.md":
+        relink: true
+        create: true
+        force: true
+        path: agents/AGENTS.md
+
     "~/.cursor/skills/evolve":
         relink: true
         create: true
