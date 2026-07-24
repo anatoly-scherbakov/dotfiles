@@ -44,6 +44,11 @@
         create: true
         force: true
         path: kitty/kitty.conf
+    ~/.config/systemd/user/app.slice.d/oomd.conf:
+        relink: true
+        create: true
+        force: true
+        path: systemd/user/app.slice.d/oomd.conf
     "~/.config/sublime-text/Packages/User/Preferences.sublime-settings":
         relink: true
         create: true
