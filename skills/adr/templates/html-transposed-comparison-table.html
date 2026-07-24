@@ -1,0 +1,181 @@
+{# template: html-transposed-comparison-table
+
+When to use: compare alternatives across many criteria — libraries, features,
+backends — delivered as a self-contained HTML page (e.g. a Claude Code
+Artifact) instead of a MkDocs Markdown file. Derived from
+material-transposed-comparison-table; same decision semantics, HTML medium.
+
+Orientation: with few alternatives and many criteria, keep the material
+template's orientation (alternatives as columns). With many alternatives
+(⩾ ~6), flip the matrix: alternatives as ROWS, criteria as columns, and the
+Decision row becomes a rightmost **Decision** column. Either orientation must
+carry a per-alternative outcome cell.
+
+Medium mapping — MkDocs/Markdown rules and their HTML analogs. Reviewers
+validate against THIS list, not against the Markdown medium:
+
+- Frontmatter (R24/R28) → no YAML. Status lives in the Verdict box label
+  ("Verdict" = decided; "Open question" = undecided, with … in the H1 per
+  R29); date lives in the meta line under the H1; author optional there.
+- R09/R29 (outcome-shaped title) → applies unchanged to <title> and H1.
+- R01/R30 (one decision, no bundling), R06/R08 (⩾ ⩽ ≈), R12, R25 (no
+  bibliography — links inline at the claim), R31, R35 (sourced factual
+  claims), R38 (no tautologies) → apply unchanged; they are medium-independent.
+- R34 (icon shortcodes) → n/a; use text glyphs/emoji: ✓ for supported,
+  ⭐ for GitHub stars, star runs ★★☆ for graded scales (define in a legend).
+- R36 (GitHub links) → the GitHub cell shows "N.Nk ⭐ · <version>, <Mon YYYY>"
+  and links to the repository.
+- R37 (heading icons), R02 (list spacing), R26/R27 (Mermaid) → n/a in HTML;
+  diagrams may be inline SVG/Canvas if needed.
+- Watch for the per-row tautology trap (R38): the Decision cell and a
+  "Main catch" criterion cell must not restate each other — the Decision cell
+  carries verdict + reason; trim the catch cell to what the verdict does not
+  already say.
+
+Exclusion marking (Stage 2 — if excluded):
+- Prerequisite rejections that never entered the matrix → a compact
+  "Excluded early" two-column table (Candidate | Why excluded) BEFORE the
+  main matrix. State in one sentence the split rule: early = fails a hard
+  constraint without needing the comparison; matrix = the comparison itself
+  shows the disqualifier.
+- Rejected finalists stay as matrix rows: add class="excl" on the <tr>
+  (light-red row tint), class="hot" on the disqualifying cell (brighter red),
+  and the Decision cell reads "Excluded — <reason>".
+
+Stage 2 — if keep or undecided: plain row; Decision cell carries the outcome
+("Keep", "Spike — shortlist #N", "Deferred — <condition>") using the tag
+spans. Never decide for the user; overall status stays undecided until every
+Decision cell is closed.
+
+Page requirements (HTML medium): self-contained (no external assets);
+theme-aware via CSS custom properties redefined under
+@media (prefers-color-scheme: dark) AND :root[data-theme="dark"] /
+:root[data-theme="light"]; wide matrix goes in an overflow-x:auto container,
+optionally full-bleed (.bleed) — the page body itself never scrolls
+horizontally. Group related criterion columns under a colspan header
+(two-row <th> structure) when they form a family (e.g. query languages),
+with any grading legend in a paragraph before the table.
+#}
+<title><Verb-leading outcome title></title>
+<style>
+  :root {
+    --bg: #f7f8fa; --surface: #fff; --ink: #1d2430; --ink-soft: #4c5666;
+    --ink-faint: #77808f; --line: #dde2e9; --accent: #33608c;
+    --good: #2c7a4b; --warn: #9a6700; --bad: #b3392b;
+    --excl: #fdf0ee; --excl-hot: #f7d4cd;
+  }
+  @media (prefers-color-scheme: dark) { :root {
+    --bg: #14181f; --surface: #1b212b; --ink: #e6e9ee; --ink-soft: #b3bcc9;
+    --ink-faint: #7f8a99; --line: #2c3441; --accent: #7aa5d2;
+    --good: #5cb884; --warn: #d9a336; --bad: #e2705f;
+    --excl: #261a19; --excl-hot: #45231e;
+  } }
+  :root[data-theme="dark"] {
+    --bg: #14181f; --surface: #1b212b; --ink: #e6e9ee; --ink-soft: #b3bcc9;
+    --ink-faint: #7f8a99; --line: #2c3441; --accent: #7aa5d2;
+    --good: #5cb884; --warn: #d9a336; --bad: #e2705f;
+    --excl: #261a19; --excl-hot: #45231e;
+  }
+  :root[data-theme="light"] {
+    --bg: #f7f8fa; --surface: #fff; --ink: #1d2430; --ink-soft: #4c5666;
+    --ink-faint: #77808f; --line: #dde2e9; --accent: #33608c;
+    --good: #2c7a4b; --warn: #9a6700; --bad: #b3392b;
+    --excl: #fdf0ee; --excl-hot: #f7d4cd;
+  }
+  body { background: var(--bg); color: var(--ink); margin: 0; overflow-x: hidden;
+         font: 1.05rem/1.65 Charter, Georgia, serif; }
+  .wrap { max-width: 46rem; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+  h1, h2, h3, th, .verdict-label { font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif; }
+  a { color: var(--accent); }
+  td a { color: inherit; }
+  .meta { color: var(--ink-faint); font-size: 0.9rem; }
+  .verdict { background: var(--surface); border: 1px solid var(--line);
+             border-left: 4px solid var(--accent); padding: 1.1rem 1.4rem;
+             margin: 2rem 0; border-radius: 4px; }
+  .verdict-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+                   letter-spacing: 0.12em; color: var(--ink-faint); }
+  .table-scroll { overflow-x: auto; margin: 1.4rem 0; }
+  .bleed { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
+           padding-inline: 1.5rem; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.88rem;
+          background: var(--surface); border: 1px solid var(--line); }
+  th, td { padding: 0.55rem 0.7rem; text-align: left; vertical-align: top;
+           border-bottom: 1px solid var(--line); }
+  th { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.07em;
+       color: var(--ink-soft); background: var(--bg); }
+  th.grp { text-align: center; border-bottom-style: dashed; }
+  th.c, td.c { text-align: center; }
+  tr.excl td { background: var(--excl); }
+  tr.excl td.hot { background: var(--excl-hot); }
+  .tag { font-weight: 700; font-size: 0.8rem;
+         font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif; }
+  .tag.good { color: var(--good); } .tag.warn { color: var(--warn); }
+  .tag.bad { color: var(--bad); }
+  .stars { color: var(--warn); letter-spacing: 0.08em; white-space: nowrap; }
+  .ck { color: var(--good); font-weight: 700; }
+  .gh { white-space: nowrap; }
+</style>
+
+<div class="wrap">
+  <h1><Verb-leading outcome title — with … in the unknown slot while undecided></h1>
+  <div class="meta"><One-line question the page answers> · <Month D, YYYY></div>
+
+  <div class="verdict">
+    <div class="verdict-label">Verdict</div><!-- "Open question" while undecided -->
+    <p><strong><Outcome.></strong> <Two-to-four sentence rationale with inline source links.></p>
+  </div>
+
+  <h2>Context</h2>
+  <p><What is the situation and why decide now. Inline links at every factual claim.></p>
+
+  <h2>Excluded early</h2>
+  <div class="table-scroll">
+  <table>
+    <tr><th>Candidate</th><th>Why excluded</th></tr>
+    <tr><td><Name></td><td><Hard-constraint failure, with source link></td></tr>
+  </table>
+  </div>
+
+  <h2>Candidates</h2>
+  <p><Legend for any graded scale used in headers or cells.></p>
+  <div class="table-scroll bleed">
+  <table>
+    <tr>
+      <th rowspan="2">Candidate</th>
+      <th rowspan="2">GitHub (<Mon YYYY>)</th>
+      <th rowspan="2">License</th>
+      <th colspan="2" class="grp"><Criterion group></th>
+      <th rowspan="2"><Criterion></th>
+      <th rowspan="2">Main catch</th>
+      <th rowspan="2">Decision</th>
+    </tr>
+    <tr>
+      <th class="c"><Sub-criterion></th>
+      <th class="c"><Sub-criterion></th>
+    </tr>
+    <tr>
+      <td><Kept candidate></td>
+      <td class="gh"><a href="https://github.com/org/repo">N.Nk ⭐ · vX.Y.Z, Mon YYYY</a></td>
+      <td><a href="<license URL>"><License></a></td>
+      <td class="c"><span class="ck">✓</span></td>
+      <td class="c"></td>
+      <td><Sourced prose claim></td>
+      <td><What the Decision cell does not already say></td>
+      <td><span class="tag good">Keep</span> — <reason></td>
+    </tr>
+    <tr class="excl">
+      <td><Excluded candidate></td>
+      <td class="gh"><a href="https://github.com/org/repo">N.Nk ⭐ · vX.Y.Z, Mon YYYY</a></td>
+      <td><a href="<license URL>"><License></a></td>
+      <td class="c"></td>
+      <td class="c"><span class="ck">✓</span></td>
+      <td class="hot"><The disqualifying fact, with source link></td>
+      <td><Residual catch, if any></td>
+      <td><span class="tag bad">Excluded</span> — <reason></td>
+    </tr>
+  </table>
+  </div>
+
+  <h2>Consequences</h2>
+  <p><What changes after this decision lands; follow-up spikes or ADRs as links.></p>
+</div>
