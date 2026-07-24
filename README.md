@@ -33,6 +33,28 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 
 Also ensure your user is in the `plugdev` group (it is by default on Ubuntu).
 
+## systemd OOM policy
+
+Ubuntu monitors the entire `user@.service` for sustained memory pressure.
+When `systemd-oomd` selects its `init.scope`, systemd stops the user manager
+and every process in the graphical session. The drop-ins in `systemd/` move
+pressure monitoring to `app.slice`, where the kill candidate is a descendant
+application scope such as a browser.
+
+`./install` links the per-user drop-in. Install the system override for the
+current user's service instance, then reload both managers:
+
+```shell
+sudo install -D -m 0644 \
+  systemd/system/user@.service.d/20-oomd-app-slice.conf \
+  "/etc/systemd/system/user@$(id -u).service.d/20-oomd-app-slice.conf"
+sudo systemctl daemon-reload
+systemctl --user daemon-reload
+```
+
+`oomctl dump` should list the user's `app.slice` with a 50% memory-pressure
+limit and should not list the enclosing `user@<uid>.service`.
+
 ## Prerequisites
 
 ```shell script
