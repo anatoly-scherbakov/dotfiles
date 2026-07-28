@@ -12,6 +12,11 @@
         create: true
         relink: true
         path: npm/npmrc
+    "~/.config/zed/settings.json":
+        create: true
+        relink: true
+        force: true
+        path: zed/settings.json
     ~/.zshrc:
         create: true
         relink: true
