@@ -255,6 +255,9 @@ bindsym $mod+Shift+p [class="jetbrains-pycharm"] focus
 bindsym $mod+c [class="Cursor" instance="^cursor$" workspace="__focused__"] focus
 bindsym $mod+Shift+c [class="Cursor" instance="^cursor$"] focus
 
+bindsym $mod+z [class="dev.zed.Zed" workspace="__focused__"] focus
+bindsym $mod+Shift+z [class="dev.zed.Zed"] focus
+
 bindsym $mod+k [class="(?i)slack"] focus
 bindsym $mod+y [class=Typora] focus
 bindsym $mod+s [class="Sublime_text"] focus
