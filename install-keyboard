@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -e
+
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+export DOTBOT_CONFIG="install.keyboard.conf.yaml"
+exec "${BASEDIR}/install" "${@}"
