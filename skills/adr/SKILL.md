@@ -127,6 +127,10 @@ Resolve frontmatter `date` to today (YYYY-MM-DD) and `author` from `git config u
 
 Per-template shape and usage live only in `templates/<name>.md` (`{# ... #}` header comment). [templates/README.md](templates/README.md) is the catalog. Do not duplicate template content anywhere else in this skill.
 
+The Material and HTML comparison templates share decision
+semantics. When changing shared outcome categories, classification rules, or
+status styling in either template, audit and update the other in the same pass.
+
 ## Rules
 
 ADR style and structure rules live in [rules.md](rules.md). Enforce them via the writer and reviewer subagents — do not apply them silently in the orchestrator alone.
