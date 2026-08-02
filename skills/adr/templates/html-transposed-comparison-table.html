@@ -5,11 +5,19 @@ backends — delivered as a self-contained HTML page (e.g. a Claude Code
 Artifact) instead of a MkDocs Markdown file. Derived from
 material-transposed-comparison-table; same decision semantics, HTML medium.
 
-Orientation: with few alternatives and many criteria, keep the material
-template's orientation (alternatives as columns). With many alternatives
-(⩾ ~6), flip the matrix: alternatives as ROWS, criteria as columns, and the
-Decision row becomes a rightmost **Decision** column. Either orientation must
-carry a per-alternative outcome cell.
+Orientation: choose the orientation that minimizes horizontal scrolling at the
+expected artifact viewport. Compare the expected total width of both shapes
+using the actual labels and compact cell content; do not use a fixed
+alternative-count threshold. Put alternatives in rows when the criterion
+columns are narrower than one column per alternative, and in columns when the
+alternative columns are narrower than one column per criterion. Verify the
+rendered choice at a normal desktop viewport. Either orientation must carry one
+outcome cell per alternative.
+
+Criterion granularity: give every independently decisive requirement its own
+criterion row or column. Do not hide a requirement inside an umbrella
+capability or a combined-stack assessment when it can independently keep or
+exclude an alternative.
 
 Medium mapping — MkDocs/Markdown rules and their HTML analogs. Reviewers
 validate against THIS list, not against the Markdown medium:
@@ -47,6 +55,16 @@ Stage 2 — if keep or undecided: plain row; Decision cell carries the outcome
 spans. Never decide for the user; overall status stays undecided until every
 Decision cell is closed.
 
+Stage 2 — if not selected after a choice is made: a finalist that satisfies
+the constraints but loses to the chosen alternative gets
+class="not-selected" on the <tr> (light-yellow row tint), and its Decision
+cell reads "Not selected". Reserve class="excl", the red tint, and
+"Excluded — <reason>" for evidence-based or hard-constraint rejection.
+
+Stage 2 — if chosen: add class="chosen" to the selected alternative's <tr>
+(light-green row tint), and make its Decision cell read "Chosen". This green
+state is distinct from the plain rows used while options remain open.
+
 Page requirements (HTML medium): self-contained (no external assets);
 theme-aware via CSS custom properties redefined under
 @media (prefers-color-scheme: dark) AND :root[data-theme="dark"] /
@@ -62,24 +80,28 @@ with any grading legend in a paragraph before the table.
     --bg: #f7f8fa; --surface: #fff; --ink: #1d2430; --ink-soft: #4c5666;
     --ink-faint: #77808f; --line: #dde2e9; --accent: #33608c;
     --good: #2c7a4b; --warn: #9a6700; --bad: #b3392b;
+    --chosen: #edf7ed; --not-selected: #fff8e1;
     --excl: #fdf0ee; --excl-hot: #f7d4cd;
   }
   @media (prefers-color-scheme: dark) { :root {
     --bg: #14181f; --surface: #1b212b; --ink: #e6e9ee; --ink-soft: #b3bcc9;
     --ink-faint: #7f8a99; --line: #2c3441; --accent: #7aa5d2;
     --good: #5cb884; --warn: #d9a336; --bad: #e2705f;
+    --chosen: #17291e; --not-selected: #332b16;
     --excl: #261a19; --excl-hot: #45231e;
   } }
   :root[data-theme="dark"] {
     --bg: #14181f; --surface: #1b212b; --ink: #e6e9ee; --ink-soft: #b3bcc9;
     --ink-faint: #7f8a99; --line: #2c3441; --accent: #7aa5d2;
     --good: #5cb884; --warn: #d9a336; --bad: #e2705f;
+    --chosen: #17291e; --not-selected: #332b16;
     --excl: #261a19; --excl-hot: #45231e;
   }
   :root[data-theme="light"] {
     --bg: #f7f8fa; --surface: #fff; --ink: #1d2430; --ink-soft: #4c5666;
     --ink-faint: #77808f; --line: #dde2e9; --accent: #33608c;
     --good: #2c7a4b; --warn: #9a6700; --bad: #b3392b;
+    --chosen: #edf7ed; --not-selected: #fff8e1;
     --excl: #fdf0ee; --excl-hot: #f7d4cd;
   }
   body { background: var(--bg); color: var(--ink); margin: 0; overflow-x: hidden;
@@ -105,6 +127,8 @@ with any grading legend in a paragraph before the table.
        color: var(--ink-soft); background: var(--bg); }
   th.grp { text-align: center; border-bottom-style: dashed; }
   th.c, td.c { text-align: center; }
+  tr.chosen td { background: var(--chosen); }
+  tr.not-selected td { background: var(--not-selected); }
   tr.excl td { background: var(--excl); }
   tr.excl td.hot { background: var(--excl-hot); }
   .tag { font-weight: 700; font-size: 0.8rem;
@@ -153,15 +177,25 @@ with any grading legend in a paragraph before the table.
       <th class="c"><Sub-criterion></th>
       <th class="c"><Sub-criterion></th>
     </tr>
-    <tr>
-      <td><Kept candidate></td>
+    <tr class="chosen">
+      <td><Chosen candidate></td>
       <td class="gh"><a href="https://github.com/org/repo">N.Nk ⭐ · vX.Y.Z, Mon YYYY</a></td>
       <td><a href="<license URL>"><License></a></td>
       <td class="c"><span class="ck">✓</span></td>
       <td class="c"></td>
       <td><Sourced prose claim></td>
       <td><What the Decision cell does not already say></td>
-      <td><span class="tag good">Keep</span> — <reason></td>
+      <td><span class="tag good">Chosen</span></td>
+    </tr>
+    <tr class="not-selected">
+      <td><Finalist not selected></td>
+      <td class="gh"><a href="https://github.com/org/repo">N.Nk ⭐ · vX.Y.Z, Mon YYYY</a></td>
+      <td><a href="<license URL>"><License></a></td>
+      <td class="c"><span class="ck">✓</span></td>
+      <td class="c"><span class="ck">✓</span></td>
+      <td><Sourced prose claim></td>
+      <td><Residual catch, if any></td>
+      <td><span class="tag warn">Not selected</span></td>
     </tr>
     <tr class="excl">
       <td><Excluded candidate></td>
