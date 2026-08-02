@@ -24,14 +24,18 @@ Forking this config is pointless because your preferences are going to be very d
 
 ### SDINNOVATION SIDE-KEYBOARD
 
-To configure the keyboard via its web configurator at https://www.huali-tech.com (WebUSB), the udev rules in `udev/99-sdinnovation-keyboard.rules` must be installed once after a fresh OS installation:
+To configure the keyboards through the WebHID configurator at
+https://www.sdcx-tech.com/, install the udev rules once after a fresh OS
+installation:
 
 ```shell
-sudo cp udev/99-sdinnovation-keyboard.rules /etc/udev/rules.d/
+sudo cp udev/70-sdinnovation-keyboard.rules /etc/udev/rules.d/
 sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
 
-Also ensure your user is in the `plugdev` group (it is by default on Ubuntu).
+The rules match the `SDINNOVATION` USB manufacturer string, so they cover
+different product and firmware IDs. They grant access to the active desktop
+session through udev's `uaccess` mechanism.
 
 ## systemd OOM policy
 
