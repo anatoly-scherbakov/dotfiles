@@ -84,10 +84,9 @@ bindsym $mod+Shift+Right move right
 # split in horizontal orientation
 bindsym $mod+h split h
 
-# split in vertical orientation
-# The `v` key is hard to access with the right hand, but I do not use this
-# combination very often.
-bindsym $mod+v split v
+# Split in vertical orientation. The bar mirrors the divider's shape and pairs
+# with $mod+Tab for tabbed layout.
+bindsym $mod+bar split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+space fullscreen toggle
@@ -259,7 +258,12 @@ bindsym $mod+z [class="dev.zed.Zed" workspace="__focused__"] focus
 bindsym $mod+Shift+z [class="dev.zed.Zed"] focus
 
 bindsym $mod+k [class="(?i)slack"] focus
-bindsym $mod+y [class=Typora] focus
+bindsym $mod+y [class="Google-chrome" title="(?i)(^|.* - )YouTube - Google Chrome$" workspace="__focused__"] focus
+bindsym $mod+Shift+y [class="Google-chrome" title="(?i)(^|.* - )YouTube - Google Chrome$"] focus
+bindsym $mod+t [class="Typora" workspace="__focused__"] focus
+bindsym $mod+Shift+t [class="Typora"] focus
+bindsym $mod+v [class="(?i)^vlc$" workspace="__focused__"] focus
+bindsym $mod+Shift+v [class="(?i)^vlc$"] focus
 bindsym $mod+s [class="Sublime_text"] focus
 bindsym $mod+m [class="Gnome-terminal" workspace="__focused__"] focus
 exec --no-startup-id picom
