@@ -69,6 +69,11 @@
         create: true
         force: true
         path: bin/launch-polybar.sh
+    "~/bin/playwright-chromium":
+        relink: true
+        create: true
+        force: true
+        path: bin/playwright-chromium.sh
     "~/.config/JetBrains/PyCharm2020.2/idea.properties":
         relink: true
         create: true
