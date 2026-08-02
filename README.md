@@ -22,6 +22,22 @@ Forking this config is pointless because your preferences are going to be very d
 
 ## Hardware setup
 
+### System XKB map
+
+`./install` applies the custom XKB map to the current X session. Xorg needs a
+system copy to apply the same map when a keyboard is reconnected, as happens
+when switching a KVM. Install that copy and its hotplug configuration once on
+each machine:
+
+```shell
+./install-keyboard
+```
+
+The command runs Dotbot as the current user and uses `sudo install` only for
+the files under `/usr/share/X11/xkb` and `/etc/X11/xorg.conf.d`. It is safe to
+rerun after changing the map. Restart the graphical session after the first
+installation so Xorg loads the new input class.
+
 ### SDINNOVATION SIDE-KEYBOARD
 
 To configure the keyboards through the WebHID configurator at
