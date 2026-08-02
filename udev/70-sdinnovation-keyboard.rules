@@ -1,0 +1,4 @@
+# SDINNOVATION input devices
+# Grant the active desktop session access for WebHID configuration.
+SUBSYSTEM=="usb", ATTR{manufacturer}=="SDINNOVATION", TAG+="uaccess"
+SUBSYSTEM=="hidraw", ATTRS{manufacturer}=="SDINNOVATION", TAG+="uaccess"
