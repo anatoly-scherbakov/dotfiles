@@ -1,0 +1,19 @@
+- shell:
+    - command: >-
+        sudo install -D -m 0644
+        xkb/yeti
+        /usr/share/X11/xkb/symbols/yeti
+      description: Installing the system XKB symbols
+      quiet: true
+      stdin: true
+      stdout: true
+      stderr: true
+    - command: >-
+        sudo install -D -m 0644
+        xkb/90-yeti-keyboard.conf
+        /etc/X11/xorg.conf.d/90-yeti-keyboard.conf
+      description: Installing the Xorg keyboard hotplug configuration
+      quiet: true
+      stdin: true
+      stdout: true
+      stderr: true
