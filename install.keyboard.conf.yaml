@@ -17,3 +17,14 @@
       stdin: true
       stdout: true
       stderr: true
+    - command: >-
+        sudo install -D -m 0644
+        udev/70-sdinnovation-keyboard.rules
+        /etc/udev/rules.d/70-sdinnovation-keyboard.rules
+        && sudo udevadm control --reload-rules
+        && sudo udevadm trigger --subsystem-match=usb --subsystem-match=hidraw
+      description: Installing the SDINNOVATION keyboard udev rule
+      quiet: true
+      stdin: true
+      stdout: true
+      stderr: true
