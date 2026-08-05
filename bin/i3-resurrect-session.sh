@@ -35,6 +35,26 @@ require_tools() {
   command -v jq >/dev/null
 }
 
+resolve_binary() {
+  local variable_name="$1"
+  local default_name="$2"
+  local candidate="${!variable_name:-$default_name}"
+  local resolved
+
+  if [[ "$candidate" == */* ]]; then
+    if [[ -x "$candidate" ]]; then
+      printf '%s\n' "$candidate"
+      return
+    fi
+  elif resolved="$(command -v "$candidate" 2>/dev/null)"; then
+    printf '%s\n' "$resolved"
+    return
+  fi
+
+  log "${variable_name} executable unavailable: $candidate"
+  return 1
+}
+
 workspace_id() {
   printf '%s' "$1" | tr -d '/\\:*"<>|'
 }
@@ -168,15 +188,111 @@ save_session() {
 start_baseline() {
   pycharm-professional &
   slack &
-  google-chrome --password-store=gnome-libsecret &
-  /home/anatoly/Telegram/Telegram &
+  start_chrome
+  "$HOME/Telegram/Telegram" &
 }
 
 start_session_apps() {
   slack &
-  /home/anatoly/Telegram/Telegram &
-  google-chrome --password-store=gnome-libsecret &
-  /home/anatoly/bin/cursor &
+  "$HOME/Telegram/Telegram" &
+  start_chrome
+  "$HOME/bin/cursor" &
+}
+
+start_chrome() {
+  local chrome_bin
+
+  if ! chrome_bin="$(resolve_binary CHROME_BIN google-chrome)"; then
+    return
+  fi
+
+  "$chrome_bin" --password-store=gnome-libsecret --restore-last-session &
+  log "started Chrome session restore: $chrome_bin"
+}
+
+snapshot_has_nemo() {
+  local snapshot="$1"
+  local programs
+
+  shopt -s nullglob
+  for programs in "$snapshot"/workspace_*_programs.json; do
+    if jq -e '
+      def executable:
+        .command as $command
+        | if ($command | type) == "array" then ($command[0] // "")
+          elif ($command | type) == "string" then $command
+          else ""
+          end;
+      any(.[]; (executable | split("/") | last | split(" ")[0]) == "nemo")
+    ' "$programs" >/dev/null; then
+      shopt -u nullglob
+      return 0
+    fi
+  done
+  shopt -u nullglob
+  return 1
+}
+
+prepare_program_restore_directories() {
+  local snapshot="$1"
+  local nemo_bin="$2"
+  local programs temporary
+
+  program_restore_dir="$(mktemp -d "$state_dir/.program-restore.XXXXXX")"
+  nemo_restore_dir="$(mktemp -d "$state_dir/.nemo-restore.XXXXXX")"
+  cp -a "$snapshot"/. "$program_restore_dir"/
+  cp -a "$snapshot"/. "$nemo_restore_dir"/
+
+  shopt -s nullglob
+  for programs in "$program_restore_dir"/workspace_*_programs.json; do
+    temporary="$(mktemp "$programs.XXXXXX")"
+    jq '
+      def executable:
+        .command as $command
+        | if ($command | type) == "array" then ($command[0] // "")
+          elif ($command | type) == "string" then $command
+          else ""
+          end;
+      def basename: executable | split("/") | last | split(" ")[0];
+      map(select(
+        (basename == "nemo"
+         or basename == "google-chrome"
+         or basename == "google-chrome-stable"
+         or basename == "chromium"
+         or basename == "chromium-browser"
+         or basename == "chrome"
+         or basename == "cursor") | not
+      ))
+    ' "$programs" >"$temporary"
+    mv "$temporary" "$programs"
+  done
+
+  for programs in "$nemo_restore_dir"/workspace_*_programs.json; do
+    temporary="$(mktemp "$programs.XXXXXX")"
+    jq --arg nemo_bin "$nemo_bin" '
+      def executable:
+        .command as $command
+        | if ($command | type) == "array" then ($command[0] // "")
+          elif ($command | type) == "string" then $command
+          else ""
+          end;
+      def basename: executable | split("/") | last | split(" ")[0];
+      map(
+        select(basename == "nemo")
+        | .command |= if type == "array" then [$nemo_bin] + .[1:]
+                      elif type == "string" then $nemo_bin + sub("^[^ ]+"; "")
+                      else [$nemo_bin]
+                      end
+      )
+    ' "$programs" >"$temporary"
+    mv "$temporary" "$programs"
+  done
+  shopt -u nullglob
+}
+
+cleanup_program_restore_directories() {
+  [[ -n "${program_restore_dir:-}" ]] && rm -rf "$program_restore_dir"
+  [[ -n "${nemo_restore_dir:-}" ]] && rm -rf "$nemo_restore_dir"
 }
 
 generation_to_restore() {
@@ -199,7 +315,8 @@ restore_session() {
     return
   fi
 
-  local snapshot manifest workspace focused
+  local snapshot manifest workspace focused nemo_bin=""
+  local program_restore_dir="" nemo_restore_dir=""
   if ! snapshot="$(generation_to_restore)" \
     || ! jq -e '.workspaces | length > 0' \
       "$snapshot/workspaces.json" >/dev/null; then
@@ -215,9 +332,25 @@ restore_session() {
     i3-resurrect restore -w "$workspace" -d "$snapshot" --layout-only
   done < <(jq -r '.workspaces[]' "$manifest")
 
+  if snapshot_has_nemo "$snapshot"; then
+    if nemo_bin="$(resolve_binary NEMO_BIN nemo)"; then
+      log "restoring Nemo placeholders with $nemo_bin"
+    else
+      log "Nemo placeholders were not restored because Nemo is unavailable"
+    fi
+  fi
+  prepare_program_restore_directories "$snapshot" "$nemo_bin"
+
   while IFS= read -r workspace; do
-    i3-resurrect restore -w "$workspace" -d "$snapshot" --programs-only
+    i3-resurrect restore -w "$workspace" -d "$program_restore_dir" --programs-only
   done < <(jq -r '.workspaces[]' "$manifest")
+
+  if [[ -n "$nemo_bin" ]]; then
+    while IFS= read -r workspace; do
+      i3-resurrect restore -w "$workspace" -d "$nemo_restore_dir" --programs-only
+    done < <(jq -r '.workspaces[]' "$manifest")
+  fi
+  cleanup_program_restore_directories
 
   # All placeholders now exist, so i3 can swallow session-restored Cursor and
   # Chrome windows into the project workspace where their titles belong.
