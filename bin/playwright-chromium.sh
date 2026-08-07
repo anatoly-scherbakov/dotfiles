@@ -9,7 +9,16 @@ fi
 
 port=${PLAYWRIGHT_CDP_PORT:-9223}
 runtime_dir=${XDG_RUNTIME_DIR:-/tmp}
-profile_dir=${PLAYWRIGHT_CHROMIUM_PROFILE:-$runtime_dir/playwright-chromium}
+chromium_path=$(command -v chromium)
+
+if [[ $chromium_path == /snap/bin/* ]]; then
+    default_profile_dir="$HOME/snap/chromium/common/playwright-chromium"
+else
+    default_profile_dir="$runtime_dir/playwright-chromium"
+fi
+
+profile_dir=${PLAYWRIGHT_CHROMIUM_PROFILE:-$default_profile_dir}
+mkdir -p "$profile_dir"
 
 echo "Starting Chromium for Playwright at http://127.0.0.1:$port"
 
