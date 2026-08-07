@@ -10,7 +10,9 @@ trap 'rm -rf "$temporary"' EXIT
 fake_home="$temporary/home"
 fake_bin="$temporary/bin"
 runtime_dir="$temporary/runtime"
-mkdir -p "$fake_home" "$fake_bin" "$runtime_dir"
+app_calls="$temporary/app-calls"
+program_restore_calls="$temporary/program-restore-calls"
+mkdir -p "$fake_home/Telegram" "$fake_home/bin" "$fake_bin" "$runtime_dir"
 
 cat >"$fake_bin/i3-msg" <<'EOF'
 #!/usr/bin/env bash
@@ -36,10 +38,12 @@ action="$1"
 shift
 workspace=""
 directory=""
+programs_only=0
 while (($#)); do
   case "$1" in
     -w) workspace="$2"; shift 2 ;;
     -d) directory="$2"; shift 2 ;;
+    --programs-only) programs_only=1; shift ;;
     *) shift ;;
   esac
 done
@@ -50,11 +54,41 @@ if [[ "$action" == save ]]; then
   printf '[]\n' >"$directory/workspace_${id}_programs.json"
 elif [[ "$action" == restore ]]; then
   printf '%s\n' "$directory" >>"$FAKE_RESTORE_CALLS"
+  if ((programs_only)); then
+    jq -r '.[] | (.command | if type == "array" then join(" ") else . end)' \
+      "$directory/workspace_${id}_programs.json" \
+      | while IFS= read -r command; do
+          printf '%s|%s|%s\n' "$directory" "$workspace" "$command" \
+            >>"$FAKE_PROGRAM_RESTORE_CALLS"
+        done
+  fi
   [[ "${FAIL_RESTORE:-0}" != 1 ]]
 fi
 EOF
 
 chmod +x "$fake_bin/i3-msg" "$fake_bin/i3-resurrect"
+
+for application in slack google-chrome; do
+  cat >"$fake_bin/$application" <<EOF
+#!/usr/bin/env bash
+printf '%s %s\\n' '$application' "\$*" >>"\$FAKE_APP_CALLS"
+EOF
+  chmod +x "$fake_bin/$application"
+done
+
+for application in "Telegram/Telegram" "bin/cursor"; do
+  cat >"$fake_home/$application" <<EOF
+#!/usr/bin/env bash
+printf '%s %s\\n' '$application' "\$*" >>"\$FAKE_APP_CALLS"
+EOF
+  chmod +x "$fake_home/$application"
+done
+
+cat >"$fake_bin/nemo" <<'EOF'
+#!/usr/bin/env bash
+printf 'nemo %s\n' "$*" >>"$FAKE_APP_CALLS"
+EOF
+chmod +x "$fake_bin/nemo"
 
 run_helper() {
   env \
@@ -64,6 +98,8 @@ run_helper() {
     XDG_RUNTIME_DIR="$runtime_dir" \
     FAKE_WORKSPACE="$2" \
     FAKE_RESTORE_CALLS="$temporary/restore-calls" \
+    FAKE_PROGRAM_RESTORE_CALLS="$program_restore_calls" \
+    FAKE_APP_CALLS="$app_calls" \
     bash "$script" "${@:3}"
 }
 
@@ -116,6 +152,29 @@ wait "$save_pid"
 jq -e '.workspaces == ["serialized"]' \
   "$serial_state/i3-resurrect/current/workspaces.json" >/dev/null
 
+restore_state="$temporary/restore-state"
+run_helper "$restore_state" restored save
+jq -n --arg home "$fake_home" '[
+  {command: ["/usr/bin/nemo"], working_directory: $home},
+  {command: ["/usr/bin/kitty"], working_directory: $home},
+  {command: ["/usr/bin/google-chrome"], working_directory: $home}
+]' >"$restore_state/i3-resurrect/current/workspace_restored_programs.json"
+rm -f "$temporary/restore-calls" "$program_restore_calls" "$app_calls" \
+  "$runtime_dir"/i3-resurrect-restored-*
+run_helper "$restore_state" restored restore
+for _ in 1 2 3 4 5; do
+  [[ -s "$app_calls" ]] && break
+  sleep 0.1
+done
+rg -F '|/usr/bin/kitty' "$program_restore_calls" | rg -F '/.program-restore.' >/dev/null
+rg -F "|$fake_bin/nemo" "$program_restore_calls" | rg -F '/.nemo-restore.' >/dev/null
+if rg -F '/usr/bin/google-chrome' "$program_restore_calls" >/dev/null; then
+  echo "Chrome was replayed through i3-resurrect" >&2
+  exit 1
+fi
+rg -Fx 'google-chrome --password-store=gnome-libsecret --restore-last-session' \
+  "$app_calls" >/dev/null
+
 printf '{broken\n' >"$state/i3-resurrect/current/workspaces.json"
 rm -f "$temporary/restore-calls" "$runtime_dir"/i3-resurrect-restored-*
 if env \
@@ -125,6 +184,8 @@ if env \
   XDG_RUNTIME_DIR="$runtime_dir" \
   FAKE_WORKSPACE=unused \
   FAKE_RESTORE_CALLS="$temporary/restore-calls" \
+  FAKE_PROGRAM_RESTORE_CALLS="$program_restore_calls" \
+  FAKE_APP_CALLS="$app_calls" \
   FAIL_RESTORE=1 \
   bash "$script" restore; then
   echo "restore unexpectedly succeeded" >&2
