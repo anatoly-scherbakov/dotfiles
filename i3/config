@@ -264,7 +264,8 @@ bindsym $mod+t [class="Typora" workspace="__focused__"] focus
 bindsym $mod+Shift+t [class="Typora"] focus
 bindsym $mod+v [class="(?i)^vlc$" workspace="__focused__"] focus
 bindsym $mod+Shift+v [class="(?i)^vlc$"] focus
-bindsym $mod+s [class="Sublime_text"] focus
+bindsym $mod+s [class="(?i)^signal$" workspace="__focused__"] focus
+bindsym $mod+Shift+s [class="(?i)^signal$"] focus
 bindsym $mod+m [class="Gnome-terminal" workspace="__focused__"] focus
 exec --no-startup-id picom
 bindsym $mod+i [class="Google-chrome" workspace="__focused__"] focus
@@ -273,9 +274,6 @@ bindsym Print exec flameshot gui
 
 # Lock screen manually with xscreensaver
 bindsym $mod+l exec xscreensaver-command -lock
-
-# Lock, then suspend
-bindsym $mod+Shift+s exec --no-startup-id sh -c 'xscreensaver-command -lock; systemctl suspend'
 
 bindsym $mod+Control_L+Shift_L+ISO_Level3_Latch+space [class="Google-chrome"] focus
 
