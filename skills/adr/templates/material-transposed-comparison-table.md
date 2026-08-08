@@ -26,15 +26,16 @@ Outcome marking (Stage 2 — after a choice is made):
 - Add `class="chosen"` to every header and data cell in the selected
   alternative's row or column. Ensure the registered stylesheet gives `.chosen` a
   light-green tint in both color schemes. Recommended colors: `#edf7ed` in
-  light mode and `#17291e` in dark mode. Record
-  `:white_check_mark: Chosen` in its Decision cell.
+  light mode and `#17291e` in dark mode. When a Decision column is present,
+  record `:white_check_mark: Chosen` in its cell.
 - A finalist that satisfies the decision's constraints but loses to the chosen
   alternative is **not selected**, not excluded. Add `class="not-selected"`
   to every header and data cell in that alternative's row or column.
 - Ensure a stylesheet registered through `extra_css` gives `.not-selected` a
   light-yellow tint in both light and dark color schemes. Recommended colors:
   `#fff8e1` in light mode and `#332b16` in dark mode.
-- Record `:material-minus-circle-outline: Not selected` in its Decision cell.
+- When a Decision column is present, record
+  `:material-minus-circle-outline: Not selected` in its cell.
 - Reserve the red `.excl` and `.excl.hot` styles, the `:x:` icon, and an
   exclusion reason for alternatives rejected on evidence or a hard constraint.
 
@@ -51,22 +52,32 @@ Exclusion marking (Stage 2 — if excluded):
 - Keep the table classless so MkDocs Material generates its native
   `.md-typeset__scrollwrap`; verify that wrapper scrolls horizontally on narrow
   viewports without document-level overflow.
-- Keep the Decision cell in the tinted row or column and record `:x: Excluded` with a
-  concise reason.
+- When a Decision column is present, keep it in the tinted row or column and
+  record `:x: Excluded` with a concise reason.
 
 The matrix in ## Decision is the primary decision surface. Use group rows or
-columns when they improve scanning. Include one Decision cell per alternative.
+columns when they improve scanning. Include one Decision cell per alternative
+while outcomes remain open. Once every outcome is settled, the Decision column
+may be omitted if every alternative row or column carries its outcome class
+(`chosen`, `not-selected`, or `excl`) and a visible legend defines those
+background colours; the ADR title and frontmatter status then record the
+selected outcome.
+Link every alternative label to its primary documentation or repository when
+one exists. Use the R36 GitHub-link form for repository links.
 
 Criterion granularity: give every independently decisive requirement its own
 criterion row or column. Do not hide a requirement inside an umbrella capability or a
 combined-stack assessment when it can independently keep or exclude an
 alternative.
 
-Icon-only cells need no source link; prose cells must cite sources per R35. Add a legend footnote when :warning: or other non-obvious markers appear.
+Every icon-only status cell must have a concise `title` tooltip that explains
+the reason for its status. Where that reason is factual, make the icon a link
+to its primary source per R35. Never use an unexplained status icon. Add a
+visible legend when :warning: or other non-obvious markers appear.
 
-Dense evidence matrices: prefer linked status icons with concise `title`
-tooltips when a criterion is categorical. Keep a visible legend because the
-tooltip is supplemental and is not reliably discoverable on touch devices.
+Dense evidence matrices: use linked status icons with concise `title` tooltips
+when a criterion is categorical. Keep a visible legend because the tooltip is
+supplemental and is not reliably discoverable on touch devices.
 Link compact visible values such as versions instead of repeating explanatory
 sentences. Preserve exclusion reasons in the Decision row or concise notes
 below the matrix. Follow R36 when the evidence URL is a GitHub repository.
