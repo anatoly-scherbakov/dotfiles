@@ -12,12 +12,18 @@ alternative-count threshold. Put alternatives in rows when the criterion
 columns are narrower than one column per alternative, and in columns when the
 alternative columns are narrower than one column per criterion. Verify the
 rendered choice at a normal desktop viewport. Either orientation must carry one
-outcome cell per alternative.
+outcome cell per alternative while outcomes remain open. Once every outcome is
+settled, the outcome column may be omitted if every alternative row or column
+is visibly classified with the chosen, not-selected, or excluded tint and a
+legend defines the tints; the Verdict box then records the selected outcome.
 
 Criterion granularity: give every independently decisive requirement its own
 criterion row or column. Do not hide a requirement inside an umbrella
 capability or a combined-stack assessment when it can independently keep or
 exclude an alternative.
+
+Link every alternative label to its primary documentation or repository when
+one exists.
 
 Medium mapping — MkDocs/Markdown rules and their HTML analogs. Reviewers
 validate against THIS list, not against the Markdown medium:
@@ -31,6 +37,8 @@ validate against THIS list, not against the Markdown medium:
   claims), R38 (no tautologies) → apply unchanged; they are medium-independent.
 - R34 (icon shortcodes) → n/a; use text glyphs/emoji: ✓ for supported,
   ⭐ for GitHub stars, star runs ★★☆ for graded scales (define in a legend).
+- Every icon-only status cell needs a concise `title` tooltip that explains its
+  status. Where the reason is factual, link the icon to its primary source.
 - R36 (GitHub links) → the GitHub cell shows "N.Nk ⭐ · <version>, <Mon YYYY>"
   and links to the repository.
 - R37 (heading icons), R02 (list spacing), R26/R27 (Mermaid) → n/a in HTML;
