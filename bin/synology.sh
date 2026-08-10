@@ -24,4 +24,4 @@ if [[ -z "${SYNOLOGY_PASSWORD:-}" ]]; then
     fi
 fi
 
-printf "%s\n" "$SYNOLOGY_PASSWORD" | sshfs -o password_stdin "$REMOTE" "$MOUNT_POINT" -o idmap=user
+printf "%s\n" "$SYNOLOGY_PASSWORD" | sshfs -o password_stdin "$REMOTE" "$MOUNT_POINT" -o idmap=user,reconnect,ServerAliveInterval=15,ServerAliveCountMax=3
