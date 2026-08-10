@@ -31,6 +31,9 @@ Use this skill to take a GitHub issue from report to local implementation. It co
 
 5. Validate through the repo's normal checks.
    - Run the most specific build, test, lint, or spec validation commands that cover the change.
+   - When browser validation is required, save every Playwright snapshot,
+     screenshot, trace, or other artifact under a unique `/tmp/...` path; never
+     use the repository as the browser-output directory.
    - If a validation command fails because a tool is missing, prefer the repo's documented installation path.
    - If network is required, request approval and rerun the same command with network access.
    - Inspect generated output when the issue is about rendered docs, links, anchors, schemas, or generated artifacts.
