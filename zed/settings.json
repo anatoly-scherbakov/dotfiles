@@ -60,7 +60,7 @@
     },
     "codex-acp": {
       "default_config_options": {
-        "collaboration_mode": "default",
+        "collaboration_mode": "plan",
         "mode": "agent-full-access"
       },
       "type": "registry"
