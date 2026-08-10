@@ -58,6 +58,9 @@ Use this skill when the user asks to look into, fix, address, or respond to feed
 
 4. Validate.
    - Run the most specific local checks that cover the changes.
+   - When browser validation is required, save every Playwright snapshot,
+     screenshot, trace, or other artifact under a unique `/tmp/...` path; never
+     use the repository as the browser-output directory.
    - If `gh pr checks --json conclusion` is unsupported, use supported fields such as `bucket`, `state`, `link`, timestamps, and `workflow`.
    - For CI failures, inspect failing run details before changing code.
 
