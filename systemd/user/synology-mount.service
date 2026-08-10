@@ -1,0 +1,15 @@
+[Unit]
+Description=Mount Synology NAS with SSHFS
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/zsh -lc 'exec /home/anatoly/bin/synology'
+ExecStop=/usr/bin/fusermount3 -u /home/anatoly/synology
+RemainAfterExit=yes
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=default.target
