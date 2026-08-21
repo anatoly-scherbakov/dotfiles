@@ -5,6 +5,7 @@ description: >-
   graphs) and propose ways to reduce it. Use when the user invokes /concise,
   asks to find duplicate or overlapping content, reduce repetition, or DRY
   up documentation/examples.
+disable-model-invocation: true
 ---
 
 # Concise
