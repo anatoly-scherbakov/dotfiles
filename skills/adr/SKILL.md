@@ -1,6 +1,7 @@
 ---
 name: adr
 description: Use when the user invokes /adr or asks to draft, brainstorm, or document an architecture decision record (ADR). Conducts a two-stage brainstorm interview (option discovery, then option exclusion) and writes a MkDocs-Material-formatted ADR. Project-agnostic — detects the project's ADR location, leaves filename naming to the user.
+disable-model-invocation: true
 ---
 
 # ADR
