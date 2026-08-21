@@ -1,6 +1,7 @@
 ---
 name: pr
 description: Create and monitor GitHub pull requests from the current branch. Use when the user asks Codex to open, create, publish, submit, or prepare a PR, watch PR checks, wait for CI, investigate failed GitHub Actions or other PR checks, and propose or implement fixes.
+disable-model-invocation: true
 ---
 
 # PR
