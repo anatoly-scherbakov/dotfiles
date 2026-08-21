@@ -1,6 +1,7 @@
 ---
 name: evolve
 description: Evolve a project from the current session by discovering the project's goal, extracting agent errors and project learnings, and persisting approved guidance into AGENTS.md files or relevant skill files. Use when the user asks to evolve, retro, run a retrospective, capture learnings, persist session lessons, update project guidance, or reduce repeated friction.
+disable-model-invocation: true
 ---
 
 # Evolve
