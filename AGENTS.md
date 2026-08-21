@@ -8,6 +8,12 @@
   Claude, and Codex. When changing skill links, audit all `skills/*`
   directories against `~/.cursor/skills/<name>`, `~/.claude/skills/<name>`,
   and `~/.codex/skills/<name>` entries in `install.conf.yaml`.
+- Cursor only registers a personal skill as a **`/` slash command** when
+  `SKILL.md` frontmatter includes `disable-model-invocation: true` (see Cursor
+  `migrate-to-skills`). Add it to every skill the user invokes via `/name`; omit
+  only when the skill should be picked up automatically from ambient context.
+  After adding or changing skills, reload the Cursor window so the `/` menu
+  rescans `~/.cursor/skills/`.
 
 ## Subdirectory guidance
 
