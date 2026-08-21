@@ -1,6 +1,7 @@
 ---
 name: make-venv
 description: Set up or repair a Python project's local virtual environment using a uv-created .venv, direnv activation, and the project's existing dependency manager. Use when the user asks to create, make, fix, or mirror a project venv, especially for Poetry projects that should not be migrated to uv.
+disable-model-invocation: true
 ---
 
 # Make Venv
