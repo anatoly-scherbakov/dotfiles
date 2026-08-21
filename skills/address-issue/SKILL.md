@@ -1,6 +1,7 @@
 ---
 name: address-issue
 description: Investigate and implement GitHub issues from a local checkout. Use when the user asks Codex to look into, fix, address, implement, or make a PR for a specific GitHub issue number or issue URL in the current repository.
+disable-model-invocation: true
 ---
 
 # Address Issue
