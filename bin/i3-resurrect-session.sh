@@ -125,24 +125,50 @@ workspace_names() {
   '
 }
 
-strip_automation_windows() {
+strip_unrestored_windows() {
   local layout="$1"
   local temporary
   temporary="$(mktemp "$layout.XXXXXX")"
 
   jq '
-    def automation_window:
+    def kitty_window:
+      [(.class? // ""), (.instance? // "")]
+      | any(test("kitty"; "i"));
+    def cursor_window:
+      (.instance? // "") | test("cursor"; "i");
+    def unrestored_window:
       (.swallows? // [])
-      | any(.instance?; test("^cursor \\("));
+      | any(
+          cursor_window
+          or kitty_window
+        );
     walk(
       if type == "object" and (.nodes? | type == "array") then
-        .nodes |= map(select(automation_window | not))
+        .nodes |= map(select(unrestored_window | not))
       elif type == "object" and (.floating_nodes? | type == "array") then
-        .floating_nodes |= map(select(automation_window | not))
+        .floating_nodes |= map(select(unrestored_window | not))
       else . end
     )
   ' "$layout" >"$temporary"
   mv "$temporary" "$layout"
+}
+
+strip_kitty_programs() {
+  local programs="$1"
+  local temporary
+  temporary="$(mktemp "$programs.XXXXXX")"
+
+  jq '
+    def executable:
+      .command as $command
+      | if ($command | type) == "array" then ($command[0] // "")
+        elif ($command | type) == "string" then $command
+        else ""
+        end;
+    def basename: executable | split("/") | last | split(" ")[0];
+    map(select((basename | test("^kitty$"; "i")) | not))
+  ' "$programs" >"$temporary"
+  mv "$temporary" "$programs"
 }
 
 promote_generation() {
@@ -171,7 +197,8 @@ save_session() {
     i3-resurrect save -w "$workspace" -d "$staging" \
       --swallow=class,instance,title
     id="$(workspace_id "$workspace")"
-    strip_automation_windows "$staging/workspace_${id}_layout.json"
+    strip_unrestored_windows "$staging/workspace_${id}_layout.json"
+    strip_kitty_programs "$staging/workspace_${id}_programs.json"
   done
 
   jq -n --arg focused "$focused" \
@@ -189,14 +216,40 @@ start_baseline() {
   pycharm-professional &
   slack &
   start_chrome
-  "$HOME/Telegram/Telegram" &
+  start_telegram
 }
 
 start_session_apps() {
   slack &
-  "$HOME/Telegram/Telegram" &
+  start_telegram
   start_chrome
   "$HOME/bin/cursor" &
+}
+
+wait_for_secret_service() {
+  local gdbus_bin timeout_seconds attempt
+
+  if ! gdbus_bin="$(resolve_binary GDBUS_BIN gdbus)"; then
+    return 1
+  fi
+
+  timeout_seconds="${SECRET_SERVICE_TIMEOUT_SECONDS:-30}"
+  if ! [[ "$timeout_seconds" =~ ^[0-9]+$ ]]; then
+    log "invalid SECRET_SERVICE_TIMEOUT_SECONDS: $timeout_seconds; using 30"
+    timeout_seconds=30
+  fi
+
+  for ((attempt = 0; attempt < timeout_seconds; attempt++)); do
+    if "$gdbus_bin" call --session \
+      --dest org.freedesktop.secrets \
+      --object-path /org/freedesktop/secrets \
+      --method org.freedesktop.DBus.Peer.Ping >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 1
+  done
+
+  return 1
 }
 
 start_chrome() {
@@ -206,8 +259,33 @@ start_chrome() {
     return
   fi
 
-  "$chrome_bin" --password-store=gnome-libsecret --restore-last-session &
-  log "started Chrome session restore: $chrome_bin"
+  (
+    if ! wait_for_secret_service; then
+      log "Chrome session restore not started: GNOME Secret Service unavailable (wait limit: ${SECRET_SERVICE_TIMEOUT_SECONDS:-30} seconds)"
+      return
+    fi
+
+    log "starting Chrome session restore: $chrome_bin"
+    if "$chrome_bin" --password-store=gnome-libsecret --restore-last-session \
+      >>"$state_dir/chrome.log" 2>&1; then
+      log "Chrome session restore process exited"
+    else
+      log "Chrome session restore process exited with status $?"
+    fi
+  ) &
+  log "queued Chrome session restore: $chrome_bin"
+}
+
+start_telegram() {
+  local telegram_bin
+
+  if ! telegram_bin="$(resolve_binary TELEGRAM_BIN "$HOME/bin/Telegram")"; then
+    log "Telegram was not started; set TELEGRAM_BIN or install it at $HOME/bin/Telegram"
+    return
+  fi
+
+  "$telegram_bin" >>"$state_dir/telegram.log" 2>&1 &
+  log "started Telegram: $telegram_bin"
 }
 
 snapshot_has_nemo() {
@@ -261,7 +339,10 @@ prepare_program_restore_directories() {
          or basename == "chromium"
          or basename == "chromium-browser"
          or basename == "chrome"
-         or basename == "cursor") | not
+         or basename == "cursor"
+         or basename == "Telegram"
+         or basename == "telegram"
+         or basename == "kitty") | not
       ))
     ' "$programs" >"$temporary"
     mv "$temporary" "$programs"
