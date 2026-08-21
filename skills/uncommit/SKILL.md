@@ -1,6 +1,7 @@
 ---
 name: uncommit
 description: Cancel all commits on the current branch while keeping the changes in the working tree. Use when a PR has accumulated too many small commits and you want to squash the history flat so it can be recommitted from scratch.
+disable-model-invocation: true
 ---
 
 # Uncommit
