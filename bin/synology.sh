@@ -5,12 +5,17 @@ set -euo pipefail
 
 MOUNT_POINT="$HOME/synology"
 REMOTE="${SYNOLOGY_REMOTE:-synology.local:/}"
+PASSWORD_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/synology/password"
 
 mkdir -p "$MOUNT_POINT"
 
 if mountpoint -q "$MOUNT_POINT"; then
     echo "$MOUNT_POINT is already mounted"
     exit 0
+fi
+
+if [[ -z "${SYNOLOGY_PASSWORD:-}" && -r "$PASSWORD_FILE" ]]; then
+    IFS= read -r SYNOLOGY_PASSWORD < "$PASSWORD_FILE" || true
 fi
 
 if [[ -z "${SYNOLOGY_PASSWORD:-}" ]]; then
