@@ -1,6 +1,7 @@
 ---
 name: commit
 description: Commits uncommitted changes on the current branch with one file per commit and one-line messages. Use when the user asks to commit, save changes to git, or create commits from staged/unstaged changes.
+disable-model-invocation: true
 ---
 
 # Commit
