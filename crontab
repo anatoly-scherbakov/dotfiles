@@ -1,3 +1,3 @@
 # Nightly Documents organization and Synology sync
 # Runs at 2:00 AM every day
-0 2 * * * cd "$HOME/projects/dotfiles" && "$HOME/Documents/.venv/bin/j" sync >> "$HOME/.local/state/backup.log" 2>&1
+0 2 * * * "$HOME/bin/backup"
