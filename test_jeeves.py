@@ -38,3 +38,28 @@ class OrganizeTests(unittest.TestCase):
 
             self.assertTrue(entry.exists())
             self.assertFalse((root / '2026-01').exists())
+
+    def test_rsync_omits_unsupported_destination_metadata(self):
+        arguments = jeeves._rsync_arguments()
+
+        self.assertIn('--no-links', arguments)
+        self.assertIn('--no-owner', arguments)
+        self.assertIn('--no-group', arguments)
+        self.assertIn('--no-perms', arguments)
+        self.assertIn('--delete-delay', arguments)
+
+    def test_symlink_excludes_are_anchored_to_the_sync_root(self):
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            temporary_root = Path(temporary_directory)
+            root = temporary_root / 'source'
+            destination = temporary_root / 'destination'
+            root.mkdir()
+            (root / 'nested').mkdir()
+            destination.mkdir()
+            (root / 'nested' / 'link').symlink_to('../target')
+            (destination / 'remote-only-link').symlink_to('target')
+
+            self.assertEqual(
+                jeeves._symlink_excludes(root, destination),
+                ['/nested/link', '/remote-only-link'],
+            )
