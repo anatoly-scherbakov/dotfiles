@@ -135,6 +135,12 @@
         force: true
         path: bin/synology.sh
 
+    "~/bin/backup":
+        relink: true
+        create: true
+        force: true
+        path: bin/backup.sh
+
     "~/bin/reMarkable":
         relink: true
         create: true
