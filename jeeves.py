@@ -1,5 +1,7 @@
 import datetime
+import os
 import re
+import tempfile
 from concurrent.futures import ProcessPoolExecutor, as_completed as _as_completed
 from pathlib import Path
 
@@ -40,6 +42,11 @@ console = Console()
 
 DATED_ENTRY = re.compile(r'^(\d{4}-\d{2}-\d{2})(?:\.|$)')
 MONTH_DIRECTORY = re.compile(r'^(\d{4})-(\d{2})$')
+
+SYNC_SOURCES = (
+    (DOCS, SYNOLOGY / 'home' / 'Documents'),
+    (Path.home() / 'projects', SYNOLOGY / 'home' / 'projects'),
+)
 
 
 def new(name: str):
@@ -100,32 +107,87 @@ def sync(dry_run: bool = False):
         failed = True
         console.print(f'[yellow]Documents organization failed: {error}[/yellow]')
 
-    if not SYNOLOGY.is_mount():
+    if not dry_run:
+        healthcheck()
+    elif not SYNOLOGY.is_mount():
         raise RuntimeError(f'Synology is not mounted at {SYNOLOGY}')
 
-    for source, destination in (
-        (DOCS, SYNOLOGY / 'home' / 'Documents'),
-        (Path.home() / 'projects', SYNOLOGY / 'home' / 'projects'),
-    ):
-        arguments = [
-            '-avJ',
-            '--delete-delay',
-            '--no-group',
-            *(f'--exclude={pattern}' for pattern in BACKUP_EXCLUDES),
-        ]
-        if dry_run:
-            arguments.append('--dry-run')
-        arguments.extend((f'{source}/', f'{destination}/'))
+    for source, destination in SYNC_SOURCES:
+        with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8') as excludes:
+            excludes.writelines(
+                f'{pattern}\n' for pattern in _symlink_excludes(source, destination)
+            )
+            excludes.flush()
 
-        console.print(f'[cyan]Syncing {source}[/cyan]')
-        try:
-            sh.rsync(*arguments, _fg=True)
-        except sh.ErrorReturnCode:
-            failed = True
-            console.print(f'[yellow]Sync failed: {source}[/yellow]')
+            arguments = _rsync_arguments(dry_run=dry_run)
+            arguments.extend((f'--exclude-from={excludes.name}', f'{source}/', f'{destination}/'))
+
+            console.print(f'[cyan]Syncing {source}[/cyan]')
+            try:
+                sh.rsync(*arguments, _fg=True)
+            except sh.ErrorReturnCode:
+                failed = True
+                console.print(f'[yellow]Sync failed: {source}[/yellow]')
 
     if failed:
         raise RuntimeError('One or more synchronization steps failed')
+
+
+def healthcheck():
+    """Confirm that the mounted Synology destinations accept a small write."""
+    if not SYNOLOGY.is_mount():
+        raise RuntimeError(f'Synology is not mounted at {SYNOLOGY}')
+
+    for _, destination in SYNC_SOURCES:
+        if not destination.is_dir():
+            raise RuntimeError(f'Synology destination is unavailable: {destination}')
+
+        probe = destination / f'.backup-healthcheck-{os.getpid()}'
+        descriptor = os.open(probe, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+        probe.unlink()
+
+
+def _rsync_arguments(
+    dry_run: bool = False,
+    checksum: bool = False,
+    itemize_changes: bool = False,
+    stats: bool = False,
+) -> list[str]:
+    """Return rsync options shared by mirroring and verification."""
+    arguments = [
+        '-avJ',
+        '--delete-delay',
+        '--no-links',
+        '--no-owner',
+        '--no-group',
+        '--no-perms',
+        *(f'--exclude={pattern}' for pattern in BACKUP_EXCLUDES),
+    ]
+    if dry_run:
+        arguments.append('--dry-run')
+    if checksum:
+        arguments.append('--checksum')
+    if itemize_changes:
+        arguments.append('--itemize-changes')
+    if stats:
+        arguments.append('--stats')
+    return arguments
+
+
+def _symlink_excludes(*roots: Path) -> list[str]:
+    """Return rsync patterns that ignore symlinks and preserve their backups."""
+    patterns = set()
+    for root in roots:
+        for directory, subdirectories, files in os.walk(root, followlinks=False):
+            for name in (*subdirectories, *files):
+                path = Path(directory) / name
+                if path.is_symlink():
+                    patterns.add(f'/{path.relative_to(root)}')
+    return sorted(patterns)
 
 
 def _organize(root: Path, today: datetime.date, dry_run: bool):
