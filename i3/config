@@ -248,6 +248,9 @@ exec --no-startup-id bash ~/.local/bin/i3-resurrect-session restore
 exec --no-startup-id bash ~/.local/bin/i3-resurrect-session autosave
 
 # Shortcuts to switch to application windows
+bindsym $mod+q [class="Chatgpt" workspace="__focused__"] focus
+bindsym $mod+Shift+q [class="Chatgpt"] focus
+
 bindsym $mod+p [class="jetbrains-pycharm" workspace="__focused__"] focus
 bindsym $mod+Shift+p [class="jetbrains-pycharm"] focus
 
