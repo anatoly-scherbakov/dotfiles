@@ -293,6 +293,10 @@ bindsym $mod+Shift+n unmark
 # Go to marked windows
 bindsym $mod+g [con_mark="🟢"] focus
 
+# Jump to the most recently urgent window (a waiting Claude/Codex agent that rang
+# the terminal bell). Repeat to cycle through several waiting agents.
+bindsym $mod+x [urgent=latest] focus
+
 # Move all Zoom windows to the assigned workspace
 assign [class="zoom"] $ws_zoom
 for_window [class="zoom"] move to workspace $ws_zoom
