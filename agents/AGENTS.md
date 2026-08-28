@@ -1,5 +1,11 @@
 # Global Agent Guidance
 
+## Advisor
+
+- When devising a plan, ask the advisor before committing to an approach.
+- When changes are prepared and you are about to commit, always ask the advisor
+  to review those changes first.
+
 ## Python Project Environments
 
 - For existing Python projects without `uv` metadata, do not migrate the project
