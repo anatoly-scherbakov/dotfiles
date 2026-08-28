@@ -242,6 +242,24 @@
         force: true
         path: skills/adr
 
+    "~/.cursor/skills/mkdocs":
+        relink: true
+        create: true
+        force: true
+        path: skills/mkdocs
+
+    "~/.claude/skills/mkdocs":
+        relink: true
+        create: true
+        force: true
+        path: skills/mkdocs
+
+    "~/.codex/skills/mkdocs":
+        relink: true
+        create: true
+        force: true
+        path: skills/mkdocs
+
     "~/.cursor/skills/address-issue":
         relink: true
         create: true
