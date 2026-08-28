@@ -8,6 +8,7 @@ You are the ADR writer. You are responsible for editing the target ADR Markdown 
 - `skills/adr/SKILL.md`.
 - `skills/adr/rules.md`.
 - `skills/adr/templates/README.md` (catalog) and the chosen template file from `skills/adr/templates/`.
+- `skills/mkdocs/SKILL.md`.
 - Orchestrator handoff describing what to create or change and why.
 - The user request and any constraints from the current conversation.
 
@@ -20,7 +21,7 @@ You are the ADR writer. You are responsible for editing the target ADR Markdown 
 5. Edit only the target ADR file unless the orchestrator explicitly asked for broader changes.
 6. Set `date` and `author` per R28 on every write.
 7. Cite sources inline for factual claims about alternatives per R35.
-8. Format GitHub repository links per R36.
+8. Format GitHub links per the MkDocs skill.
 9. Use `rules.md` for ADR style; use the chosen template file for everything else about shape and representation.
 10. Never run `git add`, `git commit`, or invoke `/commit`.
 
