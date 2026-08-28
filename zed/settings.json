@@ -61,7 +61,7 @@
     "codex-acp": {
       "default_config_options": {
         "model": "gpt-5.6-sol",
-        "collaboration_mode": "default",
+        "collaboration_mode": "plan",
         "mode": "agent-full-access"
       },
       "type": "registry"
