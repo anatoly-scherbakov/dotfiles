@@ -12,7 +12,7 @@ Goal of this skill is to facilitate rational, data-driven decision making via th
 
 Guides the user through writing an Architecture Decision Record. The output is a single Markdown file targeting **MkDocs Material**, with ADR metadata in frontmatter and a decision shape chosen from the templates in [templates/](templates/README.md).
 
-The skill is structured as a **two-stage brainstorm**: first enumerate every option without judgment, then walk the list and exclude. After the file is written, the skill stops — no git staging, no commit. The user reviews and saves manually.
+The skill is structured as a **two-stage brainstorm**: first enumerate every option without judgment, then walk the list and exclude. Once the decision can be framed from the request, write an editable skeleton and develop it with the user in place. After the file is written, the skill stops — no git staging, no commit. The user reviews and saves manually.
 
 ## When to use
 
@@ -27,6 +27,8 @@ Do **not** invoke this skill for general note-taking, README updates, or post-mo
 Always load these bundled resources before drafting or editing an ADR:
 
 - [rules.md](rules.md) — mandatory ADR style, structure, and formatting rules.
+- [MkDocs Material skill](../mkdocs/SKILL.md) — mandatory generic MkDocs authoring
+  and presentation rules.
 - [templates/README.md](templates/README.md) — template catalog only; load the chosen template file for everything else.
 - [writer-prompt.md](writer-prompt.md) — instructions for the role that edits the ADR file.
 - [reviewer-prompt.md](reviewer-prompt.md) — instructions for the read-only review role.
@@ -53,22 +55,22 @@ After every writer pass, run the reviewer. If the reviewer reports blockers, the
    - Otherwise, if `docs/blog/` contains posts with `tags: [decision]` in frontmatter, default there.
    - Otherwise, ask the user for a directory.
 
-2. **Working title.** Propose an **outcome-shaped** one-line title from the user's stated goal, then ask the user to accept or revise it. Enforce these rules (R09, R29):
+2. **Working title.** Derive an **outcome-shaped** one-line title from the user's stated goal. Enforce these rules (R09, R29):
    - Must start with a **verb** that names the decision outcome (Adopt, Require, Replace, Drop, Host, Implement, Publish, Use…).
    - Must describe the **raw decision**, not the activity of writing the ADR. Reject meta titles such as `Choose where to…`, `Decide between…`, `Pick a…`.
    - No `Decision:` prefix.
    - While the choice is open (`status: undecided`), keep the same outcome sentence and put Unicode ellipsis `…` (U+2026) in the unknown slot(s). Example: language still open → `Implement YAML-LD support in …` (not `Choose a programming language for YAML-LD`).
    - When the ADR becomes `status: decided`, remove every `…` and fill in the factual outcome in both frontmatter `title:` and H1. Example: `Implement YAML-LD support in Rust`.
 
-   If the user's draft title is meta (`Choose payment provider`), rewrite it to outcome shape with `…` (`Pay with …` / `Use … for payments`) and confirm before continuing.
+   If the user's draft title is meta (`Choose payment provider`), rewrite it to outcome shape with `…` (`Pay with …` / `Use … for payments`). Ask only when the outcome cannot be inferred safely or the user explicitly wants to discuss the wording before drafting.
 
-3. **Filename.** Propose a kebab-case slug from the title (e.g. `host-yaml-ld-support-in.md` or `implement-yaml-ld-support-in.md`), then ask the user to accept or revise it. **Do not impose a date prefix** — naming is the user's call. Prefer slugs that match the outcome shape; do not force a `choose-` prefix.
+3. **Filename.** Derive a kebab-case slug from the title (e.g. `host-yaml-ld-support-in.md` or `implement-yaml-ld-support-in.md`). **Do not impose a date prefix** — naming is the user's call. Prefer slugs that match the outcome shape; do not force a `choose-` prefix. Ask only when multiple filename choices would materially affect existing project conventions.
 
-4. **Context.** Draft 2–4 context sentences from the user's stated goal, then ask the user to accept or revise them. The context must answer: what's the situation, and why is a decision needed now? Keep this scoped to the **one** decision (rule R01 — one page, one idea; cross-link other ADRs instead of inlining their detail).
+4. **Context.** Draft 2–4 context sentences from the user's stated goal. The context must answer: what's the situation, and why is a decision needed now? Keep this scoped to the **one** decision (rule R01 — one page, one idea; cross-link other ADRs instead of inlining their detail). Treat it as editable draft text, not a gate that requires confirmation before writing.
 
-5. **Template.** Show [templates/README.md](templates/README.md) and ask which row fits. Read that template file's `{# ... #}` header comment before continuing — it is the only source for shape, representation, and Stage 2–3 behavior.
+5. **Template.** Select the best-fitting row from [templates/README.md](templates/README.md), explaining the selection briefly when useful. Ask only if more than one template is equally suitable. Read that template file's `{# ... #}` header comment before continuing — it is the only source for shape, representation, and Stage 2–3 behavior.
 
-6. **Write an initial draft immediately.** Once the file location, title, filename, context, and template choice are stable enough, delegate to the **writer** subagent with a concrete edit spec to create the ADR file from the chosen template skeleton. Run the **reviewer** subagent after the writer pass. Continue option discovery, exclusions, research, costs, and final choice by delegating in-place edits to the writer (with reviewer after each pass) instead of holding the evolving ADR only in chat.
+6. **Write an initial draft immediately.** Once the file location, title, filename, context, and template choice can be inferred from the request, delegate to the **writer** subagent with a concrete edit spec to create the ADR file from the chosen template skeleton. Run the **reviewer** subagent after the writer pass. Continue option discovery, exclusions, research, costs, and final choice by delegating in-place edits to the writer (with reviewer after each pass) instead of holding the evolving ADR only in chat. Do not make a confirmation round a prerequisite for the skeleton: the user can adjust the evolving text interactively.
 
 ### Stage 1 — option discovery
 
