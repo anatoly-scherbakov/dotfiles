@@ -27,6 +27,5 @@ Template shape and usage live only in `templates/<name>.md` (`{# ... #}` header 
 - **R32** — before using non-obvious MkDocs, Markdown extension, or raw HTML attributes in an ADR, read the relevant documentation and verify the rendered behavior instead of guessing from memory.
 - **R34** — prefer MkDocs icon shortcodes such as `:white_check_mark:`, `:question:`, `:x:`, and `:warning:` over raw emoji in ADR content, especially tables.
 - **R35** — factual claims about alternatives (features, compatibility, standards support, behavior, limitations) must include an inline source link where the claim appears — docs page, README section, RFC, release note, or issue. Icon-only cells (`:white_check_mark:`, `:x:`, `:warning:`) need no link; prose cells do.
-- **R36** — GitHub repository links in Material ADRs use `[:fontawesome-brands-github: \`org/repo\`](https://github.com/org/repo)` — icon, backtick-wrapped `org/repo`, full GitHub URL. Applies in prose, tables, and column headers. Packages without a GitHub repo: link to primary docs instead; R36 does not apply.
 - **R37** — ADR section headings use Material icons: `## :material-text-box-outline: Context`, `## :material-arrow-decision-outline: Decision`, `## :material-arrow-right-bold-outline: Consequences`.
 - **R38** — no tautologies in ADR prose or table cells (same fact twice, no new information).
