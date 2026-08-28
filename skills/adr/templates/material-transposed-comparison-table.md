@@ -15,12 +15,15 @@ Put alternatives in columns when the alternative columns are narrower than one
 column per criterion. Verify the rendered choice at a normal desktop viewport;
 the native horizontal scroll wrapper remains a fallback for narrow screens.
 
-Ordering: place every non-excluded alternative first and keep all excluded
-alternatives together at the bottom or right edge of the matrix. Preserve the
-existing relative order within the non-excluded and excluded groups unless the
-user requests another ordering. When an alternative becomes excluded, move its
-entire row or column—including its label, every criterion cell, and Decision
-cell—into the trailing excluded group.
+Ordering: in an unsectioned matrix, place every non-excluded alternative first
+and keep all excluded alternatives together at the bottom or right edge. In a
+matrix divided into sections, apply that ordering within each section: retain
+the user's section structure and place each section's excluded alternatives at
+its trailing edge. Preserve the existing relative order within the
+non-excluded and excluded groups unless the user requests another ordering.
+When an alternative becomes excluded, move its entire row or column—including
+its label, every criterion cell, and Decision cell—into the applicable
+trailing excluded group.
 
 Outcome marking (Stage 2 — after a choice is made):
 - Add `class="chosen"` to every header and data cell in the selected
@@ -53,17 +56,19 @@ Exclusion marking (Stage 2 — if excluded):
   `.md-typeset__scrollwrap`; verify that wrapper scrolls horizontally on narrow
   viewports without document-level overflow.
 - When a Decision column is present, keep it in the tinted row or column and
-  record `:x: Excluded` with a concise reason.
+  record `:x: <concise reason>`. The cross mark already conveys exclusion;
+  do not repeat `Excluded` as text.
 
 The matrix in ## Decision is the primary decision surface. Use group rows or
 columns when they improve scanning. Include one Decision cell per alternative
-while outcomes remain open. Once every outcome is settled, the Decision column
+while outcomes remain open. Leave a cell empty when its alternative has no
+outcome yet; do not write a redundant label such as `Open`. Once every outcome is settled, the Decision column
 may be omitted if every alternative row or column carries its outcome class
 (`chosen`, `not-selected`, or `excl`) and a visible legend defines those
 background colours; the ADR title and frontmatter status then record the
 selected outcome.
 Link every alternative label to its primary documentation or repository when
-one exists. Use the R36 GitHub-link form for repository links.
+one exists. Follow the MkDocs skill's GitHub-link rule.
 
 Criterion granularity: give every independently decisive requirement its own
 criterion row or column. Do not hide a requirement inside an umbrella capability or a
@@ -80,13 +85,14 @@ when a criterion is categorical. Keep a visible legend because the tooltip is
 supplemental and is not reliably discoverable on touch devices.
 Link compact visible values such as versions instead of repeating explanatory
 sentences. Preserve exclusion reasons in the Decision row or concise notes
-below the matrix. Follow R36 when the evidence URL is a GitHub repository.
+below the matrix. Follow the MkDocs skill's GitHub-link rule when the evidence
+URL is on GitHub.
 
 Stage 2 — if excluded: may remain a comparison row or column with criterion cells and an exclusion outcome in its Decision cell; use Context for prerequisite rejections that never entered the matrix.
 
-Stage 2 — if keep or undecided: add as a comparison row or column; gather criterion cells with source links per R35; record one outcome per alternative.
+Stage 2 — if keep or undecided: add as a comparison row or column; gather criterion cells with source links per R35. Leave the Decision cell empty until that alternative has an outcome.
 
-Stage 2 — after all options: ask which alternatives have a decided outcome vs still undecided; record each outcome in its Decision cell; overall status stays undecided until the user closes all open alternatives. Never decide for the user.
+Stage 2 — after all options: ask which alternatives have a decided outcome vs still undecided; record only decided or excluded outcomes in the Decision cells; overall status stays undecided until the user closes all open alternatives. Never decide for the user.
 #}
 ---
 title: <Verb-leading title>
@@ -136,7 +142,7 @@ hide: [toc]
     <th class="excl">[:fontawesome-brands-github: `org/repo`](https://github.com/org/repo)</th>
     <td class="excl hot">[:x:](<source URL> "<disqualifying evidence tooltip>")</td>
     <td class="excl">[<claim>](<source URL>)</td>
-    <td class="excl">:x: Excluded — <concise reason></td>
+    <td class="excl">:x: <concise reason></td>
   </tr>
 </table>
 
