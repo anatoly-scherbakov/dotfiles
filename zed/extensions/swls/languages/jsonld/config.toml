@@ -1,0 +1,9 @@
+name = "JSON-LD"
+grammar = "jsonld"
+path_suffixes = ["jsonld"]
+tab_size = 2
+brackets = [
+    { start = "{", end = "}", close = true, surround = true, newline = true },
+    { start = "[", end = "]", close = true, surround = true, newline = true },
+    { start = "\"", end = "\"", close = true, surround = true, newline = false, not_in = ["string"] },
+]
