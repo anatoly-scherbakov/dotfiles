@@ -141,6 +141,12 @@
         force: true
         path: bin/backup.sh
 
+    "~/bin/wg-github":
+        relink: true
+        create: true
+        force: true
+        path: bin/wg-github
+
     "~/bin/reMarkable":
         relink: true
         create: true
