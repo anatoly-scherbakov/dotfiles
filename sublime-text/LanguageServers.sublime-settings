@@ -1,0 +1,7 @@
+{
+  "swls": {
+    "enabled": true,
+    "command": ["/home/anatoly/.local/bin/swls"],
+    "selector": "source.jsonld"
+  }
+}
