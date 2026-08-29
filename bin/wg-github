@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script_path=$(readlink -f "${BASH_SOURCE[0]}")
+repository_root=$(cd "$(dirname "$script_path")/.." && pwd)
+skill_directory="$repository_root/.codex/skills/wg-github"
+
+cd "$skill_directory"
+exec uv run --project "$skill_directory" j report "$@"
