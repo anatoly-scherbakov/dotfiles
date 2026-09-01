@@ -29,3 +29,10 @@ Template shape and usage live only in `templates/<name>.md` (`{# ... #}` header 
 - **R35** — factual claims about alternatives (features, compatibility, standards support, behavior, limitations) must include an inline source link where the claim appears — docs page, README section, RFC, release note, or issue. Icon-only cells (`:white_check_mark:`, `:x:`, `:warning:`) need no link; prose cells do.
 - **R37** — ADR section headings use Material icons: `## :material-text-box-outline: Context`, `## :material-arrow-decision-outline: Decision`, `## :material-arrow-right-bold-outline: Consequences`.
 - **R38** — no tautologies in ADR prose or table cells (same fact twice, no new information).
+- **R39** — in a MkDocs-enabled ADR site, render `{{ adr_metadata(date, status) }}`
+  immediately below the H1. For an ADR that depends on an earlier decision,
+  store `prerequisite.title` and `prerequisite.url` in frontmatter and call
+  `{{ adr_metadata(date, status, prerequisite) }}`. If the site has no such
+  macro, add the implementation from
+  [references/adr_metadata.py](references/adr_metadata.py) to its MkDocs
+  macro module before using the ADR convention.
