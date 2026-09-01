@@ -32,6 +32,9 @@ Always load these bundled resources before drafting or editing an ADR:
 - [templates/README.md](templates/README.md) — template catalog only; load the chosen template file for everything else.
 - [writer-prompt.md](writer-prompt.md) — instructions for the role that edits the ADR file.
 - [reviewer-prompt.md](reviewer-prompt.md) — instructions for the read-only review role.
+- [references/adr_metadata.py](references/adr_metadata.py) — MkDocs metadata
+  macro for ADR status, date, and prerequisites; load it when the target is a
+  MkDocs site.
 
 ## Mandatory two-role workflow
 
