@@ -2,6 +2,8 @@
     - ~/.cursor/skills
     - ~/.claude/skills
     - ~/.codex/skills
+    - ~/.agents/skills
+    - ~/.gemini/config/skills
 
 - link:
     ~/.vimrc:
