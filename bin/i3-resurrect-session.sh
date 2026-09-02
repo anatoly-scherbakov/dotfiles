@@ -136,11 +136,15 @@ strip_unrestored_windows() {
       | any(test("kitty"; "i"));
     def cursor_window:
       (.instance? // "") | test("cursor"; "i");
+    def nemo_window:
+      [(.class? // ""), (.instance? // "")]
+      | any(test("nemo"; "i"));
     def unrestored_window:
       (.swallows? // [])
       | any(
           cursor_window
           or kitty_window
+          or nemo_window
         );
     walk(
       if type == "object" and (.nodes? | type == "array") then
@@ -153,7 +157,7 @@ strip_unrestored_windows() {
   mv "$temporary" "$layout"
 }
 
-strip_kitty_programs() {
+strip_unrestored_programs() {
   local programs="$1"
   local temporary
   temporary="$(mktemp "$programs.XXXXXX")"
@@ -166,7 +170,7 @@ strip_kitty_programs() {
         else ""
         end;
     def basename: executable | split("/") | last | split(" ")[0];
-    map(select((basename | test("^kitty$"; "i")) | not))
+    map(select((basename | test("^(kitty|nemo)$"; "i")) | not))
   ' "$programs" >"$temporary"
   mv "$temporary" "$programs"
 }
@@ -198,7 +202,7 @@ save_session() {
       --swallow=class,instance,title
     id="$(workspace_id "$workspace")"
     strip_unrestored_windows "$staging/workspace_${id}_layout.json"
-    strip_kitty_programs "$staging/workspace_${id}_programs.json"
+    strip_unrestored_programs "$staging/workspace_${id}_programs.json"
   done
 
   jq -n --arg focused "$focused" \
@@ -288,38 +292,12 @@ start_telegram() {
   log "started Telegram: $telegram_bin"
 }
 
-snapshot_has_nemo() {
-  local snapshot="$1"
-  local programs
-
-  shopt -s nullglob
-  for programs in "$snapshot"/workspace_*_programs.json; do
-    if jq -e '
-      def executable:
-        .command as $command
-        | if ($command | type) == "array" then ($command[0] // "")
-          elif ($command | type) == "string" then $command
-          else ""
-          end;
-      any(.[]; (executable | split("/") | last | split(" ")[0]) == "nemo")
-    ' "$programs" >/dev/null; then
-      shopt -u nullglob
-      return 0
-    fi
-  done
-  shopt -u nullglob
-  return 1
-}
-
 prepare_program_restore_directories() {
   local snapshot="$1"
-  local nemo_bin="$2"
   local programs temporary
 
   program_restore_dir="$(mktemp -d "$state_dir/.program-restore.XXXXXX")"
-  nemo_restore_dir="$(mktemp -d "$state_dir/.nemo-restore.XXXXXX")"
   cp -a "$snapshot"/. "$program_restore_dir"/
-  cp -a "$snapshot"/. "$nemo_restore_dir"/
 
   shopt -s nullglob
   for programs in "$program_restore_dir"/workspace_*_programs.json; do
@@ -348,32 +326,11 @@ prepare_program_restore_directories() {
     mv "$temporary" "$programs"
   done
 
-  for programs in "$nemo_restore_dir"/workspace_*_programs.json; do
-    temporary="$(mktemp "$programs.XXXXXX")"
-    jq --arg nemo_bin "$nemo_bin" '
-      def executable:
-        .command as $command
-        | if ($command | type) == "array" then ($command[0] // "")
-          elif ($command | type) == "string" then $command
-          else ""
-          end;
-      def basename: executable | split("/") | last | split(" ")[0];
-      map(
-        select(basename == "nemo")
-        | .command |= if type == "array" then [$nemo_bin] + .[1:]
-                      elif type == "string" then $nemo_bin + sub("^[^ ]+"; "")
-                      else [$nemo_bin]
-                      end
-      )
-    ' "$programs" >"$temporary"
-    mv "$temporary" "$programs"
-  done
   shopt -u nullglob
 }
 
 cleanup_program_restore_directories() {
   [[ -n "${program_restore_dir:-}" ]] && rm -rf "$program_restore_dir"
-  [[ -n "${nemo_restore_dir:-}" ]] && rm -rf "$nemo_restore_dir"
 }
 
 generation_to_restore() {
@@ -396,8 +353,8 @@ restore_session() {
     return
   fi
 
-  local snapshot manifest workspace focused nemo_bin=""
-  local program_restore_dir="" nemo_restore_dir=""
+  local snapshot manifest workspace focused
+  local program_restore_dir=""
   if ! snapshot="$(generation_to_restore)" \
     || ! jq -e '.workspaces | length > 0' \
       "$snapshot/workspaces.json" >/dev/null; then
@@ -413,28 +370,16 @@ restore_session() {
     i3-resurrect restore -w "$workspace" -d "$snapshot" --layout-only
   done < <(jq -r '.workspaces[]' "$manifest")
 
-  if snapshot_has_nemo "$snapshot"; then
-    if nemo_bin="$(resolve_binary NEMO_BIN nemo)"; then
-      log "restoring Nemo placeholders with $nemo_bin"
-    else
-      log "Nemo placeholders were not restored because Nemo is unavailable"
-    fi
-  fi
-  prepare_program_restore_directories "$snapshot" "$nemo_bin"
+  prepare_program_restore_directories "$snapshot"
 
   while IFS= read -r workspace; do
     i3-resurrect restore -w "$workspace" -d "$program_restore_dir" --programs-only
   done < <(jq -r '.workspaces[]' "$manifest")
 
-  if [[ -n "$nemo_bin" ]]; then
-    while IFS= read -r workspace; do
-      i3-resurrect restore -w "$workspace" -d "$nemo_restore_dir" --programs-only
-    done < <(jq -r '.workspaces[]' "$manifest")
-  fi
   cleanup_program_restore_directories
 
-  # All placeholders now exist, so i3 can swallow session-restored Cursor and
-  # Chrome windows into the project workspace where their titles belong.
+  # The restored layout can swallow session-restored Cursor and Chrome windows
+  # into the project workspace where their titles belong.
   start_session_apps
 
   focused="$(jq -r '.focused // empty' "$manifest")"
