@@ -51,12 +51,14 @@ id="$(printf '%s' "$workspace" | tr -d '/\\:*"<>|')"
 if [[ "$action" == save ]]; then
   printf '%s\n' '{"nodes":[
     {"swallows":[{"class":"^kitty$","instance":"^kitty$"}]},
+    {"swallows":[{"class":"^Nemo$","instance":"^nemo$"}]},
     {"swallows":[{"instance":"^cursor \\("}]},
     {"swallows":[{"class":"^Google-chrome$"}]}
   ],"floating_nodes":[]}' \
     >"$directory/workspace_${id}_layout.json"
   printf '%s\n' '[
     {"command":["/usr/bin/kitty"]},
+    {"command":["/usr/bin/nemo"]},
     {"command":["/usr/bin/slack"]}
   ]' >"$directory/workspace_${id}_programs.json"
 elif [[ "$action" == restore ]]; then
@@ -117,7 +119,7 @@ jq -e '.workspaces == ["alpha"]' \
   "$state/i3-resurrect/current/workspaces.json" >/dev/null
 jq -e '
   [.. | objects | .swallows? // empty | .[]?]
-  | all(((.class? // "") + (.instance? // "")) | test("kitty|cursor"; "i") | not)
+  | all(((.class? // "") + (.instance? // "")) | test("kitty|cursor|nemo"; "i") | not)
 ' "$state/i3-resurrect/current/workspace_alpha_layout.json" >/dev/null
 jq -e '
   [.. | objects | .swallows? // empty | .[]?]
@@ -125,6 +127,9 @@ jq -e '
 ' "$state/i3-resurrect/current/workspace_alpha_layout.json" >/dev/null
 jq -e '
   any(.[]; (.command[0] // "") == "/usr/bin/kitty") | not
+' "$state/i3-resurrect/current/workspace_alpha_programs.json" >/dev/null
+jq -e '
+  any(.[]; (.command[0] // "") == "/usr/bin/nemo") | not
 ' "$state/i3-resurrect/current/workspace_alpha_programs.json" >/dev/null
 jq -e '
   any(.[]; (.command[0] // "") == "/usr/bin/slack")
@@ -189,16 +194,23 @@ for _ in 1 2 3 4 5; do
   [[ -s "$app_calls" ]] && break
   sleep 0.1
 done
-if rg -F '|/usr/bin/kitty' "$program_restore_calls" >/dev/null; then
+if [[ -s "$program_restore_calls" ]] \
+  && rg -F '|/usr/bin/kitty' "$program_restore_calls" >/dev/null; then
   echo "Kitty was replayed through i3-resurrect" >&2
   exit 1
 fi
-rg -F "|$fake_bin/nemo" "$program_restore_calls" | rg -F '/.nemo-restore.' >/dev/null
-if rg -F '/usr/bin/google-chrome' "$program_restore_calls" >/dev/null; then
+if [[ -s "$program_restore_calls" ]] \
+  && rg -F '/usr/bin/nemo' "$program_restore_calls" >/dev/null; then
+  echo "Nemo was replayed through i3-resurrect" >&2
+  exit 1
+fi
+if [[ -s "$program_restore_calls" ]] \
+  && rg -F '/usr/bin/google-chrome' "$program_restore_calls" >/dev/null; then
   echo "Chrome was replayed through i3-resurrect" >&2
   exit 1
 fi
-if rg -F '/home/test/bin/Telegram' "$program_restore_calls" >/dev/null; then
+if [[ -s "$program_restore_calls" ]] \
+  && rg -F '/home/test/bin/Telegram' "$program_restore_calls" >/dev/null; then
   echo "Telegram was replayed through i3-resurrect" >&2
   exit 1
 fi
