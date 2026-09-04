@@ -6,6 +6,12 @@
 - When changes are prepared and you are about to commit, always ask the advisor
   to review those changes first.
 
+## Project Layout
+
+- `~/projects` is where I clone all git repositories for projects. When looking
+  for a repo by name, or when cloning a new one, use `~/projects/<repo>`.
+- `~/Documents` holds documents arranged historically (organized by date).
+
 ## Python Project Environments
 
 - For existing Python projects without `uv` metadata, do not migrate the project
