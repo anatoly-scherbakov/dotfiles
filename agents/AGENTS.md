@@ -6,6 +6,16 @@
 - When changes are prepared and you are about to commit, always ask the advisor
   to review those changes first.
 
+## Learning from mistakes
+
+- When you recognize you made a mistake during a turn — the same conditions
+  under which you would draft a bug report (a retracted claim, unrequested scope
+  expansion, a stored fact you failed to apply, a correction the user had to
+  make) — Claude Code files a draft under `~/.claude/feedback/drafts/`. If you
+  filed such a draft this turn, invoke the `retro` skill before yielding, to
+  learn from it and update this agentic knowledge base. Older backlog is drained
+  on demand with `/retro`, not automatically.
+
 ## Project Layout
 
 - `~/projects` is where I clone all git repositories for projects. When looking
