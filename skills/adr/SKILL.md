@@ -77,6 +77,20 @@ After every writer pass, run the reviewer. If the reviewer reports blockers, the
 
 ### Stage 1 — option discovery
 
+### Alternative universes
+
+When an alternative would create a materially distinct implementation future,
+call that future an **alternative universe**. An alternative universe is a
+conditional roadmap, not another ADR and not an adopted plan.
+
+Create one subpage per such alternative when the user asks for implementation
+detail or when the decision cannot be evaluated without it. Keep the subpages
+beside the parent ADR (for example, `decision/index.md` with
+`decision/<alternative>.md` subpages). Each subpage must state that it applies
+only if the parent selects that alternative and link back to the parent. The
+parent ADR remains the sole place that compares alternatives and records their
+outcomes.
+
 Propose an initial list of **every** option or capability you can infer from the user's stated goal, including partial or likely-bad options. Then ask the user to accept, remove, rename, or add items.
 
 > Here is the initial option list I see. I'll include weak and partial options too so we can narrow them down next. What should I add, remove, or rename?
