@@ -105,6 +105,10 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+Prior focus output primary
 bindsym $mod+Next focus output eDP-1
 
+# Cycle through workspaces.
+bindsym $mod+Control+Prior workspace prev
+bindsym $mod+Control+Next workspace next
+
 # move the focused container to a specific output (same left/right mapping)
 bindsym $mod+Shift+Prior move container to output primary
 bindsym $mod+Shift+Next move container to output eDP-1
