@@ -6,15 +6,19 @@
 - When changes are prepared and you are about to commit, always ask the advisor
   to review those changes first.
 
+## Privileged Operations
+
+- If the user says they are completing a privileged operation in another
+  terminal, do not retry `sudo`. Verify the externally applied change with
+  non-privileged checks.
+
 ## Learning from mistakes
 
 - When you recognize you made a mistake during a turn — the same conditions
-  under which you would draft a bug report (a retracted claim, unrequested scope
-  expansion, a stored fact you failed to apply, a correction the user had to
-  make) — Claude Code files a draft under `~/.claude/feedback/drafts/`. If you
-  filed such a draft this turn, invoke the `retro` skill before yielding, to
-  learn from it and update this agentic knowledge base. Older backlog is drained
-  on demand with `/retro`, not automatically.
+  that merit a retrospective (a retracted claim, unrequested scope expansion, a
+  stored fact you failed to apply, or a correction the user had to make) — invoke
+  the `retro` skill before yielding. It derives a proposed lesson from the active
+  conversation and requires approval before changing durable guidance.
 
 ## Project Layout
 
