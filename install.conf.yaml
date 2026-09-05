@@ -232,6 +232,24 @@
         force: true
         path: skills/evolve
 
+    "~/.cursor/skills/retro":
+        relink: true
+        create: true
+        force: true
+        path: skills/retro
+
+    "~/.claude/skills/retro":
+        relink: true
+        create: true
+        force: true
+        path: skills/retro
+
+    "~/.codex/skills/retro":
+        relink: true
+        create: true
+        force: true
+        path: skills/retro
+
     "~/.cursor/skills/adr":
         relink: true
         create: true
