@@ -184,6 +184,12 @@
         force: true
         path: skills/commit
 
+    "~/.gemini/config/skills/commit":
+        relink: true
+        create: true
+        force: true
+        path: skills/commit
+
     "~/.codex/AGENTS.md":
         relink: true
         create: true
@@ -226,7 +232,19 @@
         force: true
         path: skills/uncommit
 
+    "~/.gemini/config/skills/uncommit":
+        relink: true
+        create: true
+        force: true
+        path: skills/uncommit
+
     "~/.codex/skills/evolve":
+        relink: true
+        create: true
+        force: true
+        path: skills/evolve
+
+    "~/.gemini/config/skills/evolve":
         relink: true
         create: true
         force: true
@@ -250,6 +268,12 @@
         force: true
         path: skills/retro
 
+    "~/.gemini/config/skills/retro":
+        relink: true
+        create: true
+        force: true
+        path: skills/retro
+
     "~/.cursor/skills/adr":
         relink: true
         create: true
@@ -263,6 +287,12 @@
         path: skills/adr
 
     "~/.codex/skills/adr":
+        relink: true
+        create: true
+        force: true
+        path: skills/adr
+
+    "~/.gemini/config/skills/adr":
         relink: true
         create: true
         force: true
@@ -286,6 +316,12 @@
         force: true
         path: skills/mkdocs
 
+    "~/.gemini/config/skills/mkdocs":
+        relink: true
+        create: true
+        force: true
+        path: skills/mkdocs
+
     "~/.cursor/skills/address-issue":
         relink: true
         create: true
@@ -299,6 +335,12 @@
         path: skills/address-issue
 
     "~/.codex/skills/address-issue":
+        relink: true
+        create: true
+        force: true
+        path: skills/address-issue
+
+    "~/.gemini/config/skills/address-issue":
         relink: true
         create: true
         force: true
@@ -322,6 +364,12 @@
         force: true
         path: skills/pr
 
+    "~/.gemini/config/skills/pr":
+        relink: true
+        create: true
+        force: true
+        path: skills/pr
+
     "~/.cursor/skills/address-pr-feedback":
         relink: true
         create: true
@@ -335,6 +383,12 @@
         path: skills/address-pr-feedback
 
     "~/.codex/skills/address-pr-feedback":
+        relink: true
+        create: true
+        force: true
+        path: skills/address-pr-feedback
+
+    "~/.gemini/config/skills/address-pr-feedback":
         relink: true
         create: true
         force: true
@@ -358,6 +412,12 @@
         force: true
         path: skills/make-venv
 
+    "~/.gemini/config/skills/make-venv":
+        relink: true
+        create: true
+        force: true
+        path: skills/make-venv
+
     "~/.cursor/skills/concise":
         relink: true
         create: true
@@ -371,6 +431,12 @@
         path: skills/concise
 
     "~/.codex/skills/concise":
+        relink: true
+        create: true
+        force: true
+        path: skills/concise
+
+    "~/.gemini/config/skills/concise":
         relink: true
         create: true
         force: true
@@ -400,6 +466,12 @@
         force: true
         path: nanopublishing/skills/find-url-for
 
+    "~/.gemini/config/skills/find-url-for":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/find-url-for
+
     "~/.cursor/skills/nanopublish":
         relink: true
         create: true
@@ -424,6 +496,12 @@
         force: true
         path: nanopublishing/skills/nanopublish
 
+    "~/.gemini/config/skills/nanopublish":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/nanopublish
+
     "~/.cursor/skills/semantify":
         relink: true
         create: true
@@ -443,6 +521,12 @@
         path: nanopublishing/skills/semantify
 
     "~/.agents/skills/semantify":
+        relink: true
+        create: true
+        force: true
+        path: nanopublishing/skills/semantify
+
+    "~/.gemini/config/skills/semantify":
         relink: true
         create: true
         force: true
