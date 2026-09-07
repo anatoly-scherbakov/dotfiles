@@ -1,17 +1,19 @@
 ---
 name: setup-agent-inbox
 description: >-
-  Set up the i3 "agent inbox" on this machine so Claude Code and Codex mark
-  their kitty terminal urgent when they need input or finish a turn — the
-  workspace lights up in polybar and Mod4+x jumps to the waiting agent. Use when
-  the user asks to set up / repair the agent inbox or agent notifications, or
-  after cloning these dotfiles onto a new machine. Idempotent: safe to re-run.
+  Set up the i3 "agent inbox" on this machine so Claude Code, Codex, and
+  Antigravity mark their kitty terminal urgent when they need input or finish a
+  turn — the workspace lights up in polybar and Mod4+x jumps to the waiting
+  agent. Use when the user asks to set up / repair the agent inbox or agent
+  notifications, or after cloning these dotfiles onto a new machine. Idempotent:
+  safe to re-run.
 ---
 
 # setup-agent-inbox
 
-Makes every waiting Claude Code / Codex agent announce itself instead of forcing
-the user to hop across i3 workspaces to find which one needs them.
+Makes every waiting Claude Code / Codex / Antigravity agent announce itself
+instead of forcing the user to hop across i3 workspaces to find which one needs
+them.
 
 ## How it works
 
@@ -26,12 +28,17 @@ an X11 **urgency hint** plus a sound. i3 marks that window urgent, polybar's
   — Claude owns its terminal (pts) and writes the bell itself when it needs
   permission (~6s) or has been idle waiting for you (~60s). Hooks can't do this:
   they run without a controlling terminal, so a hook's bell never reaches kitty.
+- **Antigravity** rings it natively via `notifications = true` in its CLI
+  settings (`~/.gemini/antigravity-cli/settings.json`) — Antigravity emits a
+  terminal bell chime and desktop notification when a task completes or requires
+  input.
 
-This skill only edits: the tracked `i3/config` (the keybind) and the two
-**standalone, private** config files `~/.claude/settings.json` and
-`~/.codex/config.toml` (never symlink those into this public repo — they hold
-`autoMode` engagement context and per-project `trust_level` paths). Every step
-checks before it writes, so re-running changes nothing.
+This skill only edits: the tracked `i3/config` (the keybind) and the three
+**standalone, private** config files `~/.claude/settings.json`,
+`~/.codex/config.toml`, and `~/.gemini/antigravity-cli/settings.json` (never
+symlink those into this public repo — they hold local tokens, `autoMode`
+engagement context, and per-project `trust_level` paths). Every step checks
+before it writes, so re-running changes nothing.
 
 ## Prerequisites
 
@@ -87,6 +94,17 @@ grep -qF 'notification_method = "bel"' "$f" || awk '
 This inserts the keys right after the `[tui]` header, before any `[tui.*]`
 sub-table (required by TOML). Verify Codex still starts: `codex --version`.
 
+### 4. Antigravity CLI notifications (`~/.gemini/antigravity-cli/settings.json`, standalone)
+
+Enable the built-in notification and terminal bell chime:
+
+```sh
+f=~/.gemini/antigravity-cli/settings.json
+jq '.notifications = true' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+```
+
+Verify: `jq -r '.notifications' ~/.gemini/antigravity-cli/settings.json` prints `true`.
+
 ## Verify end-to-end
 
 1. Focus another workspace, then in an agent's kitty window run
@@ -95,5 +113,7 @@ sub-table (required by TOML). Verify Codex still starts: `codex --version`.
 2. Claude, unfocused/away: a permission prompt (~6s) or sitting idle after a turn
    (~60s) rings the bell → the workspace goes urgent.
 3. Codex, unfocused: trigger a tool approval and a turn completion — both ring.
-4. Two agents urgent at once → repeated `Mod4+x` cycles between them.
-5. Re-run this skill → every step reports already-present, nothing changes.
+4. Antigravity, unfocused: completing a task or requiring approval/input emits a
+   terminal bell chime → the workspace goes urgent.
+5. Multiple agents urgent at once → repeated `Mod4+x` cycles between them.
+6. Re-run this skill → every step reports already-present, nothing changes.
