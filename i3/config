@@ -258,8 +258,8 @@ bindsym $mod+Shift+q [class="Chatgpt"] focus
 bindsym $mod+p [class="jetbrains-pycharm" workspace="__focused__"] focus
 bindsym $mod+Shift+p [class="jetbrains-pycharm"] focus
 
-bindsym $mod+c [class="Cursor" instance="^cursor$" workspace="__focused__"] focus
-bindsym $mod+Shift+c [class="Cursor" instance="^cursor$"] focus
+bindsym $mod+c [class="(?i)^cursor$" instance="^cursor$" workspace="__focused__"] focus
+bindsym $mod+Shift+c [class="(?i)^cursor$" instance="^cursor$"] focus
 
 bindsym $mod+z [class="dev.zed.Zed" workspace="__focused__"] focus
 bindsym $mod+Shift+z [class="dev.zed.Zed"] focus
