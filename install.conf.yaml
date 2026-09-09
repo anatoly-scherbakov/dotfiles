@@ -51,6 +51,11 @@
         create: true
         force: true
         path: kitty/kitty.conf
+    ~/.config/wireplumber/main.lua.d/51-audio-routing.lua:
+        relink: true
+        create: true
+        force: true
+        path: wireplumber/51-audio-routing.lua
     ~/.config/systemd/user/app.slice.d/oomd.conf:
         relink: true
         create: true
