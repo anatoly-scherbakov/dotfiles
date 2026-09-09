@@ -1,7 +1,7 @@
 ---
 name: retro
 description: Turn a concrete mistake or correction from the active conversation into minimal, durable agent guidance. Use when the user asks for a retrospective or when the agent recognizes a mistake worth preventing in future work.
-disable-model-invocation: true
+disable-model-invocation: false
 ---
 
 # Retro
