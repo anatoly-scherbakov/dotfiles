@@ -15,6 +15,10 @@ if [[ "$1" == "--ui" ]]; then
   exit 0
 fi
 
+_irene_dir="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+# shellcheck source=i3-workspace-name.sh
+source "$_irene_dir/i3-workspace-name.sh"
+
 title=$1
 num=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).num')
 current_name=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).name')
@@ -29,19 +33,10 @@ if [[ "$num" == "-1" || -z "$num" ]]; then
   # Default: keep current name as prefix
   desired_name="${current_name}: ${title}"
 else
-  # Symbol prefixes for workspaces 0–14. Index is the workspace num.
-  prefixes=("🄌" "❶" "❷" "❸" "❹" "❺" "❻" "❼" "❽" "❾" "❿" "➕" "➖" "✖" "➗")
-  prefix="${prefixes[$num]}"
-
-  if [[ -n "$prefix" ]]; then
-    # Keep numeric prefix so `workspace number N` continues to target this
-    # workspace; i3bar (with strip_workspace_numbers yes) will hide "N:"
-    # and only show the symbol+title like `❶foo` or `➕bar`.
-    desired_name="${num}:${prefix}${title}"
-  else
-    # Fallback: numeric prefix plus raw title
-    desired_name="${num}: ${title}"
-  fi
+  # Keep numeric prefix so `workspace number N` continues to target this
+  # workspace; i3bar (with strip_workspace_numbers yes) will hide "N:"
+  # and only show the symbol+title like `❶foo` or `➕bar`.
+  desired_name="$(i3_workspace_numbered_name "$num" "$title")"
 fi
 
 i3-msg rename workspace "$current_name" to "$desired_name"
