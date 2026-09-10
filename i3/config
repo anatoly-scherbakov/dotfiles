@@ -17,6 +17,8 @@
 # Windows key.
 # On Microsoft ergonomic keyboards, it is on the left. Thus, every key we press
 # it together with should be accessible by the right hand.
+# Shift elevates (same action, wider/stronger). Ctrl+Page cycles workspaces;
+# Ctrl+Shift+Page reorders them (changes identity).
 set $mod Mod4
 
 # Use tabbed layout for new workspaces/containers by default.
@@ -108,6 +110,10 @@ bindsym $mod+Next focus output eDP-1
 # Cycle through workspaces.
 bindsym $mod+Control+Prior workspace prev
 bindsym $mod+Control+Next workspace next
+
+# Reorder the focused workspace (Chrome-style Ctrl+Shift+Page).
+bindsym $mod+Control+Shift+Prior exec --no-startup-id ~/.local/bin/i3-reorder-workspace left
+bindsym $mod+Control+Shift+Next exec --no-startup-id ~/.local/bin/i3-reorder-workspace right
 
 # move the focused container to a specific output (same left/right mapping)
 bindsym $mod+Shift+Prior move container to output primary
@@ -273,9 +279,9 @@ bindsym $mod+v [class="(?i)^vlc$" workspace="__focused__"] focus
 bindsym $mod+Shift+v [class="(?i)^vlc$"] focus
 bindsym $mod+s [class="(?i)^signal$" workspace="__focused__"] focus
 bindsym $mod+Shift+s [class="(?i)^signal$"] focus
-bindsym $mod+m [class="Gnome-terminal" workspace="__focused__"] focus
 exec --no-startup-id picom
 bindsym $mod+i [class="Google-chrome" workspace="__focused__"] focus
+bindsym $mod+Shift+i [class="Google-chrome"] focus
 
 bindsym Print exec flameshot gui
 
