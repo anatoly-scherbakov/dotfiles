@@ -135,6 +135,11 @@
         create: true
         force: true
         path: bin/i3-resurrect-session.sh
+    "~/.local/bin/i3-reorder-workspace":
+        relink: true
+        create: true
+        force: true
+        path: bin/i3-reorder-workspace.sh
 
     "~/bin/synology":
         relink: true
