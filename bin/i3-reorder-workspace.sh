@@ -64,7 +64,10 @@ fi
 occ_name="$(jq -r '.name' <<<"$occupant")"
 occ_num="$(jq -r '.num' <<<"$occupant")"
 occ_title="$(i3_workspace_title "$occ_name" "$occ_num")"
-tmp="__i3_reorder_tmp_$$"
+# i3 refuses to rename to a name starting with "__" (reserved as
+# i3-internal), and parses a leading digit as the workspace number, so the
+# scratch name uses a non-numeric, non-underscore prefix.
+tmp="i3-reorder-tmp-$$"
 
 if [[ "$num" == "-1" ]]; then
   rename_workspace "$name" "$tmp"

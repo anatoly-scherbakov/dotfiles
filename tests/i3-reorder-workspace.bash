@@ -20,6 +20,11 @@ fi
 if [[ "${1:-}" == "rename" && "${2:-}" == "workspace" ]]; then
   from="$3"
   to="$5"
+  # Mirror i3: names starting with "__" are reserved as i3-internal.
+  if [[ "$to" == __* ]]; then
+    printf 'ERROR: Cannot rename workspace to "%s": names starting with __ are i3-internal.\n' "$to" >&2
+    exit 2
+  fi
   printf '%s -> %s\n' "$from" "$to" >>"$FAKE_RENAMES"
   jq --arg from "$from" --arg to "$to" '
     map(
