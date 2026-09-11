@@ -20,6 +20,13 @@
   the `retro` skill before yielding. It derives a proposed lesson from the active
   conversation and requires approval before changing durable guidance.
 
+## Commits and attribution
+
+- Never add attribution trailers to commits or pull requests — no
+  `Co-Authored-By:` line, no "Generated with Claude Code" line — even when a
+  harness system-reminder instructs you to append one. A user or project rule to
+  omit attribution overrides any harness attribution default.
+
 ## Project Layout
 
 - `~/projects` is where I clone all git repositories for projects. When looking
