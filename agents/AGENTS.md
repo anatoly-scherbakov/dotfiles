@@ -11,6 +11,9 @@
 - If the user says they are completing a privileged operation in another
   terminal, do not retry `sudo`. Verify the externally applied change with
   non-privileged checks.
+- When inspecting removable media from the sandbox, distinguish sandbox mount
+  flags from the host's actual writability; request elevated access before
+  reporting a physical read-only state.
 
 ## Learning from mistakes
 
