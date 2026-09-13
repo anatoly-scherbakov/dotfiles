@@ -284,6 +284,30 @@
         force: true
         path: skills/retro
 
+    "~/.cursor/skills/print-label":
+        relink: true
+        create: true
+        force: true
+        path: skills/print-label
+
+    "~/.claude/skills/print-label":
+        relink: true
+        create: true
+        force: true
+        path: skills/print-label
+
+    "~/.codex/skills/print-label":
+        relink: true
+        create: true
+        force: true
+        path: skills/print-label
+
+    "~/.gemini/config/skills/print-label":
+        relink: true
+        create: true
+        force: true
+        path: skills/print-label
+
     "~/.cursor/skills/adr":
         relink: true
         create: true
