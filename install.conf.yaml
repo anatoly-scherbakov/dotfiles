@@ -86,6 +86,11 @@
         create: true
         force: true
         path: bin/playwright-chromium.sh
+    "~/bin/spawn-claude":
+        relink: true
+        create: true
+        force: true
+        path: bin/spawn-claude.sh
     "~/.config/JetBrains/PyCharm2020.2/idea.properties":
         relink: true
         create: true
@@ -295,6 +300,12 @@
         create: true
         force: true
         path: skills/print-label
+
+    "~/.claude/skills/spawn-claude":
+        relink: true
+        create: true
+        force: true
+        path: skills/spawn-claude
 
     "~/.codex/skills/print-label":
         relink: true
