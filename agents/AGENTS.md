@@ -36,6 +36,14 @@
   for a repo by name, or when cloning a new one, use `~/projects/<repo>`.
 - `~/Documents` holds documents arranged historically (organized by date).
 
+## Working across repositories
+
+- When work leads into another repository (e.g. the `~/datafold` monorepo), read
+  that repo's agentic docs (`CLAUDE.md`/`AGENTS.md`, including the relevant module
+  doc) before acting in it or asserting its conventions.
+- Determine a repo's default/integration branch from the remote
+  (`git remote show origin`), never a possibly-stale local `origin/HEAD` symref.
+
 ## Python Project Environments
 
 - For existing Python projects without `uv` metadata, do not migrate the project
