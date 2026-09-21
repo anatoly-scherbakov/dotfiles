@@ -319,6 +319,30 @@
         force: true
         path: skills/print-label
 
+    "~/.cursor/skills/github-notifications":
+        relink: true
+        create: true
+        force: true
+        path: skills/github-notifications
+
+    "~/.claude/skills/github-notifications":
+        relink: true
+        create: true
+        force: true
+        path: skills/github-notifications
+
+    "~/.codex/skills/github-notifications":
+        relink: true
+        create: true
+        force: true
+        path: skills/github-notifications
+
+    "~/.gemini/config/skills/github-notifications":
+        relink: true
+        create: true
+        force: true
+        path: skills/github-notifications
+
     "~/.cursor/skills/adr":
         relink: true
         create: true
