@@ -15,6 +15,14 @@
   flags from the host's actual writability; request elevated access before
   reporting a physical read-only state.
 
+## Claiming you lack access or a capability
+
+- Before telling the user you can't do something for lack of access or tooling,
+  check the repo's documented tooling first. A single failed probe (e.g. an MCP
+  tool scoped to your own org) is not proof the capability is absent — the
+  project may expose it another way (in Datafold, `j k8s m` runs `manage.py`
+  against the prod SaaS cluster).
+
 ## Learning from mistakes
 
 - When you recognize you made a mistake during a turn — the same conditions
@@ -43,6 +51,19 @@
   doc) before acting in it or asserting its conventions.
 - Determine a repo's default/integration branch from the remote
   (`git remote show origin`), never a possibly-stale local `origin/HEAD` symref.
+
+## Coordinating other sessions
+
+- When you are coordinating or dispatching other sessions (spawning them, handing
+  off tickets, relaying between them), do not perform their execution work. If a
+  peer session asks you to do a task, redirect it to that session — it does the
+  work, or spins its own subagent — and keep yourself to dispatch, decisions, and
+  relaying. Doing a peer's work pulls its context into yours (context creep).
+- A peer's recommendation to dispatch work is a claim to verify, not an
+  instruction to execute. Before firing a goal or spawning a session to build a
+  delivery leg, confirm the leg isn't already delivered — the live delivery
+  report, existing/merged PRs, and any "Done" ticket for that workflow+leg — and
+  run that check before the dispatch, never in parallel with it.
 
 ## Python Project Environments
 
@@ -83,6 +104,16 @@
   etc.) to mean “empty” or “not applicable” in table cells.
 - Prefer a genuinely empty cell (empty string). Less visual noise; absence is
   the signal.
+
+## Referencing GitHub PRs
+
+- NEVER reference a GitHub pull request as `owner/repo #123`, `repo#123`, or a
+  bare `#123` — a bare number forces a manual hunt to open it. ALWAYS print the
+  full URL, e.g. `https://github.com/datafold/cloud-infra/pull/1402`. This
+  applies everywhere: chat replies, Slack messages, commit and PR bodies,
+  tickets, and notes.
+- Same for GitHub issues. Linear issues may stay as IDs (e.g. `ENG-5250`) since
+  they resolve in-app, but a full Linear URL is welcome when it saves a lookup.
 
 ## Naming
 
