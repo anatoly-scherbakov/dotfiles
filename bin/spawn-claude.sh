@@ -41,6 +41,23 @@ esac
 command -v kitty  >/dev/null 2>&1    || { echo "spawn-claude: kitty not found"       >&2; exit 1; }
 command -v setsid >/dev/null 2>&1    || { echo "spawn-claude: setsid not found"       >&2; exit 1; }
 
+# Clear the session markers Claude Code injects into every subprocess it
+# spawns. When spawn-claude is run from inside a Claude session (e.g. its Bash
+# tool), these leak into the new window and make the fresh `claude` believe it
+# is a *child* of the caller: transcript persistence is disabled (childSession
+# gates it) and the window never registers as an independent top-level session.
+# Unsetting them makes the launch indistinguishable from one started in a plain
+# terminal — its own session id, its own messaging socket, full persistence.
+# These names are absent in a normal shell, and `unset` of an absent name is a
+# no-op under `set -u`; the unset propagates through setsid/kitty/zsh by
+# inheritance, so the `claude` inside the new window sees a clean environment.
+unset CLAUDE_CODE_CHILD_SESSION \
+      CLAUDE_CODE_SESSION_ID \
+      CLAUDE_CODE_MESSAGING_SOCKET \
+      CLAUDE_CODE_MESSAGING_TOKEN \
+      CLAUDE_PID \
+      CLAUDECODE
+
 # Detach fully (new session, closed std streams) so the window outlives the
 # caller even when that caller is a short-lived, sandboxed tool invocation.
 # claude's arguments ride as the interactive shell's positional parameters, so
