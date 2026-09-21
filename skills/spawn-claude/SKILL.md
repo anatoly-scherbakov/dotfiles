@@ -21,6 +21,12 @@ kitty window whose cwd is `DIR`, and runs `claude` there with every remaining
 argument forwarded verbatim. When claude exits, the window drops to an
 interactive shell in the same directory instead of closing.
 
+The helper clears the Claude Code session markers (`CLAUDE_CODE_CHILD_SESSION`,
+`CLAUDE_CODE_SESSION_ID`, `CLAUDE_CODE_MESSAGING_SOCKET`/`_TOKEN`, `CLAUDE_PID`,
+`CLAUDECODE`) that leak in when it is launched from inside a Claude session, so
+the new window is a genuine top-level session with its own transcript
+persistence rather than a marked child of the caller.
+
 ## Workflow
 
 1. From the user's request, determine:
@@ -33,11 +39,27 @@ interactive shell in the same directory instead of closing.
    `~/projects/<name>` first, then `~/<name>` (so `datafold` → `~/datafold`).
    The helper applies the same rule, so a bare name may be passed straight
    through. Only ask the user if the directory cannot be found.
-3. **Compose the prompt.** If the user is handing off work from the *current*
-   session, write a **self-contained brief** as the prompt — the new session
-   knows nothing. Include the repository, the branch or worktree, what is already
-   done, what to do next, and the key file paths. If the user gave explicit
-   prompt text, pass it verbatim.
+3. **Compose the prompt — keep it concise; do not duplicate a durable spec.**
+   When the work is already captured somewhere the new session can open — a
+   Linear ticket, a design doc, a PR — make the prompt a **short pointer** to it,
+   e.g. `Address ENG-1234` (add its URL or repo only if that helps it find the
+   thing). The new session reads the source itself; re-narrating the ticket's
+   contents into the prompt is wasteful repetition. Only write a longer
+   self-contained brief when there is **no** such durable source — and then
+   include just what the new session can't recover on its own (repository,
+   branch/worktree, what's already done, what to do next, key file paths). If the
+   user gave explicit prompt text, pass it verbatim.
+
+   **Always append a one-line pingback** (unless the user says not to). After the
+   task pointer, add a single sentence telling the new session to report back:
+   read **your own** session name from `ListAgents` (the `This session is <name>`
+   line at the top) and instruct the new session to `SendMessage` that name a
+   one-line status when the work is complete (PR opened/updated/merged) or if it
+   stops blocked — e.g. `When done or blocked, SendMessage to drivetime-queue
+   with a one-line status.` The task detail stays in the ticket; this line is the
+   only coordination the prompt adds. The pingback relies on the new window being
+   a genuine top-level session (see Mechanism) — a marked child can't be
+   messaged, so it would silently never arrive.
 4. **Launch** by running the helper, forwarding flags before the prompt:
 
    ```sh
