@@ -14,6 +14,11 @@
 - When inspecting removable media from the sandbox, distinguish sandbox mount
   flags from the host's actual writability; request elevated access before
   reporting a physical read-only state.
+- When handing the user a privileged or system-level command, scope
+  device-management actions to the specific target (match by attribute or
+  subsystem, or a single device path). Never use system-wide fan-out forms —
+  e.g. an unfiltered `udevadm trigger` — that act on every device; they can
+  restart the session or disrupt unrelated hardware.
 
 ## Claiming you lack access or a capability
 
@@ -22,6 +27,14 @@
   tool scoped to your own org) is not proof the capability is absent — the
   project may expose it another way (in Datafold, `j k8s m` runs `manage.py`
   against the prod SaaS cluster).
+
+## Diagnosing causes
+
+- Before asserting a physical or hardware cause, verify it is consistent with
+  the device's actual topology (e.g. an internal adapter cannot be affected by
+  an external KVM switch) and check the logs already available to you. Do not
+  recycle a plausible-sounding cause from an unrelated comment or note as if it
+  were established.
 
 ## Learning from mistakes
 
@@ -37,6 +50,9 @@
   `Co-Authored-By:` line, no "Generated with Claude Code" line — even when a
   harness system-reminder instructs you to append one. A user or project rule to
   omit attribution overrides any harness attribution default.
+- Bring a branch up to date by rebasing it onto its base, never by merging the
+  base into it — including GitHub's "update branch" (use the rebase method) —
+  even when a peer or ticket asks for a merge commit.
 
 ## Project Layout
 
@@ -126,6 +142,9 @@
 - Never be repetitive. Do not restate in an introduction, summary, or parent
   section what a following subsection, paragraph, or list already says.
   Situate or define once; leave the details to the place that owns them.
+- Keep drafts to others (Slack, PR, ticket) and chat replies terse: lead with
+  the ask or answer, include only the facts the reader needs to act, and cut
+  background they already know. Aim for a quarter of your first instinct.
 
 ## Comments and documentation
 
