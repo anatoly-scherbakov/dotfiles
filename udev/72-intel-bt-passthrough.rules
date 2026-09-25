@@ -1,0 +1,5 @@
+# Intel AX201 Bluetooth (8087:0026) is passed through to the win11 VM.
+# Disable host USB autosuspend for it: after a short idle the host powers the
+# port down, and the wake/reset cycle wedges the passed-through radio (Windows
+# shows the adapter present but dead). Keeping it powered removes that trigger.
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="8087", ATTR{idProduct}=="0026", ATTR{power/control}="on"
