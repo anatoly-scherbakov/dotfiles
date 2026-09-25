@@ -53,6 +53,38 @@ The rules match the `SDINNOVATION` USB manufacturer string, so they cover
 different product and firmware IDs. They grant access to the active desktop
 session through udev's `uaccess` mechanism.
 
+### Intel AX201 Bluetooth passthrough to the win11 VM
+
+The internal Intel AX201 Bluetooth (`8087:0026`) is passed through to the
+`win11` libvirt VM. Two host-side settings keep it stable:
+
+- `/etc/modprobe.d/vm-bluetooth-passthrough.conf` (`install btusb /bin/true`)
+  stops the host `btusb` driver from racing qemu for the adapter.
+- The udev rule below disables host USB autosuspend for the adapter; without
+  it, an idle autosuspend/resume cycle resets the radio and wedges it in the
+  guest (Windows shows the adapter present but with no Bluetooth). Install it
+  once after a fresh OS installation:
+
+```shell
+sudo cp udev/72-intel-bt-passthrough.rules /etc/udev/rules.d/
+sudo udevadm control --reload-rules
+sudo udevadm trigger --action=add --subsystem-match=usb \
+    --attr-match=idVendor=8087 --attr-match=idProduct=0026
+```
+
+Scope the `trigger` to the adapter as shown. A bare
+`udevadm trigger --action=add` re-emits add events for *every* device,
+which re-adds input and DRM devices and restarts the graphical session.
+
+If the adapter still goes dead after a device reset (visible as
+`usb 3-14: reset ...` in `dmesg`), re-establish the passthrough live — no root
+needed — with a vendor/product-only hostdev XML:
+
+```shell
+virsh detach-device win11 bt-hostdev.xml --live
+virsh attach-device win11 bt-hostdev.xml --live
+```
+
 ## systemd OOM policy
 
 Ubuntu monitors the entire `user@.service` for sustained memory pressure.
