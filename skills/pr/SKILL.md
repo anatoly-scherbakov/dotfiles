@@ -19,7 +19,7 @@ Use this skill to publish the current branch as a GitHub pull request, watch CI,
 2. Create or locate the PR.
    - If a PR already exists for the branch, use it instead of creating a duplicate: `gh pr view --json number,url,headRefName,baseRefName,state`.
    - Otherwise create the PR with `gh pr create`.
-   - Let `gh pr create` infer title/body from commits when appropriate; use explicit `--title`, `--body`, `--base`, or `--draft` only when the user provided those requirements or repo conventions require them.
+   - Always provide a human-readable title and concise Markdown description with `Summary` and `Validation` sections. The description should state the purpose, principal changes, and validation performed. Use explicit `--title` and `--body` when creating a PR; use `gh pr edit` to correct inferred metadata on an existing PR.
    - If the branch has no upstream, push it with `git push -u origin HEAD` before or during PR creation.
 
 3. Watch checks.
