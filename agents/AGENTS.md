@@ -53,6 +53,9 @@
 - Bring a branch up to date by rebasing it onto its base, never by merging the
   base into it — including GitHub's "update branch" (use the rebase method) —
   even when a peer or ticket asks for a merge commit.
+- Before committing on a branch based on another PR, fetch and check whether that
+  base has merged or moved (`git fetch`, `gh pr view <base>`), and rebase onto the
+  current base before committing or opening the PR.
 
 ## Project Layout
 
