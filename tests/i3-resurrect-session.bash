@@ -22,12 +22,17 @@ if [[ "$*" == "-t get_tree" ]]; then
     nodes: [{
       type: "workspace",
       name: $workspace,
-      nodes: [{window: 1, window_properties: {instance: "kitty"}}]
+      nodes: ([{window: 1, window_properties: {instance: "kitty"}}]
+              + if env.FAKE_PLACEHOLDER == "1" then
+                  [{type: "con", id: 42, window: 16777631,
+                    swallows: [{title: "^Unfilled$"}]}]
+                else [] end)
     }]
   }'
 elif [[ "$*" == "-t get_workspaces" ]]; then
   jq -n --arg workspace "$FAKE_WORKSPACE" '[{name: $workspace, focused: true}]'
 else
+  [[ -n "${FAKE_I3_COMMANDS:-}" ]] && printf '%s\n' "$*" >>"$FAKE_I3_COMMANDS"
   printf '[{"success":true}]\n'
 fi
 EOF
@@ -248,6 +253,22 @@ for _ in $(seq 100); do
     "$lingering_state/i3-resurrect/session.log" >/dev/null && break
   sleep 0.1
 done
+
+placeholder_state="$temporary/placeholder-state"
+i3_commands="$temporary/i3-commands"
+run_helper "$placeholder_state" placeholder save
+rm -f "$runtime_dir"/i3-resurrect-restored-*
+FAKE_PLACEHOLDER=1 FAKE_I3_COMMANDS="$i3_commands" \
+  PLACEHOLDER_POLL_SECONDS=0.1 PLACEHOLDER_SETTLE_SECONDS=1 \
+  run_helper "$placeholder_state" placeholder restore
+for _ in $(seq 50); do
+  rg -F 'closed 1 unfilled placeholders' \
+    "$placeholder_state/i3-resurrect/session.log" >/dev/null && break
+  sleep 0.1
+done
+rg -F 'closed 1 unfilled placeholders' \
+  "$placeholder_state/i3-resurrect/session.log" >/dev/null
+rg -Fx '[con_id=42] kill' "$i3_commands" >/dev/null
 
 timeout_state="$temporary/timeout-state"
 run_helper "$timeout_state" timeout save

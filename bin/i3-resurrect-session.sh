@@ -341,6 +341,46 @@ cleanup_program_restore_directories() {
   [[ -n "${program_restore_dir:-}" ]] && rm -rf "$program_restore_dir"
 }
 
+# A placeholder carries its own i3-created window until a real window
+# replaces it, and i3 drops the swallow criteria of a filled container.
+placeholder_ids() {
+  i3-msg -t get_tree | jq -r '
+    .. | objects
+    | select(.type? == "con" and ((.swallows? // []) | any(.dock? == null)))
+    | .id
+  '
+}
+
+# Restored placeholders that no window claims linger as empty frames, and
+# they can break an in-place restart of i3. Wait until the launched
+# applications stop filling placeholders, then close the rest.
+sweep_placeholders() {
+  local poll="${PLACEHOLDER_POLL_SECONDS:-5}"
+  local settle="${PLACEHOLDER_SETTLE_SECONDS:-60}"
+  local limit="${PLACEHOLDER_TIMEOUT_SECONDS:-300}"
+  local count previous=-1 changed=$SECONDS id
+  local -a ids
+
+  while true; do
+    mapfile -t ids < <(placeholder_ids)
+    count=${#ids[@]}
+    ((count == 0)) && return
+    if ((count != previous)); then
+      previous=$count
+      changed=$SECONDS
+    fi
+    if ((SECONDS - changed >= settle || SECONDS >= limit)); then
+      break
+    fi
+    sleep "$poll"
+  done
+
+  for id in "${ids[@]}"; do
+    i3-msg "[con_id=$id] kill" >/dev/null
+  done
+  log "closed $count unfilled placeholders"
+}
+
 generation_to_restore() {
   if valid_generation "$current_dir"; then
     printf '%s\n' "$current_dir"
@@ -398,6 +438,7 @@ restore_session() {
   # into the project workspace where their titles belong.
   release_lock
   start_session_apps
+  sweep_placeholders &
 }
 
 autosave() {
