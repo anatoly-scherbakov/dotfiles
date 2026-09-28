@@ -9,3 +9,7 @@
 	path = nanopublishing
 	url = git@github.com:iolanta-tech/nanopublishing.git
 	branch = main
+[submodule "mattpocock-skills"]
+	path = mattpocock-skills
+	url = git@github.com:mattpocock/skills.git
+	branch = main

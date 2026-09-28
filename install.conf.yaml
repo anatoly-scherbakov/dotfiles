@@ -571,6 +571,30 @@
         force: true
         path: nanopublishing/skills/nanopublish
 
+    "~/.cursor/skills/grilling":
+        relink: true
+        create: true
+        force: true
+        path: mattpocock-skills/skills/productivity/grilling
+
+    "~/.claude/skills/grilling":
+        relink: true
+        create: true
+        force: true
+        path: mattpocock-skills/skills/productivity/grilling
+
+    "~/.codex/skills/grilling":
+        relink: true
+        create: true
+        force: true
+        path: mattpocock-skills/skills/productivity/grilling
+
+    "~/.gemini/config/skills/grilling":
+        relink: true
+        create: true
+        force: true
+        path: mattpocock-skills/skills/productivity/grilling
+
     "~/.cursor/skills/semantify":
         relink: true
         create: true
