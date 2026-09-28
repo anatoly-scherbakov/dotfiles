@@ -111,6 +111,14 @@ run_locked() {
   "$@"
 }
 
+# Launched applications and background subshells outlive the restore, so
+# they must not inherit the lock descriptor. A `9>&-` redirection on a
+# function call does not achieve that: bash keeps a saved copy of the
+# descriptor, which forked subshells inherit.
+release_lock() {
+  exec 9>&-
+}
+
 workspace_names() {
   i3-msg -t get_tree | jq -r '
     def real_windows:
@@ -359,8 +367,9 @@ restore_session() {
     || ! jq -e '.workspaces | length > 0' \
       "$snapshot/workspaces.json" >/dev/null; then
     log "no valid snapshot; starting baseline applications"
-    start_baseline 9>&-
     : >"$restore_marker"
+    release_lock
+    start_baseline
     return
   fi
   manifest="$snapshot/workspaces.json"
@@ -378,18 +387,17 @@ restore_session() {
 
   cleanup_program_restore_directories
 
-  # The restored layout can swallow session-restored Cursor and Chrome windows
-  # into the project workspace where their titles belong. Close the lock
-  # descriptor so these long-lived applications do not hold the session lock
-  # and block every later save.
-  start_session_apps 9>&-
-
   focused="$(jq -r '.focused // empty' "$manifest")"
   if [[ -n "$focused" ]]; then
     i3-msg "workspace --no-auto-back-and-forth \"$focused\"" >/dev/null
   fi
   : >"$restore_marker"
   log "restored session"
+
+  # The restored layout can swallow session-restored Cursor and Chrome windows
+  # into the project workspace where their titles belong.
+  release_lock
+  start_session_apps
 }
 
 autosave() {
