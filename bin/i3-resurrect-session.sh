@@ -359,7 +359,7 @@ restore_session() {
     || ! jq -e '.workspaces | length > 0' \
       "$snapshot/workspaces.json" >/dev/null; then
     log "no valid snapshot; starting baseline applications"
-    start_baseline
+    start_baseline 9>&-
     : >"$restore_marker"
     return
   fi
@@ -379,8 +379,10 @@ restore_session() {
   cleanup_program_restore_directories
 
   # The restored layout can swallow session-restored Cursor and Chrome windows
-  # into the project workspace where their titles belong.
-  start_session_apps
+  # into the project workspace where their titles belong. Close the lock
+  # descriptor so these long-lived applications do not hold the session lock
+  # and block every later save.
+  start_session_apps 9>&-
 
   focused="$(jq -r '.focused // empty' "$manifest")"
   if [[ -n "$focused" ]]; then
