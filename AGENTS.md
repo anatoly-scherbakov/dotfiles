@@ -8,6 +8,9 @@
   Claude, Codex, and Antigravity. When changing skill links, audit all `skills/*`
   directories against `~/.cursor/skills/<name>`, `~/.claude/skills/<name>`,
   `~/.codex/skills/<name>`, and `~/.gemini/config/skills/<name>` entries in `install.conf.yaml`.
+  Exception: `spawn-claude` is Claude-only (it launches `claude`); link it
+  only to `~/.claude/skills/` and leave `disable-model-invocation` off it —
+  Claude Code hides flagged skills from the model.
 - Cursor only registers a personal skill as a **`/` slash command** when
   `SKILL.md` frontmatter includes `disable-model-invocation: true` (see Cursor
   `migrate-to-skills`). Add it to every skill the user invokes via `/name`; omit

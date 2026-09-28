@@ -1,12 +1,11 @@
 ---
 name: spawn-claude
 description: Spawn a fresh, foreground Claude session in its own kitty window in a chosen project directory — optionally with an initial prompt, plan mode, or a worktree — to offload work to a window you Alt-Tab to.
-disable-model-invocation: true
 ---
 
 # spawn-claude
 
-Use this user-invoked skill to hand a task to a **new** Claude session running in
+Use this skill to hand a task to a **new** Claude session running in
 its **own kitty window**. i3 adopts the window like any hand-opened terminal, so
 it lives in the workspace and is reached by Alt-Tab / `Mod4+x`.
 
