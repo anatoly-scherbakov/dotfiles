@@ -148,6 +148,8 @@
   full URL, e.g. `https://github.com/datafold/cloud-infra/pull/1402`. This
   applies everywhere: chat replies, Slack messages, commit and PR bodies,
   tickets, and notes.
+- When restating PR numbers from a peer's brief, a report cell, or your own
+  notes, expand each to its full URL before sending.
 - Same for GitHub issues. Linear issues may stay as IDs (e.g. `ENG-5250`) since
   they resolve in-app, but a full Linear URL is welcome when it saves a lookup.
 
