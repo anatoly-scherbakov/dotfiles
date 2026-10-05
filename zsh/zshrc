@@ -29,3 +29,6 @@ export PATH="$PATH:/home/anatoly/.lmstudio/bin"
 
 # Added by Antigravity CLI installer
 export PATH="/home/anatoly/.local/bin:$PATH"
+
+# Claude Code on the Enterprise org (setup-claude-ent.sh)
+alias claude-ent='CLAUDE_CONFIG_DIR="$HOME/.claude-enterprise" claude'
