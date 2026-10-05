@@ -10,7 +10,6 @@ state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/i3-resurrect"
 current_dir="$state_dir/current"
 previous_dir="$state_dir/previous"
 log_file="$state_dir/session.log"
-lock_file="$state_dir/session.lock"
 runtime_dir="${XDG_RUNTIME_DIR:-/tmp}"
 restore_marker="$runtime_dir/i3-resurrect-restored-$(basename "${I3SOCK:-default}")"
 operation="${1:-unknown}"
@@ -98,25 +97,6 @@ migrate_legacy_snapshot() {
   mv "$state_dir/workspaces.json" "$migration/"
   mv "$migration" "$current_dir"
   log "migrated legacy snapshot"
-}
-
-run_locked() {
-  exec 9>"$lock_file"
-  if ! flock -n 9; then
-    log "$operation waiting for lock"
-    flock 9
-  fi
-
-  migrate_legacy_snapshot
-  "$@"
-}
-
-# Launched applications and background subshells outlive the restore, so
-# they must not inherit the lock descriptor. A `9>&-` redirection on a
-# function call does not achieve that: bash keeps a saved copy of the
-# descriptor, which forked subshells inherit.
-release_lock() {
-  exec 9>&-
 }
 
 workspace_names() {
@@ -408,7 +388,6 @@ restore_session() {
       "$snapshot/workspaces.json" >/dev/null; then
     log "no valid snapshot; starting baseline applications"
     : >"$restore_marker"
-    release_lock
     start_baseline
     return
   fi
@@ -436,7 +415,6 @@ restore_session() {
 
   # The restored layout can swallow session-restored Cursor and Chrome windows
   # into the project workspace where their titles belong.
-  release_lock
   start_session_apps
   sweep_placeholders &
 }
@@ -452,8 +430,8 @@ autosave() {
 }
 
 case "$operation" in
-  save) run_locked save_session ;;
-  restore) run_locked restore_session ;;
+  save) migrate_legacy_snapshot; save_session ;;
+  restore) migrate_legacy_snapshot; restore_session ;;
   autosave) autosave ;;
   *)
     echo "Usage: $0 {save|restore|autosave}" >&2
