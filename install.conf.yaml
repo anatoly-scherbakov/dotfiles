@@ -307,6 +307,12 @@
         force: true
         path: skills/spawn-claude
 
+    "~/.claude/skills/close-idle-sessions":
+        relink: true
+        create: true
+        force: true
+        path: skills/close-idle-sessions
+
     "~/.codex/skills/print-label":
         relink: true
         create: true
