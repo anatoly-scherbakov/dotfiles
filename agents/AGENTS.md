@@ -5,6 +5,8 @@
 - When devising a plan, ask the advisor before committing to an approach.
 - When changes are prepared and you are about to commit, always ask the advisor
   to review those changes first.
+- Never run an edit and its `git commit` in the same tool batch; the advisor
+  review goes between them.
 
 ## Privileged Operations
 
@@ -35,6 +37,12 @@
   an external KVM switch) and check the logs already available to you. Do not
   recycle a plausible-sounding cause from an unrelated comment or note as if it
   were established.
+
+## Bulk loads
+
+- Before a bulk load into a stateful service, project disk growth as well as
+  memory — including snapshot/WAL retention × the post-load snapshot size —
+  against the volume's free space.
 
 ## Learning from mistakes
 
@@ -83,6 +91,15 @@
   delivery leg, confirm the leg isn't already delivered — the live delivery
   report, existing/merged PRs, and any "Done" ticket for that workflow+leg — and
   run that check before the dispatch, never in parallel with it.
+- Spawn worker sessions in auto mode with instructions to research first, then
+  switch to plan mode and present the plan, implementing nothing until the user
+  approves it (details in the `spawn-claude` skill).
+- A design the user hasn't approved, or a premise you've asked someone to
+  confirm, is open: don't tell peers it's settled or commit code built on it
+  until the answer arrives.
+- One session manages one worktree. When work needs a branch other than the one
+  this session's checkout is on, do not create or switch to another worktree —
+  route it to the dispatcher (e.g. `mdlz-queue`) so a session of its own takes it.
 
 ## Python Project Environments
 
@@ -139,6 +156,9 @@
 - Avoid contractions in path and directory names (e.g. use `images/`, not `img/`;
   use `documentation/`, not `docs/`, unless an existing project convention
   already uses the short form).
+- The same applies to every identifier you coin — id prefixes, node/edge
+  types, CLI and variable names (e.g. `fivetran_connector:`, not `ftconn:`):
+  abbreviate only when the industry or the customer already does.
 
 ## Prose
 
