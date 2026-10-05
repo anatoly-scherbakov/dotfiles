@@ -59,6 +59,13 @@ persistence rather than a marked child of the caller.
    only coordination the prompt adds. The pingback relies on the new window being
    a genuine top-level session (see Mechanism) — a marked child can't be
    messaged, so it would silently never arrive.
+   **Worker sessions start auto, then plan.** When a coordinating session spawns
+   a worker for a task, launch it with `--permission-mode auto`, and end the
+   prompt with: research the task first, then switch to plan mode
+   (`EnterPlanMode`) and present the plan; implement nothing until the user
+   approves it. Skip this only when the user explicitly asks for a different mode
+   or for immediate execution, or when the task is a single command the user has
+   already approved.
 4. **Launch** by running the helper, forwarding flags before the prompt:
 
    ```sh
