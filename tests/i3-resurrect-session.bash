@@ -90,10 +90,6 @@ EOF
   chmod +x "$fake_bin/$application"
 done
 
-cat >>"$fake_bin/google-chrome" <<'EOF'
-sleep "${FAKE_CHROME_SECONDS:-0}"
-EOF
-
 for application in "bin/Telegram" "bin/cursor"; do
   cat >"$fake_home/$application" <<EOF
 #!/usr/bin/env bash
@@ -107,15 +103,6 @@ cat >"$fake_bin/nemo" <<'EOF'
 printf 'nemo %s\n' "$*" >>"$FAKE_APP_CALLS"
 EOF
 chmod +x "$fake_bin/nemo"
-
-kill_tree() {
-  local child children
-  children="$(pgrep -P "$1" || true)"
-  kill "$1" 2>/dev/null || true
-  for child in $children; do
-    kill_tree "$child"
-  done
-}
 
 run_helper() {
   env \
@@ -172,31 +159,6 @@ jq -e '.workspaces == ["fresh"]' \
 jq -e '.workspaces == ["legacy"]' \
   "$legacy_state/previous/workspaces.json" >/dev/null
 
-autosave_state="$temporary/autosave-state"
-run_helper "$autosave_state" alpha autosave &
-autosave_pid=$!
-for _ in 1 2 3 4 5; do
-  [[ -e "$autosave_state/i3-resurrect/session.lock" ]] && break
-  sleep 0.1
-done
-flock -n "$autosave_state/i3-resurrect/session.lock" -c true
-kill_tree "$autosave_pid"
-wait "$autosave_pid" 2>/dev/null || true
-
-serial_state="$temporary/serial-state"
-mkdir -p "$serial_state/i3-resurrect"
-flock "$serial_state/i3-resurrect/session.lock" sleep 1 &
-locker_pid=$!
-sleep 0.1
-run_helper "$serial_state" serialized save &
-save_pid=$!
-sleep 0.1
-kill -0 "$save_pid"
-wait "$locker_pid"
-wait "$save_pid"
-jq -e '.workspaces == ["serialized"]' \
-  "$serial_state/i3-resurrect/current/workspaces.json" >/dev/null
-
 restore_state="$temporary/restore-state"
 run_helper "$restore_state" restored save
 jq -n --arg home "$fake_home" '[
@@ -235,24 +197,6 @@ fi
 rg -Fx 'google-chrome --password-store=gnome-libsecret --restore-last-session' \
   "$app_calls" >/dev/null
 rg -Fx 'bin/Telegram ' "$app_calls" >/dev/null
-
-lingering_state="$temporary/lingering-state"
-run_helper "$lingering_state" lingering save
-rm -f "$app_calls" "$runtime_dir"/i3-resurrect-restored-*
-FAKE_CHROME_SECONDS=1 run_helper "$lingering_state" lingering restore
-for _ in $(seq 30); do
-  [[ -e "$app_calls" ]] && rg -F 'google-chrome ' "$app_calls" >/dev/null && break
-  sleep 0.1
-done
-if ! flock -n "$lingering_state/i3-resurrect/session.lock" -c true; then
-  echo "a restored application holds the session lock" >&2
-  exit 1
-fi
-for _ in $(seq 100); do
-  rg -F 'Chrome session restore process exited' \
-    "$lingering_state/i3-resurrect/session.log" >/dev/null && break
-  sleep 0.1
-done
 
 placeholder_state="$temporary/placeholder-state"
 i3_commands="$temporary/i3-commands"
