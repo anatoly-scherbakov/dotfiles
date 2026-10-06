@@ -37,6 +37,10 @@
   an external KVM switch) and check the logs already available to you. Do not
   recycle a plausible-sounding cause from an unrelated comment or note as if it
   were established.
+- When a fix covers several instances of one cause, check each instance's state
+  yourself (e.g. its row count) before stating it; a property verified on one
+  instance does not carry over to its siblings, least of all into a destructive
+  step.
 
 ## Bulk loads
 
@@ -91,6 +95,8 @@
   delivery leg, confirm the leg isn't already delivered — the live delivery
   report, existing/merged PRs, and any "Done" ticket for that workflow+leg — and
   run that check before the dispatch, never in parallel with it.
+- When research contradicts a premise in a peer's brief, confirm the actual goal
+  with the user before planning around the brief's stated requirements.
 - Spawn worker sessions in auto mode with instructions to research first, then
   switch to plan mode and present the plan, implementing nothing until the user
   approves it (details in the `spawn-claude` skill).
