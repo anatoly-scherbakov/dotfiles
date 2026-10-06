@@ -1,12 +1,7 @@
-# GTK has rewritten this file to add the line:
-
-include "%L"
-
-# This is necessary to add your own Compose sequences
-# in addition to the builtin sequences of GTK. If this
-# is not what you want, just remove that line.
+# Custom Compose sequences.
 #
-# A backup of the previous file contents has been made.
+# System Compose sequences are intentionally not included. Add any needed
+# sequence explicitly below.
 
 
 # Mathematical symbols
@@ -19,6 +14,29 @@ include "%L"
 <Multi_key> <U2248> <slash>            : "≉"
 <Multi_key> <U2248> <KP_Divide>        : "≉"
 <Multi_key> <q> <e> <d>                : "∎"
+<Multi_key> <i> <n>                    : "∈" U2208
+<Multi_key> <slash> <i> <n>            : "∉" U2209
+
+# Set theory
+<Multi_key> <C> <u> <p>                : "∪" U222A
+<Multi_key> <C> <a> <p>                : "∩" U2229
+<Multi_key> <parenleft> <less>         : "⊂" U2282
+<Multi_key> <parenleft> <underscore>   : "⊆" U2286
+<Multi_key> <parenright> <greater>     : "⊃" U2283
+<Multi_key> <parenright> <underscore>  : "⊇" U2287
+<Multi_key> <P> <asciicircum>          : "℘" U2118
+
+# Description logic
+<Multi_key> <s> <q> <c> <a> <p>        : "⊓" U2293
+<Multi_key> <s> <q> <c> <u> <p>        : "⊔" U2294
+<Multi_key> <bracketleft> <underscore> : "⊑" U2291
+<Multi_key> <bracketright> <underscore> : "⊒" U2292
+<Multi_key> <equal> <underscore>       : "≡" U2261
+<Multi_key> <T> <T>                    : "⊤" U22A4
+<Multi_key> <underscore> <bar>         : "⊥" U22A5
+<Multi_key> <3> <3>                    : "∃" U2203
+<Multi_key> <A> <v>                    : "∀" U2200
+<Multi_key> <minus> <bar>              : "¬" U00AC
 
 # Nicer greater/less than equal signs
 <Multi_key> <greater> <equal> : "⩾"
@@ -119,7 +137,6 @@ include "%L"
 <Multi_key> <s> <c> <i> <s> <s> <o> <r> <s> :  "✀"   U2700	# BLACK SAFETY SCISSORS
 <Multi_key> <KP_Subtract> <KP_Subtract> : "➖"   U2796  # Remove something
 <Multi_key> <KP_Add> <KP_Add> : "➕"   U2795  # Add something
-<Multi_key> <g> <e> <a> <r> : "⚙️"   U2699  # Automated refactorings
 <Multi_key> <at> <g> <r> <e> <e> <n> : "🟢"   U1F7E2  # Unit test is now passing
 <Multi_key> <at> <r> <e> <d> : "🔴"   U1F534  # Unit test is now broken
 <Multi_key> <at> <y> <e> <l> <l> <o> <w> : "🟡"   U1F7E1  # Unit test is now skipped
