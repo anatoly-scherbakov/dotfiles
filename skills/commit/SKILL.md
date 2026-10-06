@@ -51,6 +51,10 @@ Commit messages often use **backticks** around technical terms (per Message styl
 
 **Default for agents:** prefer `git commit -m '...'` whenever the subject includes backticks; avoid `git commit -m "...\`...\`..."` unless you need embedded single quotes.
 
+### zsh loop variables
+
+- Do not use `path` as a shell variable in zsh scripts or loops; it is tied to `PATH`, so assigning a filename to it can make commands unavailable. Use a name such as `filepath` instead.
+
 ## Message style
 
 - Imperative, present tense: "Add X", "Fix Y", "Update Z in README".
