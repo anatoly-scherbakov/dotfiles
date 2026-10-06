@@ -36,8 +36,12 @@ duplicative guidance.
    proposed rule. Ask for explicit approval before changing a guidance file.
    The user may apply, skip, dismiss, reword, or redirect the proposal.
 5. After an approved write, read the target back and verify the new guidance is
-   present. If an `AGENTS.md` exceeds roughly 80 lines, flag it and offer
-   consolidation, but never remove existing guidance without approval.
+   present. If an `AGENTS.md` exceeds roughly 80 lines, flag it and propose a
+   split first: move each section that governs only one subdirectory into that
+   subdirectory's `AGENTS.md` (creating it if needed), keep only repo-wide
+   guidance at the root, and point to the moved sections from the root. Offer
+   consolidation for what remains. Never remove or move existing guidance
+   without approval.
 6. Report the applied, skipped, and dismissed proposals. Do not persist a
    backlog, delete external reports, or infer approval from a prior session.
 
