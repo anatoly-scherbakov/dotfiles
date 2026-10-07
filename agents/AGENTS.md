@@ -100,6 +100,9 @@
 - Spawn worker sessions in auto mode with instructions to research first, then
   switch to plan mode and present the plan, implementing nothing until the user
   approves it (details in the `spawn-claude` skill).
+- Pass a spawned session's prompt from a file written with a quoted heredoc
+  (`<<'EOF'`), never inline in double quotes: backticks and `$` in the prompt
+  would run in your shell.
 - A design the user hasn't approved, or a premise you've asked someone to
   confirm, is open: don't tell peers it's settled or commit code built on it
   until the answer arrives.
