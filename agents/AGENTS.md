@@ -29,6 +29,9 @@
   tool scoped to your own org) is not proof the capability is absent — the
   project may expose it another way (in Datafold, `j k8s m` runs `manage.py`
   against the prod SaaS cluster).
+- After a context compaction, re-read a skill's SKILL.md from disk before citing
+  its steps or limits; the copy carried over from before compaction may be
+  stale.
 
 ## Diagnosing causes
 
