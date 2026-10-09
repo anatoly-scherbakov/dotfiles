@@ -25,6 +25,10 @@ Markdown document that is not built with MkDocs.
 
 ## Authoring
 
+- Give runnable examples the execution context they require: prerequisites,
+  filenames, working directory, complete flags, and whether a command keeps
+  running or needs a second terminal. Distinguish user-created inputs from
+  generated outputs; output directory previews show generated files only.
 - Keep front-page examples self-contained. For a short shell query accepted on
   standard input, use the project's selected inline form (for example,
   `echo '…' | command --query -`) instead of requiring a separate file.
@@ -45,9 +49,12 @@ Markdown document that is not built with MkDocs.
 - Avoid copying repeated content blocks between pages. Include canonical files
   where appropriate; when `mkdocs-macros-plugin` is already configured,
   define and reuse a macro.
-- When `mkdocs-table-reader-plugin` is already configured, render CSV example
-  data with `{{ read_csv('docs/path/to/file.csv') }}` instead of duplicating it
-  as a fenced code block or local macro.
+- Render CSV example data from its canonical file through the project's
+  configured renderer.
+- When files are part of the lesson, pair readable previews with links to the
+  complete, exact artifacts. Preserve meaningful identifiers and empty cells.
+  Choose result previews from the actual media type when available, which can
+  differ from the filename extension or requested format.
 - Show discontiguous ranges from one source file in a single fenced block,
   using line-range includes and ellipses or comments for omitted sections.
 - Use an admonition when a page needs a compact, reader-facing status or scope
@@ -60,6 +67,13 @@ Markdown document that is not built with MkDocs.
 
 - For raw HTML attributes, Markdown extensions, tables, tooltip titles, or
   custom CSS classes, verify the rendered result in Chromium via Playwright.
+- Follow the documented reader journey through links and controls. For content
+  revealed by tabs or other controls, verify both interaction and direct
+  fragment URLs that promise to reveal it.
+- When documentation uses mutable external data, build and review it using
+  saved captures. Keep retrieval and rewriting of examples in explicit refresh
+  operations; inspect verification commands for those effects before running
+  them.
 - Before starting a development server, inspect project dev tooling for its
   documented local URL and probe it. Reuse a responsive server; do not infer
   its absence from a partial port scan.
