@@ -85,6 +85,10 @@
   doc) before acting in it or asserting its conventions.
 - Determine a repo's default/integration branch from the remote
   (`git remote show origin`), never a possibly-stale local `origin/HEAD` symref.
+- Butterfly (`~/projects/datafold-butterfly`) regularly merges `upstream/master`
+  from `~/datafold` (`docs/butterfly/upstream-sync.md`). When a Butterfly bug also
+  exists upstream, fix it in `~/datafold`; it reaches Butterfly on the next sync.
+  Before claiming a change in one repo won't reach another, read how the two sync.
 
 ## Coordinating other sessions
 
@@ -112,6 +116,13 @@
 - One session manages one worktree. When work needs a branch other than the one
   this session's checkout is on, do not create or switch to another worktree —
   route it to the dispatcher (e.g. `mdlz-queue`) so a session of its own takes it.
+- Never remove a session's own worktree or its local branch, and never list that
+  as a step for the user, even when project docs say to remove it after merge:
+  Claude Code offers the removal when the session closes.
+- Treat the dispatcher's relayed dashboard decision as the user's answer on the
+  card it names, including one that lifts an earlier hold: act on it without
+  re-asking in-session. Permission prompts and denials still need the user
+  directly.
 
 ## Python Project Environments
 
@@ -164,6 +175,14 @@
   notes, expand each to its full URL before sending.
 - Same for GitHub issues. Linear issues may stay as IDs (e.g. `ENG-5250`) since
   they resolve in-app, but a full Linear URL is welcome when it saves a lookup.
+- Read a draft PR's `reviewDecision` as provisional: it shows `REVIEW_REQUIRED`
+  while the PR is a draft. Before telling anyone whose approval or merge a PR
+  needs, confirm it from branch protection or the ruleset and from who reviewed
+  and merged the repo's recent PRs; a doc's stated process may not match
+  practice. If neither shows it, say the requirement is unverified.
+- Before stating a PR's status (open, awaiting review, merged), query it
+  (`gh pr view <url> --json state,reviewDecision,mergedAt`) in the same turn;
+  never restate it from earlier in the conversation.
 
 ## Naming
 
@@ -194,3 +213,17 @@
   reader would otherwise default to and get wrong (e.g. "NOT thread-safe").
   Rule of thumb: if the negation only makes sense as an echo of a design
   discussion the reader never saw, cut it.
+
+## Shell
+
+- In zsh, always brace a variable that is followed by a colon (`"${B}:sha"`,
+  not `$B:sha`); zsh reads `:a`, `:h`, `:t`, `:r`, `:e` etc. as history
+  modifiers and silently rewrites the value.
+- In zsh, quote separator text in `echo` (`echo '==='`, `echo '---'`): a bare
+  `=word` aborts the command line and a bare `#` starts a comment, so later
+  commands never run. Never read empty output from a compound command as
+  absence; check that the command actually ran.
+
+## Timestamps
+
+- Run `date -u` before writing any timestamp; never estimate the current time.
