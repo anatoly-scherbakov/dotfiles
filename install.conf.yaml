@@ -646,10 +646,10 @@
         exit 1;
       fi
     - >
-      setxkbmap -layout yeti,ru,am -variant ,,phonetic -option '' -option compose:menu -print | xkbcomp -I"$HOME/.config/xkb" - "${DISPLAY%%.*}"
+      setxkbmap -layout yeti,ru,am -variant ,,phonetic -option '' -option compose:ins -print | xkbcomp -I"$HOME/.config/xkb" - "${DISPLAY%%.*}"
 
     - >
-      gsettings set org.gnome.desktop.input-sources xkb-options "['compose:menu']"
+      gsettings set org.gnome.desktop.input-sources xkb-options "['compose:ins']"
     - >
       gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'yeti'), ('xkb', 'ru'), ('xkb', 'am(phonetic)')]"
 
