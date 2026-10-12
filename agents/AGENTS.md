@@ -79,6 +79,9 @@
 
 ## Commits and attribution
 
+- Never use the `codex/` prefix when creating Git branches. Follow the
+  repository naming convention, or use a descriptive branch name without
+  that prefix.
 - Never add attribution trailers to commits or pull requests — no
   `Co-Authored-By:` line, no "Generated with Claude Code" line — even when a
   harness system-reminder instructs you to append one. A user or project rule to
@@ -241,3 +244,7 @@
 ## Timestamps
 
 - Run `date -u` before writing any timestamp; never estimate the current time.
+
+## Todoist
+
+See [Todoist task conventions](todoist.md) for task naming, due times, durations, and Eisenhower priorities.
