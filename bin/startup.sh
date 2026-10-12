@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-setxkbmap -layout yeti,ru,am -variant ,,phonetic -option '' -option compose:menu \
+setxkbmap -layout yeti,ru,am -variant ,,phonetic -option '' -option compose:ins \
   -print | xkbcomp -I"$HOME/.config/xkb" - "${DISPLAY%%.*}"
