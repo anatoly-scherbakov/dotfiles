@@ -17,6 +17,11 @@
 <Multi_key> <i> <n>                    : "∈" U2208
 <Multi_key> <slash> <i> <n>            : "∉" U2209
 
+# Arrows
+<Multi_key> <less> <minus>             : "←" U2190
+<Multi_key> <minus> <greater>          : "→" U2192
+<Multi_key> <minus> <less> <greater>   : "↔" U2194
+
 # Set theory
 <Multi_key> <C> <u> <p>                : "∪" U222A
 <Multi_key> <C> <a> <p>                : "∩" U2229
