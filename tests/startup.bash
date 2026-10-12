@@ -35,7 +35,7 @@ env \
   bash "$script"
 
 rg -F -- '-layout yeti,ru,am -variant ,,phonetic' "$temporary/setxkbmap-args" >/dev/null
-rg -F -- '-option  -option compose:menu -print' "$temporary/setxkbmap-args" >/dev/null
+rg -F -- '-option  -option compose:ins -print' "$temporary/setxkbmap-args" >/dev/null
 rg -F -- "-I$fake_home/.config/xkb - :42" "$temporary/xkbcomp-args" >/dev/null
 rg -F 'pc+yeti+ru:2+am(phonetic):3' "$temporary/xkbcomp-input" >/dev/null
 if rg -F '/home/anatoly' "$script" "$repo_dir/bin/i3-resurrect-session.sh" >/dev/null; then
