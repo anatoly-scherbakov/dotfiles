@@ -1,6 +1,6 @@
 partial alphanumeric_keys
 xkb_symbols "yeti" {
-    include "pc+us+inet(evdev)+compose(menu)"
+    include "pc+us+inet(evdev)+compose(ins)"
 
     // Caps Lock as EN/RU toggle only
     key <CAPS> {
