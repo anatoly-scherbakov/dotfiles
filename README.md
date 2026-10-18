@@ -20,6 +20,27 @@ This repo contains my personal settings and configurations for a number of softw
 
 Forking this config is pointless because your preferences are going to be very different from mine. But you might be interested to copy-paste something. Enjoy!
 
+## Prose linting
+
+Check a Markdown draft against the reusable 50-word paragraph limit:
+
+```shell
+lint-prose draft.md
+cat draft.md | lint-prose
+```
+
+Run these commands from any directory. Paragraphs of exactly 50 words pass;
+longer paragraphs produce an error and exit status 1. Wrapped source lines
+remain one paragraph. Blockquotes and list items are checked separately.
+
+Install [Vale](https://docs.vale.sh/topics/installation) 3.21 or later, then
+run `./install --only link` to make `lint-prose` available in `~/bin`.
+
+The configuration lives in `vale/vale.ini`, with the limit in
+`vale/styles/Prose/ParagraphLength.yml`. It uses Vale's built-in word count,
+which excludes code and link destinations. The wrapper selects this
+configuration explicitly, so it works across projects.
+
 ## Hardware setup
 
 ### System XKB map
