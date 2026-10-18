@@ -163,6 +163,12 @@
         force: true
         path: bin/backup.sh
 
+    "~/bin/lint-prose":
+        relink: true
+        create: true
+        force: true
+        path: bin/lint-prose.sh
+
     "~/bin/wg-github":
         relink: true
         create: true
