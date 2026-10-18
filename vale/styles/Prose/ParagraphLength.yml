@@ -1,0 +1,6 @@
+extends: metric
+message: 'Paragraph has %s words; maximum is 50. Split or shorten it.'
+level: error
+scope: [paragraph, list, blockquote]
+formula: words
+condition: '> 50.0'
