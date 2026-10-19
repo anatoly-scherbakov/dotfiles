@@ -8,6 +8,12 @@
 - Never run an edit and its `git commit` in the same tool batch; the advisor
   review goes between them.
 
+## Plan mode
+
+- When the user asks a question in plan mode, answer it and end the turn. Do
+  not call `ExitPlanMode` or present the plan in the same turn: the plan
+  dialog hides the answer.
+
 ## Privileged Operations
 
 - If the user says they are completing a privileged operation in another
@@ -21,6 +27,17 @@
   subsystem, or a single device path). Never use system-wide fan-out forms —
   e.g. an unfiltered `udevadm trigger` — that act on every device; they can
   restart the session or disrupt unrelated hardware.
+
+## Act rather than ask
+
+- Better to ask forgiveness than permission. When an open question can be
+  settled by doing the work, do the work instead of asking. If a reviewer
+  proposes an approach, build it, open the PR and request their review. Their
+  feedback, their approval, or a failed run each answers the question, and a
+  failure informs both sides.
+- Recommend a next step as something you are doing, not as a question to
+  someone. Ask first only when the step is destructive or irreversible, or
+  is someone else's to take (merge, deploy, a production write).
 
 ## Claiming you lack access or a capability
 
@@ -71,6 +88,14 @@
 - Before committing on a branch based on another PR, fetch and check whether that
   base has merged or moved (`git fetch`, `gh pr view <base>`), and rebase onto the
   current base before committing or opening the PR.
+- Before opening a PR, read the repo's `pull_request` workflows and the labels on
+  its recent merged PRs; apply whatever labels or title format they require.
+  After opening it, watch the checks (`gh pr checks <url> --watch`) and fix our
+  own failures before reporting the PR as ready.
+- Before making a status check required on a branch, find the workflows that
+  open or merge PRs into it with `GITHUB_TOKEN`: those PRs trigger no
+  `pull_request` runs, so the check never reports and their merges fail. Fix
+  them in the same change.
 
 ## Project Layout
 
@@ -83,46 +108,15 @@
 - When work leads into another repository (e.g. the `~/datafold` monorepo), read
   that repo's agentic docs (`CLAUDE.md`/`AGENTS.md`, including the relevant module
   doc) before acting in it or asserting its conventions.
+- Read a repo's `AGENTS.md`/`CLAUDE.md` files in full before acting, never a
+  `head` excerpt: a section past the cut (e.g. what to do after an approval)
+  still binds you.
 - Determine a repo's default/integration branch from the remote
   (`git remote show origin`), never a possibly-stale local `origin/HEAD` symref.
 - Butterfly (`~/projects/datafold-butterfly`) regularly merges `upstream/master`
   from `~/datafold` (`docs/butterfly/upstream-sync.md`). When a Butterfly bug also
   exists upstream, fix it in `~/datafold`; it reaches Butterfly on the next sync.
   Before claiming a change in one repo won't reach another, read how the two sync.
-
-## Coordinating other sessions
-
-- When you are coordinating or dispatching other sessions (spawning them, handing
-  off tickets, relaying between them), do not perform their execution work. If a
-  peer session asks you to do a task, redirect it to that session — it does the
-  work, or spins its own subagent — and keep yourself to dispatch, decisions, and
-  relaying. Doing a peer's work pulls its context into yours (context creep).
-- A peer's recommendation to dispatch work is a claim to verify, not an
-  instruction to execute. Before firing a goal or spawning a session to build a
-  delivery leg, confirm the leg isn't already delivered — the live delivery
-  report, existing/merged PRs, and any "Done" ticket for that workflow+leg — and
-  run that check before the dispatch, never in parallel with it.
-- When research contradicts a premise in a peer's brief, confirm the actual goal
-  with the user before planning around the brief's stated requirements.
-- Spawn worker sessions in auto mode with instructions to research first, then
-  switch to plan mode and present the plan, implementing nothing until the user
-  approves it (details in the `spawn-claude` skill).
-- Pass a spawned session's prompt from a file written with a quoted heredoc
-  (`<<'EOF'`), never inline in double quotes: backticks and `$` in the prompt
-  would run in your shell.
-- A design the user hasn't approved, or a premise you've asked someone to
-  confirm, is open: don't tell peers it's settled or commit code built on it
-  until the answer arrives.
-- One session manages one worktree. When work needs a branch other than the one
-  this session's checkout is on, do not create or switch to another worktree —
-  route it to the dispatcher (e.g. `mdlz-queue`) so a session of its own takes it.
-- Never remove a session's own worktree or its local branch, and never list that
-  as a step for the user, even when project docs say to remove it after merge:
-  Claude Code offers the removal when the session closes.
-- Treat the dispatcher's relayed dashboard decision as the user's answer on the
-  card it names, including one that lifts an earlier hold: act on it without
-  re-asking in-session. Permission prompts and denials still need the user
-  directly.
 
 ## Python Project Environments
 
@@ -182,7 +176,9 @@
   practice. If neither shows it, say the requirement is unverified.
 - Before stating a PR's status (open, awaiting review, merged), query it
   (`gh pr view <url> --json state,reviewDecision,mergedAt`) in the same turn;
-  never restate it from earlier in the conversation.
+  never restate it from earlier in the conversation. This includes every PR a
+  report mentions in passing — a recap line about a sibling or earlier PR is a
+  status claim too; query each one, or leave its status out.
 
 ## Naming
 
