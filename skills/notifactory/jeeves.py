@@ -21,9 +21,8 @@ CHECK_SUITE_BRANCH = re.compile(r' for (?P<branch>\S+) branch$')
 PULL_REQUEST_URL = re.compile(
     r'github\.com/(?P<owner>[^/]+)/(?P<name>[^/]+)/pull/(?P<number>\d+)',
 )
-# An approval usually re-subscribes its author within seconds; not always.
-RESUBSCRIPTION_TIMEOUT_SECONDS = 20
-RESUBSCRIPTION_POLL_SECONDS = 2
+# GitHub re-subscribes an approval's author a second or two after the approval.
+RESUBSCRIPTION_DELAY_SECONDS = 10
 
 SkipFileOption = Annotated[
     Path,
@@ -189,14 +188,6 @@ def _viewer_subscription(url: str) -> str:
     ).strip()
 
 
-def _await_resubscription(url: str) -> None:
-    deadline = time.monotonic() + RESUBSCRIPTION_TIMEOUT_SECONDS
-    while time.monotonic() < deadline:
-        if _viewer_subscription(url) == 'SUBSCRIBED':
-            return
-        time.sleep(RESUBSCRIPTION_POLL_SECONDS)
-
-
 def _merge_method(url: str) -> MergeMethod:
     repository = _gh_json(
         'repo', 'view', url.split('/pull/')[0], '--json',
@@ -275,15 +266,11 @@ def act(
         print(f'{url} opened, skipped')
         return
 
-    if action == Action.approve_unsubscribe:
-        # Start unsubscribed, so the approval's re-subscription is detectable.
-        _unsubscribe(thread_id)
-
     if action in {Action.approve, Action.approve_unsubscribe}:
         _gh('pr', 'review', url, '--approve')
 
     if action == Action.approve_unsubscribe:
-        _await_resubscription(url)
+        time.sleep(RESUBSCRIPTION_DELAY_SECONDS)
 
     if action == Action.merge:
         chosen = method or _merge_method(url)
