@@ -181,6 +181,13 @@
   report mentions in passing — a recap line about a sibling or earlier PR is a
   status claim too; query each one, or leave its status out.
 
+## GitHub notification triage
+
+- In `notifactory`, offer **Merge** for open PRs I authored in any repository
+  and for Dependabot PRs in the `iolanta-tech` org.
+- In `notifactory`, approving a PR in the `w3c` org keeps my subscription:
+  offer **Approve**, never **Approve & unsubscribe**.
+
 ## Naming
 
 - Avoid contractions in path and directory names (e.g. use `images/`, not `img/`;
