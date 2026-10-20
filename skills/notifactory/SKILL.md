@@ -10,60 +10,61 @@ Triage the unread GitHub inbox: show each notification, ask what to do, do it.
 Do not analyze diffs, read local checkouts, or investigate claims; the user
 decides from the summary alone and asks for more when they want it.
 
-## Fetch
+## Commands
+
+`jeeves.py` in this skill's base directory does the GitHub work. Run it with
+[jeeves-shell](https://pypi.org/project/jeeves-shell/), pointing
+`JEEVES_ROOT` at that directory:
 
 ```sh
-gh api 'notifications?all=false&per_page=100' --paginate
+JEEVES_ROOT=<skill base directory> uvx --from jeeves-shell --with sh j <command>
 ```
 
-If the list is empty, say the inbox is clear and stop.
+- `j batch --skip-file <file>` prints the next four unread notifications,
+  newest first, as JSON, with the count remaining. Each has its thread ID,
+  verbatim title, browser URL, type, reason, `updated_at`, and latest comment;
+  a pull request adds author, `is_mine`, state, draft flag, review decision,
+  the user's own latest review, mergeability, and failed checks.
+- `j act <thread-id> <action> --skip-file <file>` carries out one action and
+  prints its result line. Actions: `done`, `skip`, `unsubscribe`, `approve`,
+  `approve-unsubscribe`, `merge` (optional `--method`), `open`.
+
+Keep the skip file in the session's scratchpad directory, so a skipped thread
+returns in a later session or once it has newer activity.
 
 ## Present
 
-Take notifications in batches of up to four, newest first. For each, print:
-
-- a heading `## <Issue|Pull request|...> · <full browser URL>`, the URL built
-  from `subject.url` (`repos/<owner>/<repo>/pulls/<n>` →
-  `https://github.com/<owner>/<repo>/pull/<n>`; `issues/<n>` likewise). When
-  `subject.url` is null or has another shape (check suites, releases,
-  discussions), use `subject.type` and `repository.html_url`;
-- the subject title, `reason`, and `updated_at`;
-- for a pull request: author, whether it is open, merged, or closed, the
-  overall review decision, and whether the user has approved it
-  (`gh pr view <url> --json author,state,reviewDecision,reviews`). Repeat
-  merge state and the user's approval in the structured question text too,
-  next to the verbatim subject title (never a paraphrase);
-- when `subject.latest_comment_url` is set, its author and the first few
-  lines of its body, so the user sees what triggered the notification.
+For each notification in the batch, print a heading
+`## <type> · <url>`, then the verbatim title, the reason, and `updated_at`;
+for a pull request, its author, whether it is open, merged, or closed, the
+review decision, and whether the user has approved it; then the latest
+comment's author and gist, if any.
 
 ## Ask
 
 Ask about the whole batch in one structured question call, one question per
-notification. Pick up to four options per notification from:
+notification. The question text carries the verbatim title, the URL, and, for
+a pull request, merge state and the user's approval. Pick up to four options:
 
-- **Done**: `gh api -X DELETE notifications/threads/<id>` (clears it from the
-  inbox).
-- **Skip**: leave it unread.
-- **Unsubscribe**: `gh api -X DELETE notifications/threads/<id>/subscription`,
-  then mark it done.
+- **Merge** (open pull request the user's own guidance marks as mergeable
+  from triage; list it first). When `failed_checks` is non-empty, name them
+  and confirm before merging.
 - **Approve & unsubscribe** (open pull request by someone else that the user
-  has not approved; list it first unless Merge applies):
-  `gh pr review <url> --approve`, then unsubscribe and mark it done. Where the
-  user's own guidance keeps subscriptions on approval, offer **Approve**
-  instead: approve and mark it done.
-- **Merge** (open pull request the user's own guidance marks as mergeable from
-  triage; list it first, ahead of any approval option): `gh pr merge <url>`
-  with a method the repository allows, then mark it done. If a check failed,
-  name it and confirm first.
-- **Open**: `xdg-open <url>`, then leave it unread.
+  has not approved; list it first unless Merge applies). Where the user's own
+  guidance keeps subscriptions on approval, offer **Approve** instead.
+- **Done**: clear it from the inbox.
+- **Unsubscribe**: ignore the thread from now on, then clear it.
+- **Skip**: leave it unread.
+- **Open**: open it in the browser and leave it unread.
 
-The free-text answer covers anything else (a comment, a reaction, merge,
-close, "tell me more"). Carry it out as instructed; draft any text the user
-did not dictate and show it before posting.
+The free-text answer covers anything else (a comment, a reaction, close,
+"tell me more"). Carry it out with `gh` as instructed, drafting any text the
+user did not dictate and showing it before posting; then clear the thread
+with `j act <thread-id> done`.
 
 ## Act
 
-Execute every answer in the batch right away, report each result in one
-line naming the full browser URL, then move to the next batch. At the end,
-re-fetch the inbox and offer any notifications that arrived or changed
-meanwhile; skipped ones stay out unless they have newer activity.
+Run `j act` for every answer in the batch, relay each result line, then run
+`j batch` again; it re-reads the inbox, so it also picks up anything that
+arrived meanwhile. An empty batch ends the run: say whether the inbox is
+clear or holds only skipped threads.
