@@ -3,6 +3,7 @@
 import json
 import re
 import tempfile
+import time
 import webbrowser
 from enum import Enum
 from pathlib import Path
@@ -17,6 +18,12 @@ FAILED_CONCLUSIONS = {
 }
 MERGE_METHOD_PREFERENCE = ('squash', 'merge', 'rebase')
 CHECK_SUITE_BRANCH = re.compile(r' for (?P<branch>\S+) branch$')
+PULL_REQUEST_URL = re.compile(
+    r'github\.com/(?P<owner>[^/]+)/(?P<name>[^/]+)/pull/(?P<number>\d+)',
+)
+# An approval usually re-subscribes its author within seconds; not always.
+RESUBSCRIPTION_TIMEOUT_SECONDS = 20
+RESUBSCRIPTION_POLL_SECONDS = 2
 
 SkipFileOption = Annotated[
     Path,
@@ -158,12 +165,36 @@ def _mark_done(thread_id: str) -> None:
     _gh('api', '-X', 'DELETE', f'notifications/threads/{thread_id}')
 
 
-def _ignore(thread_id: str) -> None:
+def _unsubscribe(thread_id: str) -> None:
     _gh(
-        'api', '-X', 'PUT',
+        'api', '-X', 'DELETE',
         f'notifications/threads/{thread_id}/subscription',
-        '-F', 'ignored=true',
     )
+
+
+def _viewer_subscription(url: str) -> str:
+    match = PULL_REQUEST_URL.search(url)
+    if match is None:
+        raise ValueError(f'Not a pull request URL: {url}')
+
+    return _gh(
+        'api', 'graphql',
+        '-f', 'query=query($owner: String!, $name: String!, $number: Int!) {'
+        ' repository(owner: $owner, name: $name) {'
+        ' pullRequest(number: $number) { viewerSubscription } } }',
+        '-f', f'owner={match.group("owner")}',
+        '-f', f'name={match.group("name")}',
+        '-F', f'number={match.group("number")}',
+        '--jq', '.data.repository.pullRequest.viewerSubscription',
+    ).strip()
+
+
+def _await_resubscription(url: str) -> None:
+    deadline = time.monotonic() + RESUBSCRIPTION_TIMEOUT_SECONDS
+    while time.monotonic() < deadline:
+        if _viewer_subscription(url) == 'SUBSCRIBED':
+            return
+        time.sleep(RESUBSCRIPTION_POLL_SECONDS)
 
 
 def _merge_method(url: str) -> MergeMethod:
@@ -244,18 +275,27 @@ def act(
         print(f'{url} opened, skipped')
         return
 
+    if action == Action.approve_unsubscribe:
+        # Start unsubscribed, so the approval's re-subscription is detectable.
+        _unsubscribe(thread_id)
+
     if action in {Action.approve, Action.approve_unsubscribe}:
         _gh('pr', 'review', url, '--approve')
+
+    if action == Action.approve_unsubscribe:
+        _await_resubscription(url)
 
     if action == Action.merge:
         chosen = method or _merge_method(url)
         _gh('pr', 'merge', url, f'--{chosen.value}')
 
     if action in {Action.unsubscribe, Action.approve_unsubscribe}:
-        _ignore(thread_id)
+        _unsubscribe(thread_id)
 
     _mark_done(thread_id)
     if action == Action.done:
         print(f'{url} done')
+    elif action == Action.approve_unsubscribe:
+        print(f'{url} {action.value}, done, {_viewer_subscription(url)}')
     else:
         print(f'{url} {action.value}, done')

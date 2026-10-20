@@ -53,7 +53,8 @@ a pull request, merge state and the user's approval. Pick up to four options:
   has not approved; list it first unless Merge applies). Where the user's own
   guidance keeps subscriptions on approval, offer **Approve** instead.
 - **Done**: clear it from the inbox.
-- **Unsubscribe**: ignore the thread from now on, then clear it.
+- **Unsubscribe**: unsubscribe from the thread, then clear it. A later
+  mention, or the user's own comment or review, subscribes them again.
 - **Skip**: leave it unread.
 - **Open**: open it in the browser and leave it unread, skipped for this run.
 
