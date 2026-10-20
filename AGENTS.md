@@ -1,5 +1,11 @@
 # dotfiles guidance
 
+## Public repository
+
+- This repository is public. Never write an employer's, client's or customer's
+  name, or their internal repository names, ticket IDs or URLs, anywhere in it.
+  Company-specific guidance belongs in that company's repository `AGENTS.md`.
+
 ## Symlinks
 
 - Manage all symlinks (including skills) via `install.conf.yaml` and apply with `./install` (dotbot) — never use manual `ln -s`.
