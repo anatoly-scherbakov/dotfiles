@@ -55,7 +55,7 @@ a pull request, merge state and the user's approval. Pick up to four options:
 - **Done**: clear it from the inbox.
 - **Unsubscribe**: ignore the thread from now on, then clear it.
 - **Skip**: leave it unread.
-- **Open**: open it in the browser and leave it unread.
+- **Open**: open it in the browser and leave it unread, skipped for this run.
 
 The free-text answer covers anything else (a comment, a reaction, close,
 "tell me more"). Carry it out with `gh` as instructed, drafting any text the

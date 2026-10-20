@@ -230,16 +230,18 @@ def act(
         else thread['repository']['html_url']
     )
 
-    if action == Action.skip:
+    if action in {Action.skip, Action.open}:
         skipped = _read_skipped(skip_file)
         skipped[thread_id] = thread['updated_at']
         skip_file.write_text(json.dumps(skipped, indent=2))
+
+    if action == Action.skip:
         print(f'{url} skipped')
         return
 
     if action == Action.open:
         webbrowser.open(url)
-        print(f'{url} opened')
+        print(f'{url} opened, skipped')
         return
 
     if action in {Action.approve, Action.approve_unsubscribe}:
