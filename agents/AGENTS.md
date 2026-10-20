@@ -113,9 +113,8 @@
   still binds you.
 - Determine a repo's default/integration branch from the remote
   (`git remote show origin`), never a possibly-stale local `origin/HEAD` symref.
-- When a repository regularly merges from an upstream repository and a bug also
-  exists upstream, fix it upstream; it arrives on the next sync. Before claiming
-  a change in one repo won't reach another, read how the two sync.
+- Before claiming a change in one repo won't reach another, read how the two
+  sync.
 
 ## Python Project Environments
 
