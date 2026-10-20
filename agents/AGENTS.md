@@ -6,7 +6,8 @@
 - When changes are prepared and you are about to commit, always ask the advisor
   to review those changes first.
 - Never run an edit and its `git commit` in the same tool batch; the advisor
-  review goes between them.
+  review goes between them. This includes edits the advisor itself requested:
+  a review covers only the diff it saw.
 
 ## Plan mode
 
