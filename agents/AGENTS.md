@@ -45,8 +45,8 @@
 - Before telling the user you can't do something for lack of access or tooling,
   check the repo's documented tooling first. A single failed probe (e.g. an MCP
   tool scoped to your own org) is not proof the capability is absent — the
-  project may expose it another way (in Datafold, `j k8s m` runs `manage.py`
-  against the prod SaaS cluster).
+  project may expose it another way (e.g. a task-runner command that runs
+  management commands against a deployed cluster).
 - After a context compaction, re-read a skill's SKILL.md from disk before citing
   its steps or limits; the copy carried over from before compaction may be
   stale.
@@ -106,18 +106,16 @@
 
 ## Working across repositories
 
-- When work leads into another repository (e.g. the `~/datafold` monorepo), read
-  that repo's agentic docs (`CLAUDE.md`/`AGENTS.md`, including the relevant module
+- When work leads into another repository, read that repo's agentic docs (`CLAUDE.md`/`AGENTS.md`, including the relevant module
   doc) before acting in it or asserting its conventions.
 - Read a repo's `AGENTS.md`/`CLAUDE.md` files in full before acting, never a
   `head` excerpt: a section past the cut (e.g. what to do after an approval)
   still binds you.
 - Determine a repo's default/integration branch from the remote
   (`git remote show origin`), never a possibly-stale local `origin/HEAD` symref.
-- Butterfly (`~/projects/datafold-butterfly`) regularly merges `upstream/master`
-  from `~/datafold` (`docs/butterfly/upstream-sync.md`). When a Butterfly bug also
-  exists upstream, fix it in `~/datafold`; it reaches Butterfly on the next sync.
-  Before claiming a change in one repo won't reach another, read how the two sync.
+- When a repository regularly merges from an upstream repository and a bug also
+  exists upstream, fix it upstream; it arrives on the next sync. Before claiming
+  a change in one repo won't reach another, read how the two sync.
 
 ## Python Project Environments
 
@@ -163,12 +161,12 @@
 
 - NEVER reference a GitHub pull request as `owner/repo #123`, `repo#123`, or a
   bare `#123` — a bare number forces a manual hunt to open it. ALWAYS print the
-  full URL, e.g. `https://github.com/datafold/cloud-infra/pull/1402`. This
+  full URL, e.g. `https://github.com/octo-org/octo-repo/pull/1402`. This
   applies everywhere: chat replies, Slack messages, commit and PR bodies,
   tickets, and notes.
 - When restating PR numbers from a peer's brief, a report cell, or your own
   notes, expand each to its full URL before sending.
-- Same for GitHub issues. Linear issues may stay as IDs (e.g. `ENG-5250`) since
+- Same for GitHub issues. Linear issues may stay as IDs (e.g. `ENG-123`) since
   they resolve in-app, but a full Linear URL is welcome when it saves a lookup.
 - Read a draft PR's `reviewDecision` as provisional: it shows `REVIEW_REQUIRED`
   while the PR is a draft. Before telling anyone whose approval or merge a PR
@@ -194,7 +192,7 @@
   use `documentation/`, not `docs/`, unless an existing project convention
   already uses the short form).
 - The same applies to every identifier you coin — id prefixes, node/edge
-  types, CLI and variable names (e.g. `fivetran_connector:`, not `ftconn:`):
+  types, CLI and variable names (e.g. `payment_provider:`, not `payprov:`):
   abbreviate only when the industry or the customer already does.
 
 ## Prose

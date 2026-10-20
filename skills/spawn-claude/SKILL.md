@@ -35,7 +35,7 @@ persistence rather than a marked child of the caller.
      and/or `--worktree [name]` for an isolated git worktree.
 2. **Resolve the directory** using the user's project-layout convention: an
    absolute or `~` path is used as given; a bare repository name resolves to
-   `~/projects/<name>` first, then `~/<name>` (so `datafold` → `~/datafold`).
+   `~/projects/<name>` first, then `~/<name>` (so `dotfiles` → `~/dotfiles`).
    The helper applies the same rule, so a bare name may be passed straight
    through. Only ask the user if the directory cannot be found.
 3. **Compose the prompt — keep it concise; do not duplicate a durable spec.**
@@ -54,7 +54,7 @@ persistence rather than a marked child of the caller.
    read **your own** session name from `ListAgents` (the `This session is <name>`
    line at the top) and instruct the new session to `SendMessage` that name a
    one-line status when the work is complete (PR opened/updated/merged) or if it
-   stops blocked — e.g. `When done or blocked, SendMessage to drivetime-queue
+   stops blocked — e.g. `When done or blocked, SendMessage to triage-queue
    with a one-line status.` The task detail stays in the ticket; this line is the
    only coordination the prompt adds. The pingback relies on the new window being
    a genuine top-level session (see Mechanism) — a marked child can't be
@@ -75,9 +75,9 @@ persistence rather than a marked child of the caller.
    Examples:
 
    ```sh
-   spawn-claude datafold "audit the flaky auth test and propose a fix"
-   spawn-claude abstractor --permission-mode plan "design the new parser"
-   spawn-claude ~/projects/datafold-commander            # no prompt: ready to type
+   spawn-claude dotfiles "audit the flaky auth test and propose a fix"
+   spawn-claude iolanta --permission-mode plan "design the new parser"
+   spawn-claude ~/projects/nanopublishing                # no prompt: ready to type
    ```
 
 5. **Confirm** the window launched — the helper prints `launched claude in <dir>`;

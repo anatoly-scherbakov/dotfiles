@@ -11,12 +11,12 @@
 #   ~ or ~/path          expanded against $HOME
 #   ./path ../path a/b   used as-is (explicit relative or nested path)
 #   bare-name            resolved against ~/projects first, then ~
-#                        (so `abstractor` -> ~/projects/abstractor,
-#                         `datafold`   -> ~/datafold)
+#                        (so `iolanta`  -> ~/projects/iolanta,
+#                         `dotfiles` -> ~/dotfiles)
 #
 # Everything after DIR is forwarded verbatim to claude, e.g.
-#   spawn-claude datafold --permission-mode plan "audit the flaky auth test"
-#   spawn-claude ~/projects/abstractor --worktree feature-x "add the parser"
+#   spawn-claude dotfiles --permission-mode plan "audit the flaky auth test"
+#   spawn-claude ~/projects/iolanta --worktree feature-x "add the parser"
 set -eu
 
 usage() { echo "usage: spawn-claude DIR [claude-arg ...]" >&2; exit 2; }
