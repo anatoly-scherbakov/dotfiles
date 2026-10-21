@@ -47,8 +47,10 @@ notification. The question text carries the verbatim title, the URL, and, for
 a pull request, merge state and the user's approval. Pick up to four options:
 
 - **Merge** (open pull request the user's own guidance marks as mergeable
-  from triage; list it first). When `failed_checks` is non-empty, name them
-  and confirm before merging.
+  from triage; list it first). Offer it only when `merge_state_status`
+  allows a merge (`CLEAN`, `UNSTABLE` or `HAS_HOOKS`); never when it is
+  `BLOCKED`, `DIRTY`, `BEHIND`, `DRAFT` or `UNKNOWN`. When `failed_checks` is
+  non-empty, name them and confirm before merging.
 - **Approve & unsubscribe** (open pull request by someone else that the user
   has not approved; list it first unless Merge applies). Where the user's own
   guidance keeps subscriptions on approval, offer **Approve** instead.
