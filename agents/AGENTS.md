@@ -116,6 +116,14 @@
 - Before claiming a change in one repo won't reach another, read how the two
   sync.
 
+## Session worktrees
+
+- Never remove a session's own worktree, and never list removing it as a
+  follow-up, a pending step or an offer. When I close a session, Claude Code
+  asks me whether to keep its worktree. This overrides any project doc that says
+  to remove the worktree once its PR merges. Cleaning up what the session
+  started (stacks, containers, images, scratch files) still applies.
+
 ## Python Project Environments
 
 - For existing Python projects without `uv` metadata, do not migrate the project
@@ -202,6 +210,11 @@
 - Keep drafts to others (Slack, PR, ticket) and chat replies terse: lead with
   the ask or answer, include only the facts the reader needs to act, and cut
   background they already know. Aim for a quarter of your first instinct.
+- Write chat replies to me in ASD-STE100 Simplified Technical English: short
+  sentences (procedures at most 20 words, descriptions at most 25), one
+  instruction per sentence, imperative mood for steps, active voice, and one
+  meaning per word. Keep technical names, commands and identifiers as they are.
+  Drafts for other people (Slack, PR, ticket) keep their normal style.
 
 ## Comments and documentation
 
