@@ -1,7 +1,6 @@
 ---
 name: notifactory
 description: Cycle through unread GitHub notifications, ask the user what to do with each, and do it. Use when the user invokes /notifactory.
-disable-model-invocation: true
 ---
 
 # Notifactory
