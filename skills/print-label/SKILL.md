@@ -1,7 +1,6 @@
 ---
 name: print-label
 description: Render and USB-print a custom NIIMBOT B1 label, always showing the exact preview and requiring explicit approval before the physical print.
-disable-model-invocation: true
 ---
 
 # Print label
