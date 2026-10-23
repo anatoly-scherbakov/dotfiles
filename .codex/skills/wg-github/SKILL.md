@@ -1,7 +1,6 @@
 ---
 name: wg-github
 description: Review current JSON-LD Working Group pull requests and propose review or follow-up actions. Use when the user invokes /wg-github or asks about the group's GitHub review queue.
-disable-model-invocation: true
 ---
 
 # WG GitHub
