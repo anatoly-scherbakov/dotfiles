@@ -51,6 +51,11 @@
         create: true
         force: true
         path: kitty/kitty.conf
+    ~/.config/opencode/cli.json:
+        relink: true
+        create: true
+        force: true
+        path: opencode/cli.json
     ~/.config/wireplumber/main.lua.d/51-audio-routing.lua:
         relink: true
         create: true
