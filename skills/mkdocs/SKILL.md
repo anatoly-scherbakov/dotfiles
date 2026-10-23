@@ -1,7 +1,6 @@
 ---
 name: mkdocs
 description: Create, edit, or review MkDocs Material documentation, especially link presentation, admonitions, and rendered behaviour.
-disable-model-invocation: true
 ---
 
 # MkDocs Material
