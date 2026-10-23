@@ -15,15 +15,18 @@
   directories against `~/.cursor/skills/<name>`, `~/.claude/skills/<name>`,
   `~/.codex/skills/<name>`, and `~/.gemini/config/skills/<name>` entries in `install.conf.yaml`.
   Exception: `spawn-claude` and `close-idle-sessions` are Claude-only (they launch
-  `claude` / drive Claude sessions); link them only to `~/.claude/skills/` and
-  leave `disable-model-invocation` off them — Claude Code hides flagged skills
-  from the model.
-- Cursor only registers a personal skill as a **`/` slash command** when
-  `SKILL.md` frontmatter includes `disable-model-invocation: true` (see Cursor
-  `migrate-to-skills`). Add it to every skill the user invokes via `/name`; omit
-  only when the skill should be picked up automatically from ambient context.
-  After adding or changing skills, reload the Cursor window so the `/` menu
-  rescans `~/.cursor/skills/`.
+  `claude` / drive Claude sessions); link them only to `~/.claude/skills/`.
+
+## Skill discovery
+
+- Omit `disable-model-invocation` from every skill's frontmatter. Setting it
+  to `true` hides the skill from OpenCode's model-visible available-skills list,
+  blocking normal skill discovery and usage even when the skill is installed
+  correctly. Explicit loading by ID still works, but the model cannot normally
+  discover the skill. Claude Code also hides flagged skills from the model.
+- Do not add this flag to enable Cursor slash commands; keep skills discoverable
+  across harnesses. After adding or changing skills, reload the Cursor window
+  so it rescans `~/.cursor/skills/`.
 
 ## Subdirectory guidance
 
