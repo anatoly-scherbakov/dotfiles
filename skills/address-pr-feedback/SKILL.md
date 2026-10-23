@@ -1,7 +1,6 @@
 ---
 name: address-pr-feedback
 description: Investigate and address GitHub pull request feedback from a local checkout, including top-level review comments, inline review comments, CI feedback when relevant, pushing fixes, and resolving fixed inline review threads.
-disable-model-invocation: true
 ---
 
 # Address PR Feedback
