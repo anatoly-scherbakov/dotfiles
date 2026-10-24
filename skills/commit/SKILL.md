@@ -7,6 +7,16 @@ description: Commits uncommitted changes on the current branch with one file per
 
 Commits all uncommitted changes on the current branch. One file per commit; one-line commit message per commit; no co-author trailers.
 
+## Delegation
+
+Delegate the complete commit workflow below to one subagent using the host agent's native delegation tools and a smaller model. Prefer the Luna family in Codex and Sonnet in Claude; elsewhere, choose a comparable smaller model. Resolve the model identifier from the runtime's available models rather than hard-coding a version.
+
+- Give the worker the exact checkout path, the user's authorized scope, this skill, and applicable repository instructions, including required advisor reviews. Tell it explicitly that it is the delegated commit worker and must execute the workflow directly without delegating it again.
+- The coordinator waits for the worker, then reports the resulting commits or blockers. Let the worker own inspection, staging, and committing in that checkout.
+- If delegation or smaller-model selection is unavailable, explain the limitation and ask the user before running the workload in the coordinator.
+
+If you are already the delegated commit worker, proceed directly to the rules and workflow below.
+
 ## Rules
 
 - **One file per commit.** Never group multiple files into a single commit. Stage and commit each changed file separately.
