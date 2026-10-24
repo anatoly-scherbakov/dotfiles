@@ -24,24 +24,29 @@ duplicative guidance.
 2. For each candidate, identify the underlying cause and formulate one short,
    imperative rule that would have prevented it. Skip incidental details,
    speculation, and lessons already documented.
-3. Select the narrowest useful target:
+3. Decide whether a deterministic check can enforce that rule: a linter, a type
+   checker, or a test. Prefer the check over a prompt. When a check can enforce
+   it, propose that check and do not also propose guidance. Propose a guidance
+   sentence only when no such check can enforce the fix.
+4. Select the narrowest useful target:
    - Cross-project agent behavior goes in the user-global agent guidance.
    - Project or directory conventions go in the applicable `AGENTS.md`.
    - Instructions relevant only while a skill is active go in that skill's
      `SKILL.md`.
    Inspect the target before proposing an edit; do not create a new guidance
    file when an existing, narrower target applies.
-4. Present each proposed lesson separately with the mistake, cause, target, and
-   proposed rule. Ask for explicit approval before changing a guidance file.
-   The user may apply, skip, dismiss, reword, or redirect the proposal.
-5. After an approved write, read the target back and verify the new guidance is
+5. Present each proposed lesson separately with the mistake, cause, target, and
+   proposed rule or check. Ask for explicit approval before changing a guidance
+   file or adding a check. The user may apply, skip, dismiss, reword, or
+   redirect the proposal.
+6. After an approved write, read the target back and verify the new guidance is
    present. If an `AGENTS.md` exceeds roughly 80 lines, flag it and propose a
    split first: move each section that governs only one subdirectory into that
    subdirectory's `AGENTS.md` (creating it if needed), keep only repo-wide
    guidance at the root, and point to the moved sections from the root. Offer
    consolidation for what remains. Never remove or move existing guidance
    without approval.
-6. Report the applied, skipped, and dismissed proposals. Do not persist a
+7. Report the applied, skipped, and dismissed proposals. Do not persist a
    backlog, delete external reports, or infer approval from a prior session.
 
 ## Constraints
@@ -50,6 +55,8 @@ duplicative guidance.
   Code feedback drafts or session transcripts.
 - Prefer one precise preventative rule per mistake. Do not preserve incident
   history as agent guidance.
+- Prefer a deterministic check over a prompt. Propose guidance only when a
+  linter, type checker, or test cannot enforce the fix.
 - Never write guidance silently. If there is no explicit approval, report the
   proposal and leave the workspace unchanged.
 - Do not duplicate guidance already present in the selected target.
