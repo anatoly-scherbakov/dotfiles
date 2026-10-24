@@ -6,6 +6,30 @@
     - ~/.gemini/config/skills
 
 - link:
+    "~/.cursor/skills/shower":
+        relink: true
+        create: true
+        force: true
+        path: skills/shower
+
+    "~/.claude/skills/shower":
+        relink: true
+        create: true
+        force: true
+        path: skills/shower
+
+    "~/.codex/skills/shower":
+        relink: true
+        create: true
+        force: true
+        path: skills/shower
+
+    "~/.gemini/config/skills/shower":
+        relink: true
+        create: true
+        force: true
+        path: skills/shower
+
     ~/.vimrc:
         create: true
         relink: true
@@ -228,18 +252,6 @@
         force: true
         path: agents/AGENTS.md
 
-    "~/.cursor/skills/evolve":
-        relink: true
-        create: true
-        force: true
-        path: skills/evolve
-
-    "~/.claude/skills/evolve":
-        relink: true
-        create: true
-        force: true
-        path: skills/evolve
-
     "~/.cursor/skills/uncommit":
         relink: true
         create: true
@@ -263,18 +275,6 @@
         create: true
         force: true
         path: skills/uncommit
-
-    "~/.codex/skills/evolve":
-        relink: true
-        create: true
-        force: true
-        path: skills/evolve
-
-    "~/.gemini/config/skills/evolve":
-        relink: true
-        create: true
-        force: true
-        path: skills/evolve
 
     "~/.cursor/skills/retro":
         relink: true
