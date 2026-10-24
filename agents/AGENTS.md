@@ -207,6 +207,9 @@
 
 ## Prose
 
+- When writing on Anatoly's behalf, prefer numbered or bulleted lists for
+  distinct points over dense paragraphs. Keep introductions and closings short,
+  and preserve his list structure when editing.
 - Never be repetitive. Do not restate in an introduction, summary, or parent
   section what a following subsection, paragraph, or list already says.
   Situate or define once; leave the details to the place that owns them.
