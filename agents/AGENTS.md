@@ -192,7 +192,8 @@
 ## GitHub notification triage
 
 - In `notifactory`, offer **Merge** for open PRs I authored in any repository
-  and for Dependabot PRs in the `iolanta-tech` org.
+  and for Dependabot PRs in the `iolanta-tech` org and my own
+  `anatoly-scherbakov` repositories.
 - In `notifactory`, approving a PR in the `w3c` org keeps my subscription:
   offer **Approve**, never **Approve & unsubscribe**.
 
