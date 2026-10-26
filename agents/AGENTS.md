@@ -247,6 +247,9 @@
 ## Timestamps
 
 - Run `date -u` before writing any timestamp; never estimate the current time.
+- When telling me when something will happen, give the duration from now ("in
+  about 50 minutes"), never a clock time I would have to convert. Logs and
+  records keep UTC timestamps.
 
 ## Todoist
 
