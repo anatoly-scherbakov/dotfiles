@@ -653,6 +653,10 @@
       fi
     - >
       setxkbmap -layout yeti,ru,am -variant ,,phonetic -option '' -option compose:ins -print | xkbcomp -I"$HOME/.config/xkb" - "${DISPLAY%%.*}"
+    - command: bash bin/check-keyboard-install.sh
+      description: Checking the system keyboard files
+      stdout: true
+      stderr: true
 
     - >
       gsettings set org.gnome.desktop.input-sources xkb-options "['compose:ins']"
