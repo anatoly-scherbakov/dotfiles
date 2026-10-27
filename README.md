@@ -56,7 +56,8 @@ each machine:
 
 The command runs Dotbot as the current user and uses `sudo install` only for
 the files under `/usr/share/X11/xkb` and `/etc/X11/xorg.conf.d`. It is safe to
-rerun after changing the map. Restart the graphical session after the first
+rerun after changing the map; `./install` reports system copies that are
+missing or outdated. Restart the graphical session after the first
 installation so Xorg loads the new input class.
 
 ### SDINNOVATION SIDE-KEYBOARD
