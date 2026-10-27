@@ -23,7 +23,8 @@ JEEVES_ROOT=<skill base directory> uvx --from jeeves-shell --with sh j <command>
   newest first, as JSON, with the count remaining. Each has its thread ID,
   verbatim title, browser URL, type, reason, `updated_at`, and latest comment;
   a pull request adds author, `is_mine`, state, draft flag, review decision,
-  the user's own latest review, mergeability, and failed checks.
+  the user's own latest review, base branch, whether that base is the
+  repository's default branch, mergeability, and failed checks.
 - `j act <thread-id> <action> --skip-file <file>` carries out one action and
   prints its result line. Actions: `done`, `skip`, `unsubscribe`, `approve`,
   `approve-unsubscribe`, `merge` (optional `--method`), `open`.
@@ -46,7 +47,9 @@ notification. The question text carries the verbatim title, the URL, and, for
 a pull request, merge state and the user's approval. Pick up to four options:
 
 - **Merge** (open pull request the user's own guidance marks as mergeable
-  from triage; list it first). Offer it only when `merge_state_status`
+  from triage; list it first). Offer it only when `targets_default_branch`
+  is true: in a stack, only the bottom pull request merges. For a stacked
+  one, name its `base_branch` in the question. Also require that `merge_state_status`
   allows a merge (`CLEAN`, `UNSTABLE` or `HAS_HOOKS`); never when it is
   `BLOCKED`, `DIRTY`, `BEHIND`, `DRAFT` or `UNKNOWN`. When `failed_checks` is
   non-empty, name them and confirm before merging.
