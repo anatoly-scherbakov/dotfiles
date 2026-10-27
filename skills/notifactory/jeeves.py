@@ -81,12 +81,20 @@ def _latest_comment(subject: dict) -> Optional[dict]:
     }
 
 
+def _default_branch(url: str) -> str:
+    return _gh(
+        'repo', 'view', url.split('/pull/')[0],
+        '--json', 'defaultBranchRef', '--jq', '.defaultBranchRef.name',
+    ).strip()
+
+
 def _pull_request(url: str, viewer: str) -> dict:
     pull_request = _gh_json(
         'pr', 'view', url, '--json',
         'url,author,state,isDraft,reviewDecision,reviews,mergeable,'
-        'mergeStateStatus,statusCheckRollup',
+        'mergeStateStatus,statusCheckRollup,baseRefName',
     )
+    default_branch = _default_branch(url)
     my_reviews = [
         review['state']
         for review in pull_request['reviews']
@@ -103,6 +111,9 @@ def _pull_request(url: str, viewer: str) -> dict:
         'is_mine': pull_request['author']['login'] == viewer,
         'state': pull_request['state'],
         'is_draft': pull_request['isDraft'],
+        'base_branch': pull_request['baseRefName'],
+        # A pull request stacked on another branch merges only into that branch.
+        'targets_default_branch': pull_request['baseRefName'] == default_branch,
         'review_decision': pull_request['reviewDecision'] or None,
         'my_review': my_reviews[-1] if my_reviews else None,
         'mergeable': pull_request['mergeable'],
@@ -273,6 +284,13 @@ def act(
         time.sleep(RESUBSCRIPTION_DELAY_SECONDS)
 
     if action == Action.merge:
+        base_branch = _gh(
+            'pr', 'view', url, '--json', 'baseRefName', '--jq', '.baseRefName',
+        ).strip()
+        if base_branch != _default_branch(url):
+            print(f'{url} not merged: it targets {base_branch}, not the default branch')
+            return
+
         chosen = method or _merge_method(url)
         _gh('pr', 'merge', url, f'--{chosen.value}')
 
