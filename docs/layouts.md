@@ -2,8 +2,11 @@
 title: Switch keyboard layouts with Caps Lock
 ---
 
-add to `~/.profile`:
+The `yeti` layout in `xkb/yeti` makes Caps Lock switch between English and
+Russian. Install it as described in the README section
+[System XKB map](../README.md#system-xkb-map):
 
 ```shell
-setxkbmap -symbols yeti -print | xkbcomp -I"$HOME/.config/xkb" - "${DISPLAY%%.*}"
+./install
+./install-keyboard
 ```
