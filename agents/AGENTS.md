@@ -40,6 +40,12 @@
   someone. Ask first only when the step is destructive or irreversible, or
   is someone else's to take (merge, deploy, a production write).
 
+## Subagents
+
+- Delegate each side task (investigation, review fix, CI fix,
+  watch-and-merge, explainer research) to a background subagent at once.
+  Keep the main thread for the user's questions and decisions.
+
 ## Claiming you lack access or a capability
 
 - Before telling the user you can't do something for lack of access or tooling,
