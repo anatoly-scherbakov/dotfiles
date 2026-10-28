@@ -26,6 +26,14 @@ RESUBSCRIPTION_DELAY_SECONDS = 10
 # An asynchronous merge usually settles within seconds; stop polling after 30.
 MERGE_POLL_INTERVAL_SECONDS = 3
 MERGE_POLL_ATTEMPTS = 10
+# Bounds the `gh pr list` calls that follow a branch chain in each direction.
+STACK_CHAIN_LIMIT = 10
+STACK_QUERY = (
+    'query($owner: String!, $name: String!, $number: Int!) {'
+    ' repository(owner: $owner, name: $name) { pullRequest(number: $number) {'
+    ' stack { baseRefName entries(first: 100) {'
+    ' nodes { position pullRequest { url state } } } } } } }'
+)
 
 SkipFileOption = Annotated[
     Path,
@@ -91,13 +99,104 @@ def _default_branch(url: str) -> str:
     ).strip()
 
 
+def _native_stack(url: str) -> Optional[dict]:
+    """Return the GitHub stack holding the pull request, or None."""
+    match = PULL_REQUEST_URL.search(url)
+    if match is None:
+        raise ValueError(f'Not a pull request URL: {url}')
+
+    return _gh_json(
+        'api', 'graphql',
+        '-f', f'query={STACK_QUERY}',
+        '-f', f'owner={match.group("owner")}',
+        '-f', f'name={match.group("name")}',
+        '-F', f'number={match.group("number")}',
+    )['data']['repository']['pullRequest']['stack']
+
+
+def _open_pull_requests(url: str, *arguments: str) -> list[dict]:
+    return _gh_json(
+        'pr', 'list', '-R', url.split('/pull/')[0], '--state', 'open',
+        '--json', 'url,baseRefName,headRefName', *arguments,
+    )
+
+
+def _branch_chain(
+    url: str, base: str, head: str, default_branch: str,
+) -> list[str]:
+    """List the open pull requests chained by branches, bottom first."""
+    below = []
+    while base != default_branch and len(below) < STACK_CHAIN_LIMIT:
+        parents = _open_pull_requests(url, '--head', base)
+        if not parents:
+            break
+        below.insert(0, parents[0]['url'])
+        base = parents[0]['baseRefName']
+
+    above = []
+    while len(above) < STACK_CHAIN_LIMIT:
+        children = _open_pull_requests(url, '--base', head)
+        if not children:
+            break
+        above.append(children[0]['url'])
+        head = children[0]['headRefName']
+
+    return [*below, url, *above]
+
+
+def _stack(url: str, base: str, head: str, default_branch: str) -> dict:
+    """Place the pull request in its stack of open pull requests."""
+    native = _native_stack(url) or {'entries': {'nodes': []}}
+    chain = [
+        entry['pullRequest']['url']
+        for entry in sorted(
+            native['entries']['nodes'], key=lambda entry: entry['position'],
+        )
+        if entry['pullRequest']['state'] == 'OPEN'
+    ]
+    # Once the rest of a GitHub stack has merged, its last open pull request
+    # may still head a chain of branches.
+    is_native = len(chain) >= 2
+    if not is_native:
+        chain = _branch_chain(url, base, head, default_branch)
+    elif chain[-1] == url:
+        # A pull request based on the top's branch sits above the stack.
+        chain = [*chain[:-1], *_branch_chain(url, base, head, base)]
+
+    if len(chain) < 2:
+        position = 'none'
+    elif chain[0] == url:
+        position = 'bottom'
+    elif chain[-1] == url:
+        position = 'top'
+    else:
+        position = 'middle'
+
+    return {
+        'stack_position': position,
+        'stack_size': len(chain),
+        # Only a GitHub stack merges its lower pull requests along with the top.
+        'stack_native': is_native,
+        'stack': chain,
+        'stack_base_branch': native['baseRefName'] if is_native else None,
+    }
+
+
 def _pull_request(url: str, viewer: str) -> dict:
     pull_request = _gh_json(
         'pr', 'view', url, '--json',
         'url,author,state,isDraft,reviewDecision,reviews,mergeable,'
-        'mergeStateStatus,statusCheckRollup,baseRefName',
+        'mergeStateStatus,statusCheckRollup,baseRefName,headRefName',
     )
     default_branch = _default_branch(url)
+    # Only an open pull request has a stack worth tracing.
+    stack = _stack(
+        url, pull_request['baseRefName'], pull_request['headRefName'],
+        default_branch,
+    ) if pull_request['state'] == 'OPEN' else {
+        'stack_position': 'none', 'stack_size': 0,
+        'stack_native': False, 'stack': [],
+    }
     my_reviews = [
         review['state']
         for review in pull_request['reviews']
@@ -122,6 +221,10 @@ def _pull_request(url: str, viewer: str) -> dict:
         'mergeable': pull_request['mergeable'],
         'merge_state_status': pull_request['mergeStateStatus'],
         'failed_checks': failed_checks,
+        'stack_position': stack['stack_position'],
+        'stack_size': stack['stack_size'],
+        'stack_native': stack['stack_native'],
+        'stack': stack['stack'],
     }
 
 
@@ -251,6 +354,42 @@ def _merge_outcome(url: str, result: dict, state: str) -> Optional[str]:
     return f'{url} not merged: {message}'
 
 
+def _merge_refusal(url: str) -> Optional[str]:
+    """Explain why the pull request must not merge; None when it may."""
+    branches = _gh_json('pr', 'view', url, '--json', 'baseRefName,headRefName')
+    default_branch = _default_branch(url)
+    stack = _stack(
+        url, branches['baseRefName'], branches['headRefName'], default_branch,
+    )
+    position = stack['stack_position']
+
+    if position in {'bottom', 'middle'}:
+        return (
+            f'{url} not merged: it is below {stack["stack"][-1]} in a stack;'
+            ' merge the stack from the top'
+        )
+
+    if position == 'top' and not stack['stack_native']:
+        return (
+            f'{url} not merged: its stack is chained by branches, not a GitHub'
+            f' stack, so a merge would land only in {branches["baseRefName"]}'
+        )
+
+    if position == 'top' and stack['stack_base_branch'] != default_branch:
+        return (
+            f'{url} not merged: its stack targets'
+            f' {stack["stack_base_branch"]}, not the default branch'
+        )
+
+    if position == 'none' and branches['baseRefName'] != default_branch:
+        return (
+            f'{url} not merged: it targets {branches["baseRefName"]},'
+            ' not the default branch'
+        )
+
+    return None
+
+
 def _merge_method(url: str) -> MergeMethod:
     repository = _gh_json(
         'repo', 'view', url.split('/pull/')[0], '--json',
@@ -336,14 +475,12 @@ def act(
         time.sleep(RESUBSCRIPTION_DELAY_SECONDS)
 
     if action == Action.merge:
-        base_branch = _gh(
-            'pr', 'view', url, '--json', 'baseRefName', '--jq', '.baseRefName',
-        ).strip()
-        if base_branch != _default_branch(url):
-            print(f'{url} not merged: it targets {base_branch}, not the default branch')
+        refusal = _merge_refusal(url)
+        if refusal is not None:
+            print(refusal)
             return
 
-        # Stacked pull requests merge only through the asynchronous API.
+        # For the top of a stack, this merges every open pull request below it.
         result = _merge_async(url, method or _merge_method(url))
         state = _gh(
             'pr', 'view', url, '--json', 'state', '--jq', '.state',
