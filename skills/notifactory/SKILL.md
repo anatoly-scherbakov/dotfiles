@@ -27,7 +27,10 @@ JEEVES_ROOT=<skill base directory> uvx --from jeeves-shell --with sh j <command>
   repository's default branch, mergeability, and failed checks.
 - `j act <thread-id> <action> --skip-file <file>` carries out one action and
   prints its result line. Actions: `done`, `skip`, `unsubscribe`, `approve`,
-  `approve-unsubscribe`, `merge` (optional `--method`), `open`.
+  `approve-unsubscribe`, `merge` (optional `--method`), `open`. `merge`
+  clears the thread only once the pull request has merged; it reports a pull
+  request that joined a merge queue as enqueued, and a refusal with GitHub's
+  message.
 
 Keep the skip file in the session's scratchpad directory, so a skipped thread
 returns in a later session or once it has newer activity.
