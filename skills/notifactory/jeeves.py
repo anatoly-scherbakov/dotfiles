@@ -182,6 +182,22 @@ def _stack(url: str, base: str, head: str, default_branch: str) -> dict:
     }
 
 
+def _failed_checks(rollup: list[dict]) -> list[str]:
+    """Name the checks whose latest run failed; a rerun supersedes old runs."""
+    latest = {}
+    for check in sorted(rollup, key=lambda check: (
+        check.get('startedAt') or check.get('completedAt') or ''
+    )):
+        name = check.get('name') or check.get('context')
+        latest[(check.get('workflowName'), name)] = check
+
+    return list(dict.fromkeys(
+        name
+        for (_, name), check in latest.items()
+        if (check.get('conclusion') or check.get('state')) in FAILED_CONCLUSIONS
+    ))
+
+
 def _pull_request(url: str, viewer: str) -> dict:
     pull_request = _gh_json(
         'pr', 'view', url, '--json',
@@ -202,11 +218,6 @@ def _pull_request(url: str, viewer: str) -> dict:
         for review in pull_request['reviews']
         if review['author']['login'] == viewer
     ]
-    failed_checks = [
-        check.get('name') or check.get('context')
-        for check in pull_request['statusCheckRollup']
-        if (check.get('conclusion') or check.get('state')) in FAILED_CONCLUSIONS
-    ]
     return {
         'url': pull_request['url'],
         'author': pull_request['author']['login'],
@@ -220,7 +231,7 @@ def _pull_request(url: str, viewer: str) -> dict:
         'my_review': my_reviews[-1] if my_reviews else None,
         'mergeable': pull_request['mergeable'],
         'merge_state_status': pull_request['mergeStateStatus'],
-        'failed_checks': failed_checks,
+        'failed_checks': _failed_checks(pull_request['statusCheckRollup']),
         'stack_position': stack['stack_position'],
         'stack_size': stack['stack_size'],
         'stack_native': stack['stack_native'],
