@@ -23,6 +23,9 @@ PULL_REQUEST_URL = re.compile(
 )
 # GitHub re-subscribes an approval's author a second or two after the approval.
 RESUBSCRIPTION_DELAY_SECONDS = 10
+# An asynchronous merge usually settles within seconds; stop polling after 30.
+MERGE_POLL_INTERVAL_SECONDS = 3
+MERGE_POLL_ATTEMPTS = 10
 
 SkipFileOption = Annotated[
     Path,
@@ -199,6 +202,55 @@ def _viewer_subscription(url: str) -> str:
     ).strip()
 
 
+def _merge_async(url: str, method: MergeMethod) -> dict:
+    """Request an asynchronous merge and poll until it leaves `pending`."""
+    match = PULL_REQUEST_URL.search(url)
+    if match is None:
+        raise ValueError(f'Not a pull request URL: {url}')
+
+    endpoint = (
+        f'repos/{match.group("owner")}/{match.group("name")}'
+        f'/pulls/{match.group("number")}/merge-async'
+    )
+    try:
+        result = _gh_json(
+            'api', '-X', 'PUT', endpoint, '-f', f'merge_method={method.value}',
+        )
+        uuid = (result.get('details') or {}).get('uuid')
+        for _ in range(MERGE_POLL_ATTEMPTS):
+            if result['status'] != 'pending':
+                break
+            time.sleep(MERGE_POLL_INTERVAL_SECONDS)
+            result = _gh_json('api', f'{endpoint}/{uuid}')
+    except sh.ErrorReturnCode as error:
+        return {'status': 'failed', 'details': {'message': _gh_error(error)}}
+
+    return result
+
+
+def _gh_error(error: sh.ErrorReturnCode) -> str:
+    try:
+        return json.loads(error.stdout)['message']
+    except (ValueError, KeyError, TypeError):
+        return error.stderr.decode().strip()
+
+
+def _merge_outcome(url: str, result: dict, state: str) -> Optional[str]:
+    """Describe a merge that did not happen; None once the PR is merged."""
+    # The async result is authoritative; `gh pr view` can lag behind it.
+    if state == 'MERGED' or result['status'] == 'merged':
+        return None
+
+    if result['status'] == 'enqueued':
+        return f'{url} enqueued, not done'
+
+    if result['status'] == 'pending':
+        return f'{url} merge pending, not done'
+
+    message = (result.get('details') or {}).get('message') or result['status']
+    return f'{url} not merged: {message}'
+
+
 def _merge_method(url: str) -> MergeMethod:
     repository = _gh_json(
         'repo', 'view', url.split('/pull/')[0], '--json',
@@ -291,8 +343,15 @@ def act(
             print(f'{url} not merged: it targets {base_branch}, not the default branch')
             return
 
-        chosen = method or _merge_method(url)
-        _gh('pr', 'merge', url, f'--{chosen.value}')
+        # Stacked pull requests merge only through the asynchronous API.
+        result = _merge_async(url, method or _merge_method(url))
+        state = _gh(
+            'pr', 'view', url, '--json', 'state', '--jq', '.state',
+        ).strip()
+        outcome = _merge_outcome(url, result, state)
+        if outcome is not None:
+            print(outcome)
+            return
 
     if action in {Action.unsubscribe, Action.approve_unsubscribe}:
         _unsubscribe(thread_id)
@@ -302,5 +361,7 @@ def act(
         print(f'{url} done')
     elif action == Action.approve_unsubscribe:
         print(f'{url} {action.value}, done, {_viewer_subscription(url)}')
+    elif action == Action.merge:
+        print(f'{url} merged, done')
     else:
         print(f'{url} {action.value}, done')
