@@ -48,6 +48,11 @@ Markdown document that is not built with MkDocs.
 - Avoid copying repeated content blocks between pages. Include canonical files
   where appropriate; when `mkdocs-macros-plugin` is already configured,
   define and reuse a macro.
+- When project-local MkDocs macros outgrow one module, suggest a package named
+  for the configured `module_name` (for example, `docs_macros/`). Group
+  implementations by responsibility and keep `__init__.py` limited to explicit
+  reexports, including `define_env`. Preserve the configured entry point and
+  existing imports when converting.
 - Render CSV example data from its canonical file through the project's
   configured renderer.
 - When files are part of the lesson, pair readable previews with links to the
