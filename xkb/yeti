@@ -16,10 +16,10 @@ xkb_symbols "yeti" {
         actions[Group1] = [ LockGroup(group=3) ]
     };
 
-    // AltGr is the third-level Latch modifier
+    // Right Alt is a normal Alt key.
     key <RALT> {
-        type[Group1]="THREE_LEVEL",
-        symbols[Group1] = [ ISO_Level3_Latch, ISO_Level3_Latch, ISO_Level3_Latch ]
+        type[Group1] = "TWO_LEVEL",
+        symbols[Group1] = [ Alt_R, Meta_R ]
     };
 
     // Romanian diacritics
