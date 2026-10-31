@@ -6,6 +6,30 @@
     - ~/.gemini/config/skills
 
 - link:
+    "~/.cursor/skills/yaml-ld":
+        relink: true
+        create: true
+        force: true
+        path: skills/yaml-ld
+
+    "~/.claude/skills/yaml-ld":
+        relink: true
+        create: true
+        force: true
+        path: skills/yaml-ld
+
+    "~/.codex/skills/yaml-ld":
+        relink: true
+        create: true
+        force: true
+        path: skills/yaml-ld
+
+    "~/.gemini/config/skills/yaml-ld":
+        relink: true
+        create: true
+        force: true
+        path: skills/yaml-ld
+
     "~/.cursor/skills/shower":
         relink: true
         create: true
@@ -407,6 +431,30 @@
         create: true
         force: true
         path: skills/mkdocs
+
+    "~/.cursor/skills/jeeves":
+        relink: true
+        create: true
+        force: true
+        path: skills/jeeves
+
+    "~/.claude/skills/jeeves":
+        relink: true
+        create: true
+        force: true
+        path: skills/jeeves
+
+    "~/.codex/skills/jeeves":
+        relink: true
+        create: true
+        force: true
+        path: skills/jeeves
+
+    "~/.gemini/config/skills/jeeves":
+        relink: true
+        create: true
+        force: true
+        path: skills/jeeves
 
     "~/.cursor/skills/address-issue":
         relink: true
