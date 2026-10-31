@@ -1,6 +1,6 @@
 ---
 name: mkdocs
-description: Create, edit, or review MkDocs Material documentation, especially link presentation, admonitions, and rendered behaviour.
+description: Create, edit, or review MkDocs Material documentation, especially link presentation, admonitions, rendered behaviour, or a macros module that has grown past one file.
 ---
 
 # MkDocs Material
