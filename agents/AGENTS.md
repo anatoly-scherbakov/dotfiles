@@ -39,12 +39,21 @@
 - Recommend a next step as something you are doing, not as a question to
   someone. Ask first only when the step is destructive or irreversible, or
   is someone else's to take (merge, deploy, a production write).
+- Put every decision I must take in the shape the `adr` skill uses: an
+  outcome-shaped title with `…` for the open slot, the context, each option
+  with pro and contra, your recommendation and the consequences. I do not
+  read the conversation history, so each record must stand alone. Never ask
+  for a decision as a bare question.
 
 ## Subagents
 
 - Delegate each side task (investigation, review fix, CI fix,
   watch-and-merge, explainer research) to a background subagent at once.
   Keep the main thread for the user's questions and decisions.
+- Run subagents on a mid-tier model. In Claude Code that is Sonnet: pass
+  `model: "sonnet"`, and use a non-fork agent type, since a fork always
+  inherits the parent's model. Other agentic harnesses choose their own
+  mid-tier model.
 
 ## Claiming you lack access or a capability
 
