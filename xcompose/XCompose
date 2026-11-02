@@ -138,6 +138,18 @@
 <Multi_key> <g> <q> <s> : "ς"    U03C2    # GREEK SMALL LETTER FINAL SIGMA
 <Multi_key> <g> <q> <x> : "ξ"    U03BE    # GREEK SMALL LETTER XI
 
+# Romanian
+<Multi_key> <U> <a>           : "ă"   U0103   # LATIN SMALL LETTER A WITH BREVE
+<Multi_key> <U> <A>           : "Ă"   U0102   # LATIN CAPITAL LETTER A WITH BREVE
+<Multi_key> <asciicircum> <a> : "â"   U00E2   # LATIN SMALL LETTER A WITH CIRCUMFLEX
+<Multi_key> <asciicircum> <A> : "Â"   U00C2   # LATIN CAPITAL LETTER A WITH CIRCUMFLEX
+<Multi_key> <asciicircum> <i> : "î"   U00EE   # LATIN SMALL LETTER I WITH CIRCUMFLEX
+<Multi_key> <asciicircum> <I> : "Î"   U00CE   # LATIN CAPITAL LETTER I WITH CIRCUMFLEX
+<Multi_key> <comma> <s>       : "ș"   U0219   # LATIN SMALL LETTER S WITH COMMA BELOW
+<Multi_key> <comma> <S>       : "Ș"   U0218   # LATIN CAPITAL LETTER S WITH COMMA BELOW
+<Multi_key> <comma> <t>       : "ț"   U021B   # LATIN SMALL LETTER T WITH COMMA BELOW
+<Multi_key> <comma> <T>       : "Ț"   U021A   # LATIN CAPITAL LETTER T WITH COMMA BELOW
+
 # Emoji for Git commits
 <Multi_key> <s> <c> <i> <s> <s> <o> <r> <s> :  "✀"   U2700	# BLACK SAFETY SCISSORS
 <Multi_key> <KP_Subtract> <KP_Subtract> : "➖"   U2796  # Remove something
