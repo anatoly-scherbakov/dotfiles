@@ -6,6 +6,54 @@
     - ~/.gemini/config/skills
 
 - link:
+    "~/.cursor/skills/control-loop":
+        relink: true
+        create: true
+        force: true
+        path: skills/control-loop
+
+    "~/.claude/skills/control-loop":
+        relink: true
+        create: true
+        force: true
+        path: skills/control-loop
+
+    "~/.codex/skills/control-loop":
+        relink: true
+        create: true
+        force: true
+        path: skills/control-loop
+
+    "~/.gemini/config/skills/control-loop":
+        relink: true
+        create: true
+        force: true
+        path: skills/control-loop
+
+    "~/.cursor/skills/sparqld":
+        relink: true
+        create: true
+        force: true
+        path: sparqld/skills/sparqld
+
+    "~/.claude/skills/sparqld":
+        relink: true
+        create: true
+        force: true
+        path: sparqld/skills/sparqld
+
+    "~/.codex/skills/sparqld":
+        relink: true
+        create: true
+        force: true
+        path: sparqld/skills/sparqld
+
+    "~/.gemini/config/skills/sparqld":
+        relink: true
+        create: true
+        force: true
+        path: sparqld/skills/sparqld
+
     "~/.cursor/skills/yaml-ld":
         relink: true
         create: true
