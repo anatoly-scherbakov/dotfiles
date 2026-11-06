@@ -232,6 +232,8 @@
 - Keep drafts to others (Slack, PR, ticket) and chat replies terse: lead with
   the ask or answer, include only the facts the reader needs to act, and cut
   background they already know. Aim for a quarter of your first instinct.
+- Address people on Slack in the relevant channel, mentioning them, never in a
+  DM — unless they wrote to me in a DM first.
 - Write chat replies to me in ASD-STE100 Simplified Technical English: short
   sentences (procedures at most 20 words, descriptions at most 25), one
   instruction per sentence, imperative mood for steps, active voice, and one
