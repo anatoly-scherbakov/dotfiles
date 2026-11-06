@@ -86,11 +86,12 @@
 
 ## Learning from mistakes
 
-- When you recognize you made a mistake during a turn — the same conditions
-  that merit a retrospective (a retracted claim, unrequested scope expansion, a
-  stored fact you failed to apply, or a correction the user had to make) — invoke
-  the `retro` skill before yielding. It derives a proposed lesson from the active
-  conversation and requires approval before changing durable guidance.
+- After each substantial task, invoke the `retro` skill before yielding, even
+  when no mistake was recognized. Also invoke it when you recognize a mistake
+  during a turn. Review the active conversation for process improvements as
+  well as mistakes. Propose only concrete, useful changes; no findings is a
+  valid result. Obtain approval before changing durable guidance or adding
+  prevention checks.
 
 ## Commits and attribution
 
