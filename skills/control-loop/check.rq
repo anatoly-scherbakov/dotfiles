@@ -1,0 +1,25 @@
+PREFIX rlog: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#>
+PREFIX control: <https://control-loop.md/vocabulary#>
+PREFIX sosa: <http://www.w3.org/ns/sosa/>
+SELECT DISTINCT ?problem ?subject ?detail WHERE {
+  {
+    ?entry a rlog:Entry ; rlog:resource ?subject ; rlog:message ?detail .
+    BIND("load error" AS ?problem)
+  }
+  UNION
+  {
+    { ?resource ?subject ?object } UNION { ?resource ?predicate ?subject }
+    FILTER(isIRI(?subject) && STRSTARTS(STR(?subject), "https://control-loop.md/undefined#"))
+    BIND("undefined term" AS ?problem)
+    BIND("" AS ?detail)
+  }
+  UNION
+  {
+    VALUES ?reference { control:covers control:breaks control:loop sosa:madeBySensor sosa:madeByActuator }
+    ?resource ?reference ?subject .
+    FILTER NOT EXISTS { ?subject a ?type }
+    BIND("dangling reference" AS ?problem)
+    BIND(STR(?reference) AS ?detail)
+  }
+}
+ORDER BY ?problem ?subject
