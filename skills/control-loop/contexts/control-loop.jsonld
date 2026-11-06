@@ -2,8 +2,8 @@
   "@context": [
     "https://json-ld.org/contexts/dollar-convenience.jsonld",
     {
-      "@vocab": "https://control-loop.md/undefined#",
-      "control": "https://control-loop.md/vocabulary#",
+      "@vocab": "https://control-loop.md/undefined/",
+      "control": "https://control-loop.md/",
       "xsd": "http://www.w3.org/2001/XMLSchema#",
       "context-file": {
         "@id": "https://sparqld.iolanta.tech/context-file",
