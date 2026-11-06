@@ -24,7 +24,7 @@ The first argument picks the mode; the second is a directory (`create`) or a
 - [rules.md](rules.md): the rules `C01`–`C18` for a correct file. `create` writes by
   them and `review` checks against them.
 - [vocabulary.yamlld](vocabulary.yamlld): the terms, their labels and comments, and
-  their links to Wikidata and SOSA (`https://control-loop.md/vocabulary#`).
+  their links to Wikidata and SOSA (`https://control-loop.md/`).
 - [contexts/](contexts/): the files a project copies beside its `CONTROL-LOOP.md`.
   `control-loop.jsonld` is the context `https://control-loop.md/context`; the other two
   are a copy of the dollar context and its registration, because sparqld loads only
