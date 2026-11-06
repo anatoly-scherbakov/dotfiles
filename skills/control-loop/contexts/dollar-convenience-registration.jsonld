@@ -1,0 +1,10 @@
+{
+  "@context": {
+    "context-file": {
+      "@id": "https://sparqld.iolanta.tech/context-file",
+      "@type": "@id"
+    }
+  },
+  "@id": "https://json-ld.org/contexts/dollar-convenience.jsonld",
+  "context-file": "dollar-convenience.jsonld"
+}
