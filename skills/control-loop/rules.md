@@ -15,7 +15,7 @@ the `review` mode checks against them. Cite a rule by its number.
   entry with `"@base"` and the project's own prefixes, if any. `"@base"` is the loop
   file's URL on the default branch, so `#loop` and the other ids are the same IRIs in
   every checkout and in the state file. Every other key must be a vocabulary term; any
-  unknown key expands into `https://control-loop.md/undefined#`, which the check
+  unknown key expands into `https://control-loop.md/undefined/`, which the check
   reports. Quote every value that starts with `#` (`loop: "#loop"`): unquoted, YAML
   reads it as a comment and drops the value.
 - `C04` In a repo that is shared with a customer, write the file so the customer can
