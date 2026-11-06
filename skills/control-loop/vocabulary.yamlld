@@ -1,0 +1,434 @@
+"@context":
+  - https://json-ld.org/contexts/dollar-convenience.jsonld
+  - "@base": https://control-loop.md/vocabulary
+    rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+    rdfs: http://www.w3.org/2000/01/rdf-schema#
+    owl: http://www.w3.org/2002/07/owl#
+    skos: http://www.w3.org/2004/02/skos/core#
+    sosa: http://www.w3.org/ns/sosa/
+    wd: https://www.wikidata.org/entity/
+    label: rdfs:label
+    comment: rdfs:comment
+    subclass-of: { "@id": rdfs:subClassOf, "@type": "@id" }
+    domain: { "@id": rdfs:domain, "@type": "@id" }
+    range: { "@id": rdfs:range, "@type": "@id" }
+    exact-match: { "@id": skos:exactMatch, "@type": "@id" }
+    close-match: { "@id": skos:closeMatch, "@type": "@id" }
+
+$id: ""
+$type: owl:Ontology
+label: Control loop vocabulary
+comment: >-
+  Terms to describe a feedback control loop, in particular a loop that an AI agent
+  runs, as a linked-data document. The set point is free text; checks refine parts
+  of it.
+
+$included:
+  # Classes
+
+  - $id: "#ControlLoop"
+    $type: owl:Class
+    label: Control loop
+    comment: >-
+      A loop that measures a system, compares the measurement with a set point, and
+      acts to reduce the difference.
+    exact-match: wd:Q48995591
+
+  - $id: "#Goal"
+    $type: owl:Class
+    label: Goal
+    comment: >-
+      A condition the supervisor wants reached once. It moves the set point over
+      time; the loop holds the set point on the way there.
+
+  - $id: "#SetPoint"
+    $type: owl:Class
+    label: Set point
+    comment: >-
+      A condition the loop holds true on every tick. Its free text is the source of
+      truth; checks refine parts of it. A set point can have clauses, each of which
+      is itself a set point.
+    close-match: wd:Q1752097
+
+  - $id: "#Clock"
+    $type: owl:Class
+    label: Clock
+    comment: What starts each tick of the loop, and how often.
+
+  - $id: "#Sensor"
+    $type: owl:Class
+    label: Sensor
+    comment: A command, query or agent that reports the state of the system.
+    subclass-of: sosa:Sensor
+    close-match: wd:Q167676
+
+  - $id: "#MeasurementNoise"
+    $type: owl:Class
+    label: Measurement noise
+    comment: A known way in which a sensor reports a state that is not the real one.
+
+  - $id: "#Check"
+    $type: owl:Class
+    label: Check
+    comment: >-
+      A comparison of the measured state with one or more set point clauses. It
+      gives a verdict.
+
+  - $id: "#Verdict"
+    $type: owl:Class
+    label: Verdict
+    comment: How a check reaches its result.
+
+  - $id: "#Verified"
+    $type: "#Verdict"
+    label: Verified
+    comment: >-
+      The result comes from a command, a query or a validation that gives the same
+      answer on the same state.
+
+  - $id: "#Inferred"
+    $type: "#Verdict"
+    label: Inferred
+    comment: >-
+      The result comes from a judge model that reads the set point text. An inferred
+      verdict alone never closes a clause.
+
+  - $id: "#GapAction"
+    $type: owl:Class
+    label: Gap action
+    comment: What the loop does when a gap needs an actuator.
+
+  - $id: "#Act"
+    $type: "#GapAction"
+    label: Act
+    comment: >-
+      The loop starts the work now, because the actuator's gate comes later (an agent
+      opens a pull request, and the review is the gate).
+
+  - $id: "#Propose"
+    $type: "#GapAction"
+    label: Propose
+    comment: The loop asks a person, because a person must decide before anything starts.
+
+  - $id: "#State"
+    $type: owl:Class
+    label: Loop state
+    comment: >-
+      The record a running loop keeps between cycles: its sensors' latest
+      observations, its gaps and how each is handled, and what it reported. Written
+      by the start mode, never committed.
+
+  - $id: "#Gap"
+    $type: owl:Class
+    label: Gap
+    comment: >-
+      A difference between a set-point clause and what the sensors measured, or a
+      piece of work a sensor found that moves the loop toward its goal.
+
+  - $id: "#Controller"
+    $type: owl:Class
+    label: Controller
+    comment: Decides the next action from the difference between the set point and the measurement.
+    exact-match: wd:Q1321995
+
+  - $id: "#Actuator"
+    $type: owl:Class
+    label: Actuator
+    comment: Applies an action to the system, through a human gate or directly.
+    subclass-of: sosa:Actuator
+    close-match: wd:Q423488
+
+  - $id: "#WorkInProgressLimit"
+    $type: owl:Class
+    label: Work-in-progress limit
+    comment: >-
+      A bound on how much the loop has in flight, so that it does not act faster than
+      its output can be absorbed.
+
+  - $id: "#Disturbance"
+    $type: owl:Class
+    label: Disturbance
+    comment: A change to the system from outside the loop.
+
+  - $id: "#Supervisor"
+    $type: owl:Class
+    label: Supervisor
+    comment: The party that sets the goal and tunes the loop.
+
+  - $id: "#Termination"
+    $type: owl:Class
+    label: Termination
+    comment: When the loop has reached its goal, and who decides it.
+
+  # Properties of a control loop
+
+  - $id: "#system"
+    $type: rdf:Property
+    label: system
+    comment: The system the loop controls, in words.
+    domain: "#ControlLoop"
+
+  - $id: "#goal"
+    $type: rdf:Property
+    label: goal
+    domain: "#ControlLoop"
+    range: "#Goal"
+
+  - $id: "#set-point"
+    $type: rdf:Property
+    label: set point
+    domain: "#ControlLoop"
+    range: "#SetPoint"
+
+  - $id: "#clock"
+    $type: rdf:Property
+    label: clock
+    domain: "#ControlLoop"
+    range: "#Clock"
+
+  - $id: "#sensors"
+    $type: rdf:Property
+    label: sensors
+    domain: "#ControlLoop"
+    range: "#Sensor"
+
+  - $id: "#noise"
+    $type: rdf:Property
+    label: noise
+    domain: "#ControlLoop"
+    range: "#MeasurementNoise"
+
+  - $id: "#checks"
+    $type: rdf:Property
+    label: checks
+    domain: "#ControlLoop"
+    range: "#Check"
+
+  - $id: "#controllers"
+    $type: rdf:Property
+    label: controllers
+    domain: "#ControlLoop"
+    range: "#Controller"
+
+  - $id: "#actuators"
+    $type: rdf:Property
+    label: actuators
+    domain: "#ControlLoop"
+    range: "#Actuator"
+
+  - $id: "#flow-control"
+    $type: rdf:Property
+    label: flow control
+    domain: "#ControlLoop"
+    range: "#WorkInProgressLimit"
+
+  - $id: "#memory"
+    $type: rdf:Property
+    label: memory
+    comment: Where the loop keeps what it learned between ticks.
+    domain: "#ControlLoop"
+
+  - $id: "#supervisor"
+    $type: rdf:Property
+    label: supervisor
+    domain: "#ControlLoop"
+    range: "#Supervisor"
+
+  - $id: "#disturbances"
+    $type: rdf:Property
+    label: disturbances
+    domain: "#ControlLoop"
+    range: "#Disturbance"
+
+  - $id: "#termination"
+    $type: rdf:Property
+    label: termination
+    domain: "#ControlLoop"
+    range: "#Termination"
+
+  # Properties of the parts
+
+  - $id: "#name"
+    $type: rdf:Property
+    label: name
+    comment: A short human-readable name.
+
+  - $id: "#text"
+    $type: rdf:Property
+    label: text
+    comment: The free-text statement of a goal, a set point, a noise or a disturbance.
+
+  - $id: "#clauses"
+    $type: rdf:Property
+    label: clauses
+    domain: "#SetPoint"
+    range: "#SetPoint"
+
+  - $id: "#definition"
+    $type: rdf:Property
+    label: definition
+    comment: The document or file that defines this part in full.
+
+  - $id: "#mechanism"
+    $type: rdf:Property
+    label: mechanism
+    comment: What fires the ticks.
+    domain: "#Clock"
+
+  - $id: "#sample-period"
+    $type: rdf:Property
+    label: sample period
+    comment: Time between two ticks, as an xsd:duration.
+    domain: "#Clock"
+    close-match: wd:Q137925352
+
+  - $id: "#lifetime"
+    $type: rdf:Property
+    label: lifetime
+    comment: What keeps the clock alive, and what stops it.
+    domain: "#Clock"
+
+  - $id: "#reads"
+    $type: rdf:Property
+    label: reads
+    comment: What the sensor reads, in words or as a command.
+    domain: "#Sensor"
+
+  - $id: "#mitigation"
+    $type: rdf:Property
+    label: mitigation
+    domain: "#MeasurementNoise"
+
+  - $id: "#covers"
+    $type: rdf:Property
+    label: covers
+    comment: The set point clauses this check compares.
+    domain: "#Check"
+    range: "#SetPoint"
+
+  - $id: "#verdict"
+    $type: rdf:Property
+    label: verdict
+    domain: "#Check"
+    range: "#Verdict"
+
+  - $id: "#command"
+    $type: rdf:Property
+    label: command
+    comment: A command or a query whose result decides a verified check.
+    domain: "#Check"
+
+  - $id: "#judge"
+    $type: rdf:Property
+    label: judge
+    comment: The instruction a judge model follows for an inferred check.
+    domain: "#Check"
+
+  - $id: "#role"
+    $type: rdf:Property
+    label: role
+    domain: "#Controller"
+
+  - $id: "#output"
+    $type: rdf:Property
+    label: output
+    comment: What the actuator produces.
+    domain: "#Actuator"
+
+  - $id: "#gate"
+    $type: rdf:Property
+    label: gate
+    comment: The human approval between the actuator's output and the system, or why there is none.
+    domain: "#Actuator"
+
+  - $id: "#on-gap"
+    $type: rdf:Property
+    label: on gap
+    comment: What the loop does when a gap needs this actuator.
+    domain: "#Actuator"
+    range: "#GapAction"
+
+  - $id: "#state"
+    $type: rdf:Property
+    label: state
+    comment: >-
+      The state file beside the loop file, gitignored, that the start mode reads and
+      writes every cycle: what was seen, what was reported, each gap's owner.
+    domain: "#ControlLoop"
+
+  - $id: "#loop"
+    $type: rdf:Property
+    label: loop
+    comment: The loop a state record belongs to.
+    domain: "#State"
+    range: "#ControlLoop"
+
+  - $id: "#observations"
+    $type: rdf:Property
+    label: observations
+    comment: The latest observation of each sensor (sosa:Observation).
+    domain: "#State"
+
+  - $id: "#gaps"
+    $type: rdf:Property
+    label: gaps
+    domain: "#State"
+    range: "#Gap"
+
+  - $id: "#breaks"
+    $type: rdf:Property
+    label: breaks
+    comment: The set-point clauses a gap keeps from holding.
+    domain: "#Gap"
+    range: "#SetPoint"
+
+  - $id: "#actuation"
+    $type: rdf:Property
+    label: actuation
+    comment: How the loop handled a gap (sosa:Actuation), with its actuator and owner.
+    domain: "#Gap"
+
+  - $id: "#owner"
+    $type: rdf:Property
+    label: owner
+    comment: >-
+      Who works on it now: an agent's task id or a pull request URL. Empty while a
+      person decides.
+
+  - $id: "#reported"
+    $type: rdf:Property
+    label: reported
+    comment: What the loop told its supervisor, one line per report, each with its time.
+    domain: "#State"
+
+  - $id: "#limit"
+    $type: rdf:Property
+    label: limit
+    domain: "#WorkInProgressLimit"
+
+  - $id: "#status"
+    $type: rdf:Property
+    label: status
+    comment: The state of a part that is planned or missing.
+
+  - $id: "#who"
+    $type: rdf:Property
+    label: who
+    domain: "#Supervisor"
+
+  - $id: "#channel"
+    $type: rdf:Property
+    label: channel
+    comment: How the supervisor sees the loop and steers it.
+    domain: "#Supervisor"
+
+  - $id: "#met-when"
+    $type: rdf:Property
+    label: met when
+    domain: "#Termination"
+
+  - $id: "#inferred-only"
+    $type: rdf:Property
+    label: inferred only
+    comment: What happens to a clause that only inferred checks cover.
+    domain: "#Termination"
