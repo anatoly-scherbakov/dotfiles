@@ -27,6 +27,15 @@ YAML-LD frontmatter. Use `semantify` when formalizing a Markdown document's pros
   register the dollar context locally through their supported mechanism.
   A context URL alone does not guarantee that the consumer can resolve it.
 
+## Minting IRIs
+
+- Mint each vocabulary term (class, property, named individual) as one path
+  segment directly under the namespace root: `https://example.com/Thing`. Do not
+  use a fragment (`https://example.com#Thing`) or an extra path level
+  (`https://example.com/vocabulary/Thing`).
+- The namespace IRI, and the prefix that names it, end with `/`
+  (`ex: https://example.com/`). The ontology node is the root itself.
+
 ## Lint and validate
 
 Use the project's existing lint task and configuration. When adding a YAML-LD
