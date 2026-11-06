@@ -13,3 +13,7 @@
 	path = mattpocock-skills
 	url = git@github.com:mattpocock/skills.git
 	branch = main
+[submodule "sparqld"]
+	path = sparqld
+	url = git@github.com:iolanta-tech/sparqld.git
+	branch = main
