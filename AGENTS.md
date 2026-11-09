@@ -14,8 +14,8 @@
   Claude, Codex, and Antigravity. When changing skill links, audit all `skills/*`
   directories against `~/.cursor/skills/<name>`, `~/.claude/skills/<name>`,
   `~/.codex/skills/<name>`, and `~/.gemini/config/skills/<name>` entries in `install.conf.yaml`.
-  Exception: `spawn-claude` and `close-idle-sessions` are Claude-only (they launch
-  `claude` / drive Claude sessions); link them only to `~/.claude/skills/`.
+  Exception: `spawn-claude` is Claude-only (it launches `claude`); link it only
+  to `~/.claude/skills/`.
 
 ## Skill discovery
 
