@@ -17,7 +17,7 @@ The first argument picks the mode; the second is a directory (`create`) or a
 |---|---|---|
 | `create <directory>` | Writes a new `CONTROL-LOOP.md` from the loop's live definitions | [create.md](create.md) |
 | `review <file>` | Reports the file's breaches of the rules, its drift from the live definitions, and gaps in the loop's design | [review.md](review.md) |
-| `start <file>` | Runs the loop in this session: schedules itself, senses, compares, acts, records | [start.md](start.md) |
+| `start <file>` | Runs the loop from this session: schedules itself, and each cycle a fresh agent senses, compares, records and returns the jobs to start | [start.md](start.md) |
 
 ## Shared resources
 
