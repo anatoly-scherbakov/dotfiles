@@ -25,6 +25,7 @@ clock:
   $type: Clock
   mechanism: <what fires each tick>
   sample-period: PT45M
+  window: <optional: the days and UTC hours the clock ticks in, such as Mon-Fri 05:00-16:00 UTC>
   lifetime: <what keeps the clock alive, and what stops it>
 
 sensors:
