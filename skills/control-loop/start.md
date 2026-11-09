@@ -74,7 +74,9 @@ report; it starts no agents.
    For a sensor that is an agent, return a job with its brief, at most one per
    sensor: only when the state file holds no running task id for it.
 3. **Compare.** Run each check: its `command` for a verified check, its `judge` for
-   an inferred one. A clause holds when every check that covers it passes.
+   an inferred one. A clause holds when every check that covers it passes. A gap
+   that waits on a person is a reading: check the thread, card or pull request it
+   waits on every cycle, and close the gap when the person has acted.
 4. **Act.** For each clause that does not hold, and each gap a sensor reported that
    has no owner in the state file, pick the actuator whose `output` fixes it:
    - `on-gap: Act`: return a job, one per gap, whose brief holds the facts already
