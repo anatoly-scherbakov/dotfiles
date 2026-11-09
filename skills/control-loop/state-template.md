@@ -32,4 +32,4 @@ reported:
 
 # Loop state
 
-Written by the `control-loop` skill's `start` mode every cycle. Not committed.
+Written by the `control-loop` skill's `do` mode every cycle. Not committed.

@@ -116,7 +116,7 @@ $included:
     comment: >-
       The record a running loop keeps between cycles: its sensors' latest
       observations, its gaps and how each is handled, and what it reported. Written
-      by the start mode, never committed.
+      by the do mode, never committed.
 
   - $id: Gap
     $type: owl:Class
@@ -361,7 +361,7 @@ $included:
     $type: rdf:Property
     label: state
     comment: >-
-      The state file beside the loop file, gitignored, that the start mode reads and
+      The state file beside the loop file, gitignored, that the do mode reads and
       writes every cycle: what was seen, what was reported, each gap's owner.
     domain: ControlLoop
 

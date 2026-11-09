@@ -1,10 +1,11 @@
-# Mode: start
+# Mode: do
 
-Run the loop that a `CONTROL-LOOP.md` describes, from this session. `start` is
+Run the loop that a `CONTROL-LOOP.md` describes, from this session. `do` is
 idempotent: the first call starts the loop, and the scheduled job calls the same
 command for every later cycle. A second call never schedules a second job.
 
-The job's prompt is `/control-loop start <absolute path to CONTROL-LOOP.md>`.
+The job's prompt is `/control-loop do <absolute path to CONTROL-LOOP.md>`. `start` is
+the older name of this mode and runs it the same way.
 
 The session keeps only the clock and starts agents. A cycle agent does the work of
 each cycle in its own fresh context, and the state file (`C12`) is its memory. Each
@@ -15,8 +16,9 @@ turn and the turn its result arrives in) and a few lines of context.
 
 ## One cycle, in the session
 
-1. **Clock.** Run `CronList` and look for jobs whose prompt is the one above. Delete
-   each that is past its time. When one is still pending, keep it and create none.
+1. **Clock.** Run `CronList` and look for jobs whose prompt is the one above, or the
+   same with `start` in place of `do`. Delete each that is past its time. When one is
+   still pending, keep it and create none.
    When none is pending, create a one-shot job (`CronCreate`, `recurring: false`) at
    now plus the clock's `sample-period`, with that prompt. Do this first, so a failed
    cycle still has a next one. A cycle that a job started finds that job past its
@@ -52,12 +54,12 @@ turn and the turn its result arrives in) and a few lines of context.
   Do not handle it in the session.
 - **Every turn** of the session, whatever started it (a user message, a compaction
   summary, a report), runs `CronList` first. When no job for this file is pending,
-  run a cycle now. A compaction summary must carry the `start` command, this rule
+  run a cycle now. A compaction summary must carry the `do` command, this rule
   and the task ids not yet given to a cycle agent, or the next turn forgets the loop
   is running; the pending job is the backstop.
 - **To stop** the loop, delete its job with `CronDelete`, and run a last cycle agent
   that records the stop in the state file. The loop also stops when the session
-  closes; `start` in a new session resumes from the state file.
+  closes; `do` in a new session resumes from the state file.
 - **A small context** costs less, because each wake re-reads the session's context.
   The harness's automatic compaction keeps it small: the state file holds the loop's
   memory, and the pending job starts the next cycle after a compaction. Set the

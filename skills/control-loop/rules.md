@@ -46,12 +46,12 @@ the `review` mode checks against them. Cite a rule by its number.
   gate comes later (an agent opens a pull request and the review is the gate);
   `Propose` when a person must decide before anything starts.
 - `C11` The `clock` has a `sample-period` (an `xsd:duration`, such as `PT45M`) and a
-  `mechanism`. When the `start` mode runs the loop, the mechanism says so, and the
+  `mechanism`. When the `do` mode runs the loop, the mechanism says so, and the
   sample period is the interval it schedules. An optional `window`
   (`<days> HH:MM-HH:MM UTC`) limits the ticks to those days and hours; a loop with no
   window ticks at all hours.
 - `C12` `memory` lists the durable records the loop reads and writes. `state` is
-  `loop-state.md`, the file beside `CONTROL-LOOP.md` that the `start` mode reads and
+  `loop-state.md`, the file beside `CONTROL-LOOP.md` that the `do` mode reads and
   writes every cycle. The repo's `.gitignore` lists it, so it is never committed.
   It is Markdown-LD in the shape of [state-template.md](state-template.md): each
   sensor's latest `Observation` (SOSA), each `Gap` with the clauses it `breaks` and
