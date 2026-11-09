@@ -58,9 +58,11 @@ turn and the turn its result arrives in) and a few lines of context.
 - **To stop** the loop, delete its job with `CronDelete`, and run a last cycle agent
   that records the stop in the state file. The loop also stops when the session
   closes; `start` in a new session resumes from the state file.
-- **A fresh session** costs less than a long one, because each wake re-reads the
-  session's context. When the context grows large, the supervisor can close the
-  session and run `start` in a new one: the state file holds the loop's memory. A
+- **A small context** costs less, because each wake re-reads the session's context.
+  The harness's automatic compaction keeps it small: the state file holds the loop's
+  memory, and the pending job starts the next cycle after a compaction. Set the
+  harness's compaction threshold well above the size of a compacted loop session
+  (about 90k tokens), or the session compacts again soon after each compaction. A
   session cannot run `/compact` on itself: a job whose prompt is `/compact` arrives
   as plain text.
 
