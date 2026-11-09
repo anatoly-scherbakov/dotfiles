@@ -288,6 +288,15 @@ $included:
     comment: What keeps the clock alive, and what stops it.
     domain: Clock
 
+  - $id: window
+    $type: rdf:Property
+    label: window
+    comment: >-
+      The days and UTC hours in which the clock ticks, as `<days> HH:MM-HH:MM UTC`
+      (for example `Mon-Fri 05:00-16:00 UTC`). Without it, the clock ticks at all hours.
+    domain: Clock
+    close-match: wd:Q5001881
+
   - $id: reads
     $type: rdf:Property
     label: reads
