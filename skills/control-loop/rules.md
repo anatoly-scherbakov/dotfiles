@@ -58,7 +58,9 @@ the `review` mode checks against them. Cite a rule by its number.
   its references (`"#set-point-…"`, `"#sensor-…"`, `"#actuator-…"`) are the loop
   file's IRIs.
 - `C13` A sensor `reads` something concrete: a command, an API call, a query, or an
-  agent with its brief. A controller has a `role`. A `WorkInProgressLimit` has a
+  agent with its brief. A sensor that reads a channel where the supervisor acts
+  returns the supervisor's own actions there too: they close gaps. A controller has
+  a `role`. A `WorkInProgressLimit` has a
   `limit`.
 - `C14` A part the loop lacks gets a node anyway, with a `status` that says it is
   missing. A limit left out on purpose says so in its `status`, with the decision.
@@ -84,7 +86,8 @@ the `review` mode checks against them. Cite a rule by its number.
   [`check.rq`](check.rq) returns no rows. It lists each file
   sparqld could not load, with the parser's line and column, each key, class or
   value the context does not define, and each reference to a clause, sensor,
-  actuator or loop that no file defines. Run it with sparqld 0.1.6 or later:
+  actuator or loop that no file defines, and each open gap with `on-gap: Propose`
+  whose clause no `Verified` check covers. Run it with sparqld 0.1.6 or later:
   - through the project's `control-loop` MCP server (the `sparqld` skill), set up in
     the local scope, so it is not committed:
     `claude mcp add --scope local control-loop -- sparqld mcp --pattern '<directory>/CONTROL-LOOP.md' --pattern '<directory>/loop-state.md' --pattern '<directory>/contexts/**' <absolute project path>`,
