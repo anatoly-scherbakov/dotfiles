@@ -24,7 +24,7 @@ gaps:
       on-gap: Act
       owner: <agent task id or pull request URL; empty while a person decides>
       time: 2026-01-01T00:00:00Z
-      status: <running, waiting for review, proposed, done>
+      status: <starting, running, waiting for review, proposed, done>
 
 reported:
   - <time> <one line the supervisor was told>
