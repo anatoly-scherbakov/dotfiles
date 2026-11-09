@@ -21,5 +21,14 @@ SELECT DISTINCT ?problem ?subject ?detail WHERE {
     BIND("dangling reference" AS ?problem)
     BIND(STR(?reference) AS ?detail)
   }
+  UNION
+  {
+    ?subject a control:Gap ; control:breaks ?clause ; control:actuation ?actuation .
+    ?actuation control:on-gap control:Propose .
+    FILTER NOT EXISTS { ?actuation control:status "done" }
+    FILTER NOT EXISTS { ?check control:covers ?clause ; control:verdict control:Verified }
+    BIND("proposed gap without a verified check" AS ?problem)
+    BIND(STR(?clause) AS ?detail)
+  }
 }
 ORDER BY ?problem ?subject
