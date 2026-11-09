@@ -4,8 +4,7 @@ Run the loop that a `CONTROL-LOOP.md` describes, from this session. `do` is
 idempotent: the first call starts the loop, and the scheduled job calls the same
 command for every later cycle. A second call never schedules a second job.
 
-The job's prompt is `/control-loop do <absolute path to CONTROL-LOOP.md>`. `start` is
-the older name of this mode and runs it the same way.
+The job's prompt is `/control-loop do <absolute path to CONTROL-LOOP.md>`.
 
 The session keeps only the clock and starts agents. A cycle agent does the work of
 each cycle in its own fresh context, and the state file (`C12`) is its memory. Each
@@ -16,9 +15,8 @@ turn and the turn its result arrives in) and a few lines of context.
 
 ## One cycle, in the session
 
-1. **Clock.** Run `CronList` and look for jobs whose prompt is the one above, or the
-   same with `start` in place of `do`. Delete each that is past its time. When one is
-   still pending, keep it and create none.
+1. **Clock.** Run `CronList` and look for jobs whose prompt is the one above. Delete
+   each that is past its time. When one is still pending, keep it and create none.
    When none is pending, create a one-shot job (`CronCreate`, `recurring: false`) at
    now plus the clock's `sample-period`, with that prompt. Do this first, so a failed
    cycle still has a next one. A cycle that a job started finds that job past its
