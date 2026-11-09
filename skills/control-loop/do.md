@@ -98,7 +98,8 @@ report; it starts no agents.
 5. **Record.** Write the state file, then run the check on it (`C18`).
 6. **Return** two parts, and nothing else:
    - **Jobs**: each job's brief, ready to pass to an agent, and the gap or sensor it
-     serves.
+     serves. Each brief ends with: "Any agent you start runs on the same model as
+     you."
    - **Report**: only what is new since the last report: new sensor values that
      matter, gaps started, gaps proposed, agents that finished. A few lines; when
      nothing is new, one line.
