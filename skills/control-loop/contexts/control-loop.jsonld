@@ -52,6 +52,7 @@
         "@type": "xsd:duration"
       },
       "lifetime": "control:lifetime",
+      "window": "control:window",
       "reads": "control:reads",
       "mitigation": "control:mitigation",
       "covers": {
