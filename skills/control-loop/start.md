@@ -21,6 +21,11 @@ turn and the turn its result arrives in) and a few lines of context.
    now plus the clock's `sample-period`, with that prompt. Do this first, so a failed
    cycle still has a next one. A cycle that a job started finds that job past its
    time, so it always arms the next one.
+   **Window.** Read the clock's `window` with one command
+   (`grep -m1 '^  window:' <loop file>`); a loop without one ticks at all hours. When
+   now plus the sample period falls outside the window, create the job at the
+   window's next start instead. When now is outside the window and a job started this
+   turn, arm the next job and end the turn: run no cycle agent.
 2. **Cycle agent.** Start one agent on the mid-tier model, with a non-fork agent
    type (in Claude Code: `model: "sonnet"`), and the brief in
    [Cycle agent](#cycle-agent). At most one cycle agent runs at a time: while one
@@ -29,6 +34,8 @@ turn and the turn its result arrives in) and a few lines of context.
    - the task ids of the agents the session started since the last cycle, each with
      the gap or sensor it serves;
    - the reports of agents that finished since the last cycle, verbatim.
+   Extra items for one cycle are additions: the brief says that the agent still runs
+   every sensor and every check.
    End the turn; the agent's result starts the next one.
 3. **Start jobs.** When the cycle agent's result arrives, start one agent per job it
    returns, on the mid-tier model, with the job's brief verbatim. Keep each task id for the
