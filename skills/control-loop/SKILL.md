@@ -8,6 +8,20 @@ description: Create, review or run an agentic feedback loop described by a CONTR
 A `CONTROL-LOOP.md` describes one loop: what it holds true, how it measures that, and
 what it does about a gap. This skill writes such a file, reviews it, and runs it.
 
+## Prerequisite: `sparqld` 0.1.7
+
+Create, review, and the `C18` check need [`sparqld`](https://crates.io/crates/sparqld)
+**0.1.7** or newer (context registration via `jsonld:Context` and
+`schema:contentUrl`). Before those steps:
+
+1. Run `sparqld --version`.
+2. If `sparqld` is missing or older than 0.1.7, propose installing or upgrading
+   with `cargo install sparqld` (add `--force` when an older binary is already
+   on `PATH`). If `cargo` is missing, propose installing Rust and Cargo with
+   Rustup first. Recheck `sparqld --version` after install.
+3. Do not run the check until 0.1.7 or newer is available. If the user declines,
+   stop and report that the check could not run.
+
 ## Modes
 
 The first argument picks the mode; the second is a directory (`create`) or a
@@ -24,11 +38,11 @@ The first argument picks the mode; the second is a directory (`create`) or a
 - [rules.md](rules.md): the rules `C01`–`C18` for a correct file. `create` writes by
   them and `review` checks against them.
 - [vocabulary.yamlld](vocabulary.yamlld): the terms, their labels and comments, and
-  their links to Wikidata and SOSA (`https://control-loop.md/`).
+  their links to Wikidata and SOSA (`urn:control-loop:vocab/`).
 - [contexts/](contexts/): the files a project copies beside its `CONTROL-LOOP.md`.
-  `control-loop.jsonld` is the context `https://control-loop.md/context`; the other two
-  are a copy of the dollar context and its registration, because sparqld loads only
-  contexts registered to local files.
+  `control-loop.jsonld` is the self-registering context `urn:control-loop:context`
+  (`jsonld:Context` + `schema:contentUrl`); sparqld resolves that URI from the
+  local file and does not fetch it.
 - [template.md](template.md): the starting point for `create`.
 - [state-template.md](state-template.md): the shape of `loop-state.md`, which `do`
   writes beside the loop file (gitignored).
