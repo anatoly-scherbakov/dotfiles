@@ -1,5 +1,5 @@
 PREFIX rlog: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#>
-PREFIX control: <https://control-loop.md/>
+PREFIX control: <urn:control-loop:vocab/>
 PREFIX sosa: <http://www.w3.org/ns/sosa/>
 SELECT DISTINCT ?problem ?subject ?detail WHERE {
   {
@@ -9,7 +9,7 @@ SELECT DISTINCT ?problem ?subject ?detail WHERE {
   UNION
   {
     { ?resource ?subject ?object } UNION { ?resource ?predicate ?subject }
-    FILTER(isIRI(?subject) && STRSTARTS(STR(?subject), "https://control-loop.md/undefined/"))
+    FILTER(isIRI(?subject) && STRSTARTS(STR(?subject), "urn:control-loop:undefined/"))
     BIND("undefined term" AS ?problem)
     BIND("" AS ?detail)
   }
