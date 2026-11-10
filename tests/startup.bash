@@ -38,6 +38,20 @@ rg -F -- '-layout yeti,ru,am -variant ,,phonetic' "$temporary/setxkbmap-args" >/
 rg -F -- '-option  -option compose:ins -print' "$temporary/setxkbmap-args" >/dev/null
 rg -F -- "-I$fake_home/.config/xkb - :42" "$temporary/xkbcomp-args" >/dev/null
 rg -F 'pc+yeti+ru:2+am(phonetic):3' "$temporary/xkbcomp-input" >/dev/null
+
+# The script must not leave input-method variables set: IBus bypasses ~/.XCompose.
+env \
+  HOME="$fake_home" \
+  DISPLAY=:42.0 \
+  PATH="$fake_bin:$PATH" \
+  FAKE_SETXKBMAP_ARGS="$temporary/setxkbmap-args-ibus" \
+  FAKE_XKBCOMP_ARGS="$temporary/xkbcomp-args-ibus" \
+  FAKE_XKBCOMP_INPUT="$temporary/xkbcomp-input-ibus" \
+  GTK_IM_MODULE=ibus \
+  QT_IM_MODULE=ibus \
+  XMODIFIERS='@im=ibus' \
+  bash -c 'source "$1"; [[ -z "${GTK_IM_MODULE:-}" && -z "${QT_IM_MODULE:-}" && -z "${XMODIFIERS:-}" ]]' \
+  bash "$script"
 if rg -F '/home/anatoly' "$script" "$repo_dir/bin/i3-resurrect-session.sh" >/dev/null; then
   echo "startup scripts contain a machine-specific home directory" >&2
   exit 1
