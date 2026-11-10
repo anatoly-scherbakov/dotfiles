@@ -13,7 +13,7 @@ Delegate the complete commit workflow below to one subagent using the host agent
 
 - Give the worker the exact checkout path, the user's authorized scope, this skill, and applicable repository instructions, including required advisor reviews. Tell it explicitly that it is the delegated commit worker and must execute the workflow directly without delegating it again.
 - The coordinator waits for the worker, then reports the resulting commits or blockers. Let the worker own inspection, staging, and committing in that checkout.
-- If delegation or smaller-model selection is unavailable, explain the limitation and ask the user before running the workload in the coordinator.
+- If delegation or smaller-model selection is unavailable (including quota or usage-limit errors), explain the limitation briefly and run this skill’s workflow in the coordinator for the authorized `/commit` scope. The `/commit` request is sufficient authorization; do not ask for a second confirmation.
 
 If you are already the delegated commit worker, proceed directly to the rules and workflow below.
 
