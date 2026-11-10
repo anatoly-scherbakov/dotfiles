@@ -14,7 +14,7 @@ When a decision lands: change frontmatter status: undecided → status: decided;
 
 Stage 2 — if excluded: becomes a :x: tab with the reason as its body; optionally a bullet or table row under any Context subheading.
 
-Stage 2 — if keep or undecided: ask for one-line Pro and one-line Contra; mark :question: for now.
+Stage 2 — if keep or undecided: ask for one-line Pro and one-line Contra; mark :question: for now. State a Pro or a Contra only when it is a real advantage or disadvantage of that option. Leave the grid empty when you cannot identify one.
 
 Stage 2 — after all options: ask "ready to pick one?"; if yes, the user names the chosen option → :white_check_mark:; other kept options stay :question:; if no, all kept options stay :question: and status stays undecided. Never decide for the user.
 #}
