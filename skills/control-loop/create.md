@@ -2,6 +2,8 @@
 
 Write a new `CONTROL-LOOP.md` for a loop. Follow [rules.md](rules.md).
 
+0. Confirm `sparqld` 0.1.7 or newer (skill Prerequisite). Propose install or
+   upgrade if missing or outdated; do not start the file until the check can run.
 1. Read the loop's live definitions (`C15`): its prompt or skill, its schedule, the
    controllers and agents it starts, the actuators' merge and approval rules, and
    where it keeps memory. Read the repo's `AGENTS.md` files in full first.
