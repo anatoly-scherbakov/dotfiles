@@ -1,21 +1,23 @@
 "@context":
-  - https://json-ld.org/contexts/dollar-convenience.jsonld
-  - "@base": https://control-loop.md/
-    rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
-    rdfs: http://www.w3.org/2000/01/rdf-schema#
-    owl: http://www.w3.org/2002/07/owl#
-    skos: http://www.w3.org/2004/02/skos/core#
-    sosa: http://www.w3.org/ns/sosa/
-    wd: https://www.wikidata.org/entity/
-    label: rdfs:label
-    comment: rdfs:comment
-    subclass-of: { "@id": rdfs:subClassOf, "@type": "@id" }
-    domain: { "@id": rdfs:domain, "@type": "@id" }
-    range: { "@id": rdfs:range, "@type": "@id" }
-    exact-match: { "@id": skos:exactMatch, "@type": "@id" }
-    close-match: { "@id": skos:closeMatch, "@type": "@id" }
+  $id: "@id"
+  $type: "@type"
+  $included: "@included"
+  "@base": urn:control-loop:vocab/
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  owl: http://www.w3.org/2002/07/owl#
+  skos: http://www.w3.org/2004/02/skos/core#
+  sosa: http://www.w3.org/ns/sosa/
+  wd: https://www.wikidata.org/entity/
+  label: rdfs:label
+  comment: rdfs:comment
+  subclass-of: { "@id": rdfs:subClassOf, "@type": "@id" }
+  domain: { "@id": rdfs:domain, "@type": "@id" }
+  range: { "@id": rdfs:range, "@type": "@id" }
+  exact-match: { "@id": skos:exactMatch, "@type": "@id" }
+  close-match: { "@id": skos:closeMatch, "@type": "@id" }
 
-$id: https://control-loop.md/
+$id: urn:control-loop:vocab/
 $type: owl:Ontology
 label: Control loop vocabulary
 comment: >-
