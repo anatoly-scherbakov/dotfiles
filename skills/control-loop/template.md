@@ -1,6 +1,6 @@
 ---
 "@context":
-  - https://control-loop.md/context
+  - urn:control-loop:context
   - "@base": <the loop file's URL on the default branch>
 
 $id: "#loop"
