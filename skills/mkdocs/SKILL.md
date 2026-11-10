@@ -1,13 +1,21 @@
 ---
 name: mkdocs
-description: Create, edit, or review MkDocs Material documentation, especially link presentation, admonitions, rendered behaviour, or a macros module that has grown past one file.
+description: >-
+  Required after every edit to MkDocs docs or mkdocs.yml (including a
+  one-character change). Create, edit, or review MkDocs Material documentation:
+  persona, concision, link presentation, admonitions, rendered behaviour, and
+  macros modules. When the project has Vale configured, the review also runs
+  Vale and clears error-level alerts.
 ---
 
 # MkDocs Material
 
-Use for MkDocs Material pages or configuration where Markdown source alone is
-insufficient to verify the reader-facing result. Do not use it for a generic
-Markdown document that is not built with MkDocs.
+Required after every change under the project's MkDocs documentation tree or to
+`mkdocs.yml`, including a one-character edit. Do not claim docs work done until
+this skill's review has run. When the project has Vale set up (`vale ls-config`
+resolves), the MkDocs review **includes** a Vale review of the changed
+documentation paths—same engagement, not a separate optional pass. Do not use
+this skill for a generic Markdown document that is not built with MkDocs.
 
 ## Reader and concision
 
@@ -24,10 +32,21 @@ Markdown document that is not built with MkDocs.
 
 ## Authoring
 
+- Show the right-hand table of contents only when it has three or more entries.
+  For fewer entries, set `hide: [toc]` in the page frontmatter. Count the
+  rendered TOC items (Material heading levels that appear in the sidebar), not
+  only the headings written in the Markdown source.
+- One page stands for one idea. Keep a page whole while it has one idea. When a
+  second independent idea arrives, give each idea its own page and make the
+  parent an index. Adding an idea must not rewrite the page for an existing idea.
 - Give runnable examples the execution context they require: prerequisites,
   filenames, working directory, complete flags, and whether a command keeps
   running or needs a second terminal. Distinguish user-created inputs from
   generated outputs; output directory previews show generated files only.
+- Never hand-write a generated document into a page. Include the file the
+  command wrote, through the project's renderer.
+- A command and its result are read as one step. Put the result immediately
+  after the command. Prose or another command between them breaks the flow.
 - Keep front-page examples self-contained. For a short shell query accepted on
   standard input, use the project's selected inline form (for example,
   `echo '…' | command --query -`) instead of requiring a separate file.
@@ -40,11 +59,19 @@ Markdown document that is not built with MkDocs.
   The filename, rather than the repository, identifies the linked resource.
 - Use MkDocs Material icon shortcodes instead of raw emoji when an icon is
   intended to match the site theme.
+- Give every Material navigation section index an `icon:` frontmatter entry
+  that matches its H1 shortcode; an H1 shortcode alone does not appear in the
+  sidebar.
+- For a named product or vendor, check the theme's `simple/` and
+  `fontawesome/brands/` icon packs first and use that brand shortcode when
+  present. Use a generic Material icon only when no brand SVG exists.
 - When a project documents RO-Crates, make the first rendered `RO-Crate`
   mention a link to [RO-Crate](https://www.researchobject.org/ro-crate/).
-- When a project already uses heading icons or Material cards, keep their
-  conventions consistent; do not introduce site-wide icon or divider rules
-  merely from this skill.
+- Format a card index from [templates/cards.md](templates/cards.md). Keep an
+  existing project's heading icons consistent; do not introduce site-wide icon
+  or divider rules merely from this skill.
+- Document a Rust CLI from [templates/rust-cli.md](templates/rust-cli.md).
+  Derive the argument tables and the command index from the compiled command.
 - Avoid copying repeated content blocks between pages. Include canonical files
   where appropriate; when `mkdocs-macros-plugin` is already configured,
   define and reuse a macro.
@@ -82,3 +109,17 @@ Markdown document that is not built with MkDocs.
   documented local URL and probe it. Reuse a responsive server; do not infer
   its absence from a partial port scan.
 - Keep agent-guidance files excluded through `exclude_docs` in `mkdocs.yml`.
+- **Vale (required when configured).** If `vale ls-config` resolves, treat
+  Vale as part of this review: run it on the changed documentation paths
+  (and other prose the project’s Vale config covers, such as `README.md`, when
+  those files changed). Follow the project’s `vale-fix` skill when present;
+  otherwise fix **error**-level alerts yourself before claiming the review
+  done. Report warning and suggestion counts; they do not block the review
+  unless the project says otherwise.
+- If Vale is not configured, do not install it unprompted. When the review
+  itself finds a prose defect a style linter would have caught mechanically
+  (misspelling of a product term, banned wording, heading casing the project
+  cares about, and similar), fix the immediate issue, then briefly propose
+  setting up Vale and the `vale-*` skills so the same class of defect fails
+  deterministically next time. One offer per engagement is enough; do not
+  nag on every edit.
