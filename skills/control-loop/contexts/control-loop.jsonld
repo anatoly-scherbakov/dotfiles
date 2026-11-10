@@ -1,125 +1,120 @@
 {
-  "@context": [
-    "https://json-ld.org/contexts/dollar-convenience.jsonld",
-    {
-      "@vocab": "https://control-loop.md/undefined/",
-      "control": "https://control-loop.md/",
-      "xsd": "http://www.w3.org/2001/XMLSchema#",
-      "context-file": {
-        "@id": "https://sparqld.iolanta.tech/context-file",
-        "@type": "@id"
-      },
-      "ControlLoop": "control:ControlLoop",
-      "Goal": "control:Goal",
-      "SetPoint": "control:SetPoint",
-      "Clock": "control:Clock",
-      "Sensor": "control:Sensor",
-      "MeasurementNoise": "control:MeasurementNoise",
-      "Check": "control:Check",
-      "Verdict": "control:Verdict",
-      "Verified": "control:Verified",
-      "Inferred": "control:Inferred",
-      "Controller": "control:Controller",
-      "Actuator": "control:Actuator",
-      "WorkInProgressLimit": "control:WorkInProgressLimit",
-      "Disturbance": "control:Disturbance",
-      "Supervisor": "control:Supervisor",
-      "Termination": "control:Termination",
-      "system": "control:system",
-      "goal": "control:goal",
-      "set-point": "control:set-point",
-      "clock": "control:clock",
-      "sensors": "control:sensors",
-      "noise": "control:noise",
-      "checks": "control:checks",
-      "controllers": "control:controllers",
-      "actuators": "control:actuators",
-      "flow-control": "control:flow-control",
-      "memory": "control:memory",
-      "supervisor": "control:supervisor",
-      "disturbances": "control:disturbances",
-      "termination": "control:termination",
-      "name": "control:name",
-      "text": "control:text",
-      "clauses": "control:clauses",
-      "definition": {
-        "@id": "control:definition",
-        "@type": "@id"
-      },
-      "mechanism": "control:mechanism",
-      "sample-period": {
-        "@id": "control:sample-period",
-        "@type": "xsd:duration"
-      },
-      "lifetime": "control:lifetime",
-      "window": "control:window",
-      "reads": "control:reads",
-      "mitigation": "control:mitigation",
-      "covers": {
-        "@id": "control:covers",
-        "@type": "@id",
-        "@container": "@set"
-      },
-      "verdict": {
-        "@id": "control:verdict",
-        "@type": "@vocab"
-      },
-      "command": "control:command",
-      "judge": "control:judge",
-      "role": "control:role",
-      "output": "control:output",
-      "gate": "control:gate",
-      "limit": "control:limit",
-      "status": "control:status",
-      "who": "control:who",
-      "channel": "control:channel",
-      "met-when": "control:met-when",
-      "inferred-only": "control:inferred-only",
-      "GapAction": "control:GapAction",
-      "Act": "control:Act",
-      "Propose": "control:Propose",
-      "on-gap": {
-        "@id": "control:on-gap",
-        "@type": "@vocab"
-      },
-      "state": {
-        "@id": "control:state",
-        "@type": "@id"
-      },
-      "sosa": "http://www.w3.org/ns/sosa/",
-      "State": "control:State",
-      "Gap": "control:Gap",
-      "loop": {
-        "@id": "control:loop",
-        "@type": "@id"
-      },
-      "observations": "control:observations",
-      "gaps": "control:gaps",
-      "actuation": "control:actuation",
-      "owner": "control:owner",
-      "reported": "control:reported",
-      "breaks": {
-        "@id": "control:breaks",
-        "@type": "@id",
-        "@container": "@set"
-      },
-      "Observation": "sosa:Observation",
-      "Actuation": "sosa:Actuation",
-      "sensor": {
-        "@id": "sosa:madeBySensor",
-        "@type": "@id"
-      },
-      "actuator": {
-        "@id": "sosa:madeByActuator",
-        "@type": "@id"
-      },
-      "time": {
-        "@id": "sosa:resultTime",
-        "@type": "xsd:dateTime"
-      },
-      "result": "sosa:hasSimpleResult"
-    }
-  ],
-  "$id": "https://control-loop.md/context",
-  "context-file": "control-loop.jsonld"
+  "@context": {
+    "@vocab": "urn:control-loop:undefined/",
+    "control": "urn:control-loop:vocab/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ControlLoop": "control:ControlLoop",
+    "Goal": "control:Goal",
+    "SetPoint": "control:SetPoint",
+    "Clock": "control:Clock",
+    "Sensor": "control:Sensor",
+    "MeasurementNoise": "control:MeasurementNoise",
+    "Check": "control:Check",
+    "Verdict": "control:Verdict",
+    "Verified": "control:Verified",
+    "Inferred": "control:Inferred",
+    "Controller": "control:Controller",
+    "Actuator": "control:Actuator",
+    "WorkInProgressLimit": "control:WorkInProgressLimit",
+    "Disturbance": "control:Disturbance",
+    "Supervisor": "control:Supervisor",
+    "Termination": "control:Termination",
+    "system": "control:system",
+    "goal": "control:goal",
+    "set-point": "control:set-point",
+    "clock": "control:clock",
+    "sensors": "control:sensors",
+    "noise": "control:noise",
+    "checks": "control:checks",
+    "controllers": "control:controllers",
+    "actuators": "control:actuators",
+    "flow-control": "control:flow-control",
+    "memory": "control:memory",
+    "supervisor": "control:supervisor",
+    "disturbances": "control:disturbances",
+    "termination": "control:termination",
+    "name": "control:name",
+    "text": "control:text",
+    "clauses": "control:clauses",
+    "definition": {
+      "@id": "control:definition",
+      "@type": "@id"
+    },
+    "mechanism": "control:mechanism",
+    "sample-period": {
+      "@id": "control:sample-period",
+      "@type": "xsd:duration"
+    },
+    "lifetime": "control:lifetime",
+    "window": "control:window",
+    "reads": "control:reads",
+    "mitigation": "control:mitigation",
+    "covers": {
+      "@id": "control:covers",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "verdict": {
+      "@id": "control:verdict",
+      "@type": "@vocab"
+    },
+    "command": "control:command",
+    "judge": "control:judge",
+    "role": "control:role",
+    "output": "control:output",
+    "gate": "control:gate",
+    "limit": "control:limit",
+    "status": "control:status",
+    "who": "control:who",
+    "channel": "control:channel",
+    "met-when": "control:met-when",
+    "inferred-only": "control:inferred-only",
+    "GapAction": "control:GapAction",
+    "Act": "control:Act",
+    "Propose": "control:Propose",
+    "on-gap": {
+      "@id": "control:on-gap",
+      "@type": "@vocab"
+    },
+    "state": {
+      "@id": "control:state",
+      "@type": "@id"
+    },
+    "sosa": "http://www.w3.org/ns/sosa/",
+    "State": "control:State",
+    "Gap": "control:Gap",
+    "loop": {
+      "@id": "control:loop",
+      "@type": "@id"
+    },
+    "observations": "control:observations",
+    "gaps": "control:gaps",
+    "actuation": "control:actuation",
+    "owner": "control:owner",
+    "reported": "control:reported",
+    "breaks": {
+      "@id": "control:breaks",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "Observation": "sosa:Observation",
+    "Actuation": "sosa:Actuation",
+    "sensor": {
+      "@id": "sosa:madeBySensor",
+      "@type": "@id"
+    },
+    "actuator": {
+      "@id": "sosa:madeByActuator",
+      "@type": "@id"
+    },
+    "time": {
+      "@id": "sosa:resultTime",
+      "@type": "xsd:dateTime"
+    },
+    "result": "sosa:hasSimpleResult"
+  },
+  "@type": "http://www.w3.org/ns/json-ld#Context",
+  "http://schema.org/contentUrl": {
+    "@id": "urn:control-loop:context"
+  }
 }
