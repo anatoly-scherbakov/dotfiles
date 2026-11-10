@@ -3,6 +3,9 @@
 Review an existing `CONTROL-LOOP.md`. Follow [rules.md](rules.md). The review reads
 and reports; it edits the file only when the user asks for the fixes.
 
+0. Confirm `sparqld` 0.1.7 or newer (skill Prerequisite). Propose install or
+   upgrade if missing or outdated; do not run the check until that version is
+   available (or the user declines—then report that the check could not run).
 1. Run the check (`C18`). Each row is a finding.
 2. Check the file against each rule `C01`–`C17`. Each breach is a finding, with its
    rule number.
