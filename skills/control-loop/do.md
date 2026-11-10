@@ -40,7 +40,10 @@ turn and the turn its result arrives in) and a few lines of context.
 3. **Start jobs.** When the cycle agent's result arrives, start one agent per job it
    returns, on the mid-tier model, with the job's brief verbatim. Keep each task id for the
    next cycle agent's brief. Do not read the loop file, the state file or the
-   sensors yourself.
+   sensors yourself. When an actuator's gate needs only checks, the session or its
+   worker executes it once they pass; hold only for a gate that names a person.
+   A gate that a worker or cycle agent cites stands until you can quote the text
+   that lifts it; a search that misses the rule does not lift it.
 4. **Report.** Pass the cycle agent's report to the supervisor as it is. When it says
    nothing is new, say so in one line.
 
