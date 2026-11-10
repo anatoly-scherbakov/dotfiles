@@ -8,14 +8,16 @@ the `review` mode checks against them. Cite a rule by its number.
 - `C01` A `CONTROL-LOOP.md` describes one loop. It lives in the project root, or beside
   the documents the loop works from (for example a runbook directory).
 - `C02` A `contexts/` directory sits beside it, holding a copy of this skill's
-  `contexts/` files. They are JSON-LD, never YAML-LD: some knowledge-graph importers
-  load every `.yamlld` file in a repository, whatever their file patterns say, so a
-  `.yamlld` context would land in the project's graph.
-- `C03` The frontmatter's `"@context"` is `https://control-loop.md/context`, then one
+  `contexts/control-loop.jsonld`. It is JSON-LD, never YAML-LD: some knowledge-graph
+  importers load every `.yamlld` file in a repository, whatever their file patterns
+  say, so a `.yamlld` context would land in the project's graph. The file registers
+  `urn:control-loop:context` with `jsonld:Context` and `schema:contentUrl` so
+  sparqld uses this local body.
+- `C03` The frontmatter's `"@context"` is `urn:control-loop:context`, then one
   entry with `"@base"` and the project's own prefixes, if any. `"@base"` is the loop
   file's URL on the default branch, so `#loop` and the other ids are the same IRIs in
   every checkout and in the state file. Every other key must be a vocabulary term; any
-  unknown key expands into `https://control-loop.md/undefined/`, which the check
+  unknown key expands into `urn:control-loop:undefined/`, which the check
   reports. Quote every value that starts with `#` (`loop: "#loop"`): unquoted, YAML
   reads it as a comment and drops the value.
 - `C04` In a repo that is shared with a customer, write the file so the customer can
@@ -89,7 +91,10 @@ the `review` mode checks against them. Cite a rule by its number.
   sparqld could not load, with the parser's line and column, each key, class or
   value the context does not define, and each reference to a clause, sensor,
   actuator or loop that no file defines, and each open gap with `on-gap: Propose`
-  whose clause no `Verified` check covers. Run it with sparqld 0.1.6 or later:
+  whose clause no `Verified` check covers. Run it with sparqld 0.1.7 or newer
+  (see the skill's Prerequisite). If `sparqld` is missing or older, propose
+  `cargo install sparqld` (with `--force` when upgrading) and do not treat the
+  check as passed until that version is available. Then:
   - through the project's `control-loop` MCP server (the `sparqld` skill), set up in
     the local scope, so it is not committed:
     `claude mcp add --scope local control-loop -- sparqld mcp --pattern '<directory>/CONTROL-LOOP.md' --pattern '<directory>/loop-state.md' --pattern '<directory>/contexts/**' <absolute project path>`,
