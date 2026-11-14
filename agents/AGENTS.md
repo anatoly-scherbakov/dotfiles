@@ -36,6 +36,8 @@
   proposes an approach, build it, open the PR and request their review. Their
   feedback, their approval, or a failed run each answers the question, and a
   failure informs both sides.
+- When a step waits on a person or an event, do all the work up to that
+  gate now (draft, branch, PR); only the gated action itself waits.
 - Recommend a next step as something you are doing, not as a question to
   someone. Ask first only when the step is destructive or irreversible, or
   is someone else's to take (merge, deploy, a production write).
@@ -77,6 +79,9 @@
   yourself (e.g. its row count) before stating it; a property verified on one
   instance does not carry over to its siblings, least of all into a destructive
   step.
+- Before saying why a workflow, task or item is blocked, read its current record
+  in that turn (the report row, the state-file section, the PR). Never answer
+  from a compaction summary.
 
 ## Bulk loads
 
@@ -240,6 +245,8 @@
   instruction per sentence, imperative mood for steps, active voice, and one
   meaning per word. Keep technical names, commands and identifiers as they are.
   Drafts for other people (Slack, PR, ticket) keep their normal style.
+- In replies to me, name the object itself (the table, the server, the PR),
+  not the project's term for its role. When the term is needed, define it once.
 
 ## Comments and documentation
 
