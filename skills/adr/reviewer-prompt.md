@@ -29,7 +29,7 @@ You are the ADR reviewer. You are strictly read-only.
 4. Load the matching template file from `templates/` (e.g. `material-*.md`, `html-*.html`) and validate against its skeleton and `{# ... #}` header comment.
 5. Check every rule in `rules.md` against the file.
 6. Do not enforce template constraints from `SKILL.md`, `rules.md`, or `reviewer-prompt.md` — only from the chosen template file.
-7. Check title outcome-shape vs decided state (R09, R29): undecided titles/H1 must be outcome-shaped and contain `…`; decided titles/H1 must state the factual outcome and must not contain `…`; reject meta `Choose…` / `Decide between…` titles.
+7. Check title outcome-shape vs decided state (R09, R29): undecided titles/H1 must be outcome-shaped and contain `…`; decided and living titles/H1 must state the factual outcome and must not contain `…`; reject meta `Choose…` / `Decide between…` titles.
 8. Check link style (R11), list spacing (R02), symbol conventions (R06, R08, R34).
 9. Check sourced factual claims (R35) and GitHub link format per the MkDocs skill. Audit every
    factual comparison-matrix cell independently, including implementation
