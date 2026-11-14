@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Save and restore the i3 workspace tree around applications which restore
-# their own sessions (notably Cursor and Google Chrome).
+# their own sessions (Google Chrome).
 set -Eeuo pipefail
 
 PATH="$HOME/.local/bin:$PATH"
@@ -122,16 +122,13 @@ strip_unrestored_windows() {
     def kitty_window:
       [(.class? // ""), (.instance? // "")]
       | any(test("kitty"; "i"));
-    def cursor_window:
-      (.instance? // "") | test("cursor"; "i");
     def nemo_window:
       [(.class? // ""), (.instance? // "")]
       | any(test("nemo"; "i"));
     def unrestored_window:
       (.swallows? // [])
       | any(
-          cursor_window
-          or kitty_window
+          kitty_window
           or nemo_window
         );
     walk(
@@ -215,7 +212,6 @@ start_session_apps() {
   slack &
   start_telegram
   start_chrome
-  "$HOME/bin/cursor" &
 }
 
 wait_for_secret_service() {
@@ -413,8 +409,8 @@ restore_session() {
   : >"$restore_marker"
   log "restored session"
 
-  # The restored layout can swallow session-restored Cursor and Chrome windows
-  # into the project workspace where their titles belong.
+  # The restored layout can swallow session-restored Chrome windows into the
+  # project workspace where their titles belong.
   start_session_apps
   sweep_placeholders &
 }
