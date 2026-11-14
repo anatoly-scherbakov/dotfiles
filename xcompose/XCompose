@@ -20,6 +20,7 @@
 # Arrows
 <Multi_key> <less> <minus>             : "←" U2190
 <Multi_key> <minus> <greater>          : "→" U2192
+<Multi_key> <equal> <greater>           : "⇒" U21D2
 <Multi_key> <minus> <less> <greater>   : "↔" U2194
 
 # Set theory
