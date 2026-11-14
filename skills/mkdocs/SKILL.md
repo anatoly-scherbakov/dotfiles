@@ -26,9 +26,18 @@ this skill for a generic Markdown document that is not built with MkDocs.
 - Run the `/concise` skill when reviewing a documentation site. Apply its
   semantic-repetition and tautology checks to prose, examples, and adjacent
   commands.
+- Review reader progression across consecutive sections within a page and
+  consecutive pages within a navigation group. Where order, links,
+  prerequisites, or wording suggest a sequence, check that each next part
+  continues, applies, deepens, contrasts with, or depends on what came before.
+  Flag abrupt jumps or missing prerequisites. Treat navigation as evidence,
+  not proof: indexes and reference collections may group independent pages, so
+  do not force a linear relationship.
 - Do not retain empty or noisy prose. Each sentence must give the documented
   reader an action, prerequisite, rationale, scope, or consequence that is not
   already evident from adjacent content. Flag redundant prose in review.
+- Number each review finding so the user can refer to it individually.
+- Report each conflict with project-local guidance as a separate finding, even when the same example has other issues.
 
 ## Authoring
 
@@ -72,6 +81,11 @@ this skill for a generic Markdown document that is not built with MkDocs.
   or divider rules merely from this skill.
 - Document a Rust CLI from [templates/rust-cli.md](templates/rust-cli.md).
   Derive the argument tables and the command index from the compiled command.
+- Use the Single Responsibility Principle (SRP) to decide where a fact
+  belongs across code, configuration, metadata, and documentation. Prefer
+  the text that was never written over a redundant restatement. If readers
+  need a repeated value, render it from its canonical source to prevent
+  drift.
 - Avoid copying repeated content blocks between pages. Include canonical files
   where appropriate; when `mkdocs-macros-plugin` is already configured,
   define and reuse a macro.
@@ -93,6 +107,11 @@ this skill for a generic Markdown document that is not built with MkDocs.
 - Treat a page's metadata as belonging to that page type. Do not apply an ADR
   metadata macro to a supporting planning page merely because it sits beneath
   an ADR.
+- When a site renders ADR status via macros or decision-log CSS, treat
+  `living` as a first-class status: the chosen outcome is filled (no title
+  ellipsis); the banner and decision-card styles must recognize it; comparison
+  tables marked living are expected to gain rows when new alternatives appear.
+  Review must check the status banner, decision cards, and status styles.
 
 ## Verification
 
