@@ -57,7 +57,6 @@ if [[ "$action" == save ]]; then
   printf '%s\n' '{"nodes":[
     {"swallows":[{"class":"^kitty$","instance":"^kitty$"}]},
     {"swallows":[{"class":"^Nemo$","instance":"^nemo$"}]},
-    {"swallows":[{"instance":"^cursor \\("}]},
     {"swallows":[{"class":"^Google-chrome$"}]}
   ],"floating_nodes":[]}' \
     >"$directory/workspace_${id}_layout.json"
@@ -90,7 +89,7 @@ EOF
   chmod +x "$fake_bin/$application"
 done
 
-for application in "bin/Telegram" "bin/cursor"; do
+for application in "bin/Telegram"; do
   cat >"$fake_home/$application" <<EOF
 #!/usr/bin/env bash
 printf '%s %s\\n' '$application' "\$*" >>"\$FAKE_APP_CALLS"
@@ -124,7 +123,7 @@ jq -e '.workspaces == ["alpha"]' \
   "$state/i3-resurrect/current/workspaces.json" >/dev/null
 jq -e '
   [.. | objects | .swallows? // empty | .[]?]
-  | all(((.class? // "") + (.instance? // "")) | test("kitty|cursor|nemo"; "i") | not)
+  | all(((.class? // "") + (.instance? // "")) | test("kitty|nemo"; "i") | not)
 ' "$state/i3-resurrect/current/workspace_alpha_layout.json" >/dev/null
 jq -e '
   [.. | objects | .swallows? // empty | .[]?]
