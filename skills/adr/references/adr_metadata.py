@@ -19,6 +19,7 @@ _ADR_STATUS = {
     'draft': 'Draft',
     'undecided': 'Undecided',
     'decided': 'Decided',
+    'living': 'Living',
 }
 
 
@@ -26,6 +27,7 @@ _ADR_STATUS_ADMONITION = {
     'draft': 'note',
     'undecided': 'warning',
     'decided': 'success',
+    'living': 'info',
 }
 
 
