@@ -54,30 +54,6 @@
         force: true
         path: sparqld/skills/sparqld
 
-    "~/.cursor/skills/yaml-ld":
-        relink: true
-        create: true
-        force: true
-        path: skills/yaml-ld
-
-    "~/.claude/skills/yaml-ld":
-        relink: true
-        create: true
-        force: true
-        path: skills/yaml-ld
-
-    "~/.codex/skills/yaml-ld":
-        relink: true
-        create: true
-        force: true
-        path: skills/yaml-ld
-
-    "~/.gemini/config/skills/yaml-ld":
-        relink: true
-        create: true
-        force: true
-        path: skills/yaml-ld
-
     "~/.cursor/skills/shower":
         relink: true
         create: true
