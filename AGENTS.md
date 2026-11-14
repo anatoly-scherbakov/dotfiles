@@ -9,11 +9,11 @@
 ## Symlinks
 
 - Manage all symlinks (including skills) via `install.conf.yaml` and apply with `./install` (dotbot) — never use manual `ln -s`.
-- A new skill needs **four** entries in `install.conf.yaml`, one each for `~/.cursor/skills/<name>`, `~/.claude/skills/<name>`, `~/.codex/skills/<name>`, `~/.gemini/config/skills/<name>`, all pointing to `skills/<name>` with `relink: true`, `create: true`, `force: true`.
-- Every repo-defined skill under `skills/` must be available to Cursor,
-  Claude, Codex, and Antigravity. When changing skill links, audit all `skills/*`
-  directories against `~/.cursor/skills/<name>`, `~/.claude/skills/<name>`,
-  `~/.codex/skills/<name>`, and `~/.gemini/config/skills/<name>` entries in `install.conf.yaml`.
+- A new skill needs entries in `install.conf.yaml` for `~/.claude/skills/<name>`,
+  `~/.codex/skills/<name>`, and `~/.gemini/config/skills/<name>`, all pointing
+  to the skill directory with `relink: true`, `create: true`, and `force: true`.
+- Every repo-defined skill under `skills/` must be available to Claude, Codex,
+  and Gemini CLI. Audit these links when adding or changing skills.
   Exception: `spawn-claude` is Claude-only (it launches `claude`); link it only
   to `~/.claude/skills/`.
 
@@ -24,9 +24,7 @@
   blocking normal skill discovery and usage even when the skill is installed
   correctly. Explicit loading by ID still works, but the model cannot normally
   discover the skill. Claude Code also hides flagged skills from the model.
-- Do not add this flag to enable Cursor slash commands; keep skills discoverable
-  across harnesses. After adding or changing skills, reload the Cursor window
-  so it rescans `~/.cursor/skills/`.
+- Keep skills discoverable across supported harnesses.
 
 ## Subdirectory guidance
 
