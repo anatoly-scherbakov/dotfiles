@@ -1,17 +1,10 @@
 - clean:
-    - ~/.cursor/skills
     - ~/.claude/skills
     - ~/.codex/skills
     - ~/.agents/skills
     - ~/.gemini/config/skills
 
 - link:
-    "~/.cursor/skills/control-loop":
-        relink: true
-        create: true
-        force: true
-        path: skills/control-loop
-
     "~/.claude/skills/control-loop":
         relink: true
         create: true
@@ -30,12 +23,6 @@
         force: true
         path: skills/control-loop
 
-    "~/.cursor/skills/sparqld":
-        relink: true
-        create: true
-        force: true
-        path: sparqld/skills/sparqld
-
     "~/.claude/skills/sparqld":
         relink: true
         create: true
@@ -53,12 +40,6 @@
         create: true
         force: true
         path: sparqld/skills/sparqld
-
-    "~/.cursor/skills/shower":
-        relink: true
-        create: true
-        force: true
-        path: skills/shower
 
     "~/.claude/skills/shower":
         relink: true
@@ -264,12 +245,6 @@
         force: true
         path: epsonscan2/settings.sf2
 
-    "~/.cursor/skills/commit":
-        relink: true
-        create: true
-        force: true
-        path: skills/commit
-
     "~/.claude/skills/commit":
         relink: true
         create: true
@@ -300,12 +275,6 @@
         force: true
         path: agents/AGENTS.md
 
-    "~/.cursor/skills/uncommit":
-        relink: true
-        create: true
-        force: true
-        path: skills/uncommit
-
     "~/.claude/skills/uncommit":
         relink: true
         create: true
@@ -324,12 +293,6 @@
         force: true
         path: skills/uncommit
 
-    "~/.cursor/skills/retro":
-        relink: true
-        create: true
-        force: true
-        path: skills/retro
-
     "~/.claude/skills/retro":
         relink: true
         create: true
@@ -347,12 +310,6 @@
         create: true
         force: true
         path: skills/retro
-
-    "~/.cursor/skills/print-label":
-        relink: true
-        create: true
-        force: true
-        path: skills/print-label
 
     "~/.claude/skills/print-label":
         relink: true
@@ -378,12 +335,6 @@
         force: true
         path: skills/print-label
 
-    "~/.cursor/skills/notifactory":
-        relink: true
-        create: true
-        force: true
-        path: skills/notifactory
-
     "~/.claude/skills/notifactory":
         relink: true
         create: true
@@ -401,12 +352,6 @@
         create: true
         force: true
         path: skills/notifactory
-
-    "~/.cursor/skills/adr":
-        relink: true
-        create: true
-        force: true
-        path: skills/adr
 
     "~/.claude/skills/adr":
         relink: true
@@ -426,12 +371,6 @@
         force: true
         path: skills/adr
 
-    "~/.cursor/skills/mkdocs":
-        relink: true
-        create: true
-        force: true
-        path: skills/mkdocs
-
     "~/.claude/skills/mkdocs":
         relink: true
         create: true
@@ -449,12 +388,6 @@
         create: true
         force: true
         path: skills/mkdocs
-
-    "~/.cursor/skills/jeeves":
-        relink: true
-        create: true
-        force: true
-        path: skills/jeeves
 
     "~/.claude/skills/jeeves":
         relink: true
@@ -474,12 +407,6 @@
         force: true
         path: skills/jeeves
 
-    "~/.cursor/skills/address-issue":
-        relink: true
-        create: true
-        force: true
-        path: skills/address-issue
-
     "~/.claude/skills/address-issue":
         relink: true
         create: true
@@ -497,12 +424,6 @@
         create: true
         force: true
         path: skills/address-issue
-
-    "~/.cursor/skills/pr":
-        relink: true
-        create: true
-        force: true
-        path: skills/pr
 
     "~/.claude/skills/pr":
         relink: true
@@ -522,12 +443,6 @@
         force: true
         path: skills/pr
 
-    "~/.cursor/skills/address-pr-feedback":
-        relink: true
-        create: true
-        force: true
-        path: skills/address-pr-feedback
-
     "~/.claude/skills/address-pr-feedback":
         relink: true
         create: true
@@ -545,12 +460,6 @@
         create: true
         force: true
         path: skills/address-pr-feedback
-
-    "~/.cursor/skills/make-venv":
-        relink: true
-        create: true
-        force: true
-        path: skills/make-venv
 
     "~/.claude/skills/make-venv":
         relink: true
@@ -570,12 +479,6 @@
         force: true
         path: skills/make-venv
 
-    "~/.cursor/skills/concise":
-        relink: true
-        create: true
-        force: true
-        path: skills/concise
-
     "~/.claude/skills/concise":
         relink: true
         create: true
@@ -593,12 +496,6 @@
         create: true
         force: true
         path: skills/concise
-
-    "~/.cursor/skills/find-url-for":
-        relink: true
-        create: true
-        force: true
-        path: nanopublishing/skills/find-url-for
 
     "~/.claude/skills/find-url-for":
         relink: true
@@ -624,12 +521,6 @@
         force: true
         path: nanopublishing/skills/find-url-for
 
-    "~/.cursor/skills/nanopublish":
-        relink: true
-        create: true
-        force: true
-        path: nanopublishing/skills/nanopublish
-
     "~/.claude/skills/nanopublish":
         relink: true
         create: true
@@ -654,12 +545,6 @@
         force: true
         path: nanopublishing/skills/nanopublish
 
-    "~/.cursor/skills/grilling":
-        relink: true
-        create: true
-        force: true
-        path: mattpocock-skills/skills/productivity/grilling
-
     "~/.claude/skills/grilling":
         relink: true
         create: true
@@ -677,12 +562,6 @@
         create: true
         force: true
         path: mattpocock-skills/skills/productivity/grilling
-
-    "~/.cursor/skills/semantify":
-        relink: true
-        create: true
-        force: true
-        path: nanopublishing/skills/semantify
 
     "~/.claude/skills/semantify":
         relink: true
