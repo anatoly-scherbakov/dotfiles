@@ -35,6 +35,8 @@ Use the resolved issue ID as `{issue_id}` in the commit message when applicable.
 
 ## Workflow
 
+**Read-only `.git`:** If a Git write fails because `.git` is read-only, retry that specific command with elevated access. The `/commit` request authorizes these Git writes; do not ask again. If elevated access is rejected, report the blocker.
+
 1. **List changes:**  
    `git status` (and if needed `git diff --name-only`, `git diff --name-only --cached`) to see modified/added/deleted files.
 
