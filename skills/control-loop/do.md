@@ -44,6 +44,8 @@ turn and the turn its result arrives in) and a few lines of context.
    worker executes it once they pass; hold only for a gate that names a person.
    A gate that a worker or cycle agent cites stands until you can quote the text
    that lifts it; a search that misses the rule does not lift it.
+   Zero reported checks is not a pass: wait until the PR's expected checks appear
+   and complete before you merge.
 4. **Report.** Pass the cycle agent's report to the supervisor as it is. When it says
    nothing is new, say so in one line.
 
