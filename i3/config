@@ -261,6 +261,9 @@ exec --no-startup-id bash ~/.local/bin/i3-resurrect-session autosave
 bindsym $mod+q [class="Chatgpt" workspace="__focused__"] focus
 bindsym $mod+Shift+q [class="Chatgpt"] focus
 
+bindsym $mod+o [class="ai.opencode.desktop" workspace="__focused__"] focus
+bindsym $mod+Shift+o [class="ai.opencode.desktop"] focus
+
 bindsym $mod+p [class="jetbrains-pycharm" workspace="__focused__"] focus
 bindsym $mod+Shift+p [class="jetbrains-pycharm"] focus
 
