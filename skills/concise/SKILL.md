@@ -53,7 +53,14 @@ For case studies and pattern catalog, see [examples.md](examples.md).
 
 ### Stage 1 — Scan
 
-Read all in-scope documents. Build **clusters** (groups of 2+ documents sharing content), not just pairwise duplicates.
+Read all in-scope documents. Build repetition clusters within and across documents.
+For each table, list its headings, row-group headings, row labels, and non-empty
+cells. Compare each row label with its group heading, then each cell with both
+its row label and group heading. Identify wording that repeats inherited context.
+Complete both comparisons before concluding that a table has no repetition.
+For example, under “Supported formats”, a row “Supported CSV” and a cell “CSV
+format” repeat the group or row context; “CSV” and the cell's distinct detail
+may be sufficient.
 
 Detection by format:
 
