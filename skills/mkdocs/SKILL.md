@@ -17,13 +17,30 @@ resolves), the MkDocs review **includes** a Vale review of the changed
 documentation paths—same engagement, not a separate optional pass. Do not use
 this skill for a generic Markdown document that is not built with MkDocs.
 
+## Explicit review
+
+When the user asks `$mkdocs review` for a page or site, delegate the review to
+one read-only subagent. Give it the requested scope and instruct it to read this
+skill, [rules.md](rules.md), and applicable project guidance. It must apply the
+reader, concision, and verification guidance below, including Vale when
+configured. It must inventory named terms across the whole page, including each
+item in table cells, and check their first mentions against MK11. It must not
+edit project files or fix findings. Report numbered,
+actionable findings with file locations and applicable rule IDs, plus Vale
+warning and suggestion counts and any checks it could not complete. Report
+project-guidance conflicts separately. Return its findings to the user without
+making changes unless the user also requested fixes.
+
+This read-only review mode does not change the required review and error fixes
+after writing or editing documentation.
+
 ## Reader and concision
 
 - Before writing or reviewing, read `docs/AGENTS.md` when present and use its
   reader persona, scope, and review guidance. If it leaves a material audience
   decision unresolved, ask the user; otherwise infer the audience from the
   task.
-- Run the `/concise` skill when reviewing a documentation site. Apply its
+- Run the `/concise` skill when reviewing a documentation page or site. Apply its
   semantic-repetition and tautology checks to prose, examples, and adjacent
   commands.
 - Review reader progression across consecutive sections within a page and
@@ -39,79 +56,10 @@ this skill for a generic Markdown document that is not built with MkDocs.
 - Number each review finding so the user can refer to it individually.
 - Report each conflict with project-local guidance as a separate finding, even when the same example has other issues.
 
-## Authoring
+## Shared rules
 
-- Show the right-hand table of contents only when it has three or more entries.
-  For fewer entries, set `hide: [toc]` in the page frontmatter. Count the
-  rendered TOC items (Material heading levels that appear in the sidebar), not
-  only the headings written in the Markdown source.
-- One page stands for one idea. Keep a page whole while it has one idea. When a
-  second independent idea arrives, give each idea its own page and make the
-  parent an index. Adding an idea must not rewrite the page for an existing idea.
-- Give runnable examples the execution context they require: prerequisites,
-  filenames, working directory, complete flags, and whether a command keeps
-  running or needs a second terminal. Distinguish user-created inputs from
-  generated outputs; output directory previews show generated files only.
-- Never hand-write a generated document into a page. Include the file the
-  command wrote, through the project's renderer.
-- A command and its result are read as one step. Put the result immediately
-  after the command. Prose or another command between them breaks the flow.
-- Keep front-page examples self-contained. For a short shell query accepted on
-  standard input, use the project's selected inline form (for example,
-  `echo '…' | command --query -`) instead of requiring a separate file.
-- Format a link to a GitHub repository root as
-  `[:fontawesome-brands-github: \`org/repo\`](https://github.com/org/repo)`.
-  Keep the repository identity inside the link even when surrounding prose
-  supplies a human-friendly product name.
-- Format a GitHub file link as
-  `[:fontawesome-brands-github: \`filename.ext\`](https://github.com/org/repo/blob/ref/path/filename.ext)`.
-  The filename, rather than the repository, identifies the linked resource.
-- Use MkDocs Material icon shortcodes instead of raw emoji when an icon is
-  intended to match the site theme.
-- Give every Material navigation section index an `icon:` frontmatter entry
-  that matches its H1 shortcode; an H1 shortcode alone does not appear in the
-  sidebar.
-- For a named product or vendor, check the theme's `simple/` and
-  `fontawesome/brands/` icon packs first and use that brand shortcode when
-  present. Use a generic Material icon only when no brand SVG exists.
-- When a project documents RO-Crates, make the first rendered `RO-Crate`
-  mention a link to [RO-Crate](https://www.researchobject.org/ro-crate/).
-- Format a card index from [templates/cards.md](templates/cards.md). Keep an
-  existing project's heading icons consistent; do not introduce site-wide icon
-  or divider rules merely from this skill.
-- Document a Rust CLI from [templates/rust-cli.md](templates/rust-cli.md).
-  Derive the argument tables and the command index from the compiled command.
-- Use the Single Responsibility Principle (SRP) to decide where a fact
-  belongs across code, configuration, metadata, and documentation. Prefer
-  the text that was never written over a redundant restatement. If readers
-  need a repeated value, render it from its canonical source to prevent
-  drift.
-- Avoid copying repeated content blocks between pages. Include canonical files
-  where appropriate; when `mkdocs-macros-plugin` is already configured,
-  define and reuse a macro.
-- When project-local MkDocs macros outgrow one module, suggest a package named
-  for the configured `module_name` (for example, `docs_macros/`). Group
-  implementations by responsibility and keep `__init__.py` limited to explicit
-  reexports, including `define_env`. Preserve the configured entry point and
-  existing imports when converting.
-- Render CSV example data from its canonical file through the project's
-  configured renderer.
-- When files are part of the lesson, pair readable previews with links to the
-  complete, exact artifacts. Preserve meaningful identifiers and empty cells.
-  Choose result previews from the actual media type when available, which can
-  differ from the filename extension or requested format.
-- Show discontiguous ranges from one source file in a single fenced block,
-  using line-range includes and ellipses or comments for omitted sections.
-- Use an admonition when a page needs a compact, reader-facing status or scope
-  notice. Give it a precise title and avoid repeating the following paragraph.
-- Treat a page's metadata as belonging to that page type. Do not apply an ADR
-  metadata macro to a supporting planning page merely because it sits beneath
-  an ADR.
-- When a site renders ADR status via macros or decision-log CSS, treat
-  `living` as a first-class status: the chosen outcome is filled (no title
-  ellipsis); the banner and decision-card styles must recognize it; comparison
-  tables marked living are expected to gain rows when new alternatives appear.
-  Review must check the status banner, decision cards, and status styles.
+Read and apply [rules.md](rules.md) when writing or reviewing MkDocs pages.
+Give the same rules to any writer and reviewer roles.
 
 ## Verification
 
