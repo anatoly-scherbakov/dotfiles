@@ -26,6 +26,13 @@
   discover the skill. Claude Code also hides flagged skills from the model.
 - Keep skills discoverable across supported harnesses.
 
+## Skill rules
+
+- When a skill has shared rules, keep them in `rules.md` and instruct each
+  applicable role in `SKILL.md` to read and apply them. Write each rule as a
+  separate paragraph starting with a stable, unique identifier and a colon,
+  such as `**MK01**:`.
+
 ## Subdirectory guidance
 
 - [agents/AGENTS.md](agents/AGENTS.md) - global agent guidance source linked into Codex
