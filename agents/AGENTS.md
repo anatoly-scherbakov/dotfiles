@@ -49,6 +49,9 @@
 
 ## Subagents
 
+- Delegate well-defined, potentially context-heavy tasks to a subagent, even
+  when their scope is narrow. Give the subagent a bounded objective and the
+  relevant sources.
 - Delegate each side task (investigation, review fix, CI fix,
   watch-and-merge, explainer research) to a background subagent at once.
   Keep the main thread for the user's questions and decisions.
