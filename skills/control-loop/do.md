@@ -15,17 +15,26 @@ turn and the turn its result arrives in) and a few lines of context.
 
 ## One cycle, in the session
 
-1. **Clock.** Run `CronList` and look for jobs whose prompt is the one above. Delete
-   each that is past its time. When one is still pending, keep it and create none.
-   When none is pending, create a one-shot job (`CronCreate`, `recurring: false`) at
-   now plus the clock's `sample-period`, with that prompt. Do this first, so a failed
-   cycle still has a next one. A cycle that a job started finds that job past its
-   time, so it always arms the next one.
+1. **Clock.** Run `CronList` and look for jobs whose prompt is the one above. Do this
+   first, so a failed cycle still has a next one.
+   - **Backstop.** When no recurring job has that prompt, create one
+     (`CronCreate`, `recurring: true`) every 3 hours, only on the hours of the
+     clock's `window`: a wake after a gap of more than an hour rewrites the whole
+     cache. A turn that fails before its first tool call arms no job, and the
+     backstop restarts the loop. A recurring job expires after 7 days; this step
+     creates it again.
+   - **Next tick.** Delete each one-shot job with that prompt that is past its time.
+     When one is still pending, keep it and create none. When none is pending, create
+     a one-shot job (`recurring: false`) at now plus the clock's `sample-period`, with
+     that prompt. A cycle that a one-shot job started finds that job past its time,
+     so it always arms the next one.
+   - **Backstop tick.** When a job started this turn and a one-shot job is still
+     pending, the loop is alive: end the turn and run no cycle agent.
    **Window.** Read the clock's `window` with one command
    (`grep -m1 '^  window:' <loop file>`); a loop without one ticks at all hours. When
-   now plus the sample period falls outside the window, create the job at the
-   window's next start instead. When now is outside the window and a job started this
-   turn, arm the next job and end the turn: run no cycle agent.
+   now plus the sample period falls outside the window, create the one-shot job at
+   the window's next start instead. When now is outside the window and a job started
+   this turn, arm the next job and end the turn: run no cycle agent.
 2. **Cycle agent.** Start one agent on the mid-tier model, with a non-fork agent
    type (in Claude Code: `model: "sonnet"`), and the brief in
    [Cycle agent](#cycle-agent). At most one cycle agent runs at a time: while one
@@ -56,12 +65,12 @@ turn and the turn its result arrives in) and a few lines of context.
   cycle agent's brief, or keep the report for the cycle agent that is running now.
   Do not handle it in the session.
 - **Every turn** of the session, whatever started it (a user message, a compaction
-  summary, a report), runs `CronList` first. When no job for this file is pending,
-  run a cycle now. A compaction summary must carry the `do` command, this rule
-  and the task ids not yet given to a cycle agent, or the next turn forgets the loop
-  is running; the pending job is the backstop.
-- **To stop** the loop, delete its job with `CronDelete`, and run a last cycle agent
-  that records the stop in the state file. The loop also stops when the session
+  summary, a report), runs `CronList` first. When no one-shot job for this file is
+  pending, run a cycle now. A compaction summary must carry the `do` command, this
+  rule and the task ids not yet given to a cycle agent, or the next turn forgets the
+  loop is running; the pending jobs are the backstop.
+- **To stop** the loop, delete its two jobs with `CronDelete`, and run a last cycle
+  agent that records the stop in the state file. The loop also stops when the session
   closes; `do` in a new session resumes from the state file.
 - **A small context** costs less, because each wake re-reads the session's context.
   The harness's automatic compaction keeps it small: the state file holds the loop's
