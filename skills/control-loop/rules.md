@@ -94,13 +94,11 @@ the `review` mode checks against them. Cite a rule by its number.
   whose clause no `Verified` check covers. Run it with sparqld 0.1.7 or newer
   (see the skill's Prerequisite). If `sparqld` is missing or older, propose
   `cargo install sparqld` (with `--force` when upgrading) and do not treat the
-  check as passed until that version is available. Then:
-  - through the project's `control-loop` MCP server (the `sparqld` skill), set up in
-    the local scope, so it is not committed:
-    `claude mcp add --scope local control-loop -- sparqld mcp --pattern '<directory>/CONTROL-LOOP.md' --pattern '<directory>/loop-state.md' --pattern '<directory>/contexts/**' <absolute project path>`,
-    where `<directory>` is the file's directory relative to the project root (no
-    prefix for the root). Its tool appears from the next session on;
-  - or, for a checkout without that server (a worktree), over HTTP:
-    `sparqld --no-watch --port <free port>` with the same patterns, in the background,
-    then `curl --data-urlencode query@<this skill>/check.rq http://127.0.0.1:<port>/`,
-    then stop sparqld.
+  check as passed until that version is available. Run it only through the
+  project's `control-loop` MCP server (the `sparqld` skill), set up in the local
+  scope, so it is not committed:
+  `claude mcp add --scope local control-loop -- sparqld mcp --pattern '<directory>/CONTROL-LOOP.md' --pattern '<directory>/loop-state.md' --pattern '<directory>/contexts/**' <absolute project path>`,
+  where `<directory>` is the file's directory relative to the project root (no
+  prefix for the root). Its tool appears from the next session on. Where that
+  server is not available (a worktree, or before the next session), report that
+  the check waits for it.
