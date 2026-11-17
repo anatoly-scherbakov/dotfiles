@@ -32,4 +32,5 @@ reported:
 
 # Loop state
 
-Written by the `control-loop` skill's `do` mode every cycle. Not committed.
+Written by the `control-loop` skill's `do` mode every cycle and committed. A gap that
+is closed and reported is deleted.

@@ -59,7 +59,7 @@ flow-control:
   - $type: WorkInProgressLimit
     limit: <what is bounded, and the bound>
 
-state: loop-state.md
+state: STATE.md
 
 memory:
   - <where the loop keeps what it learned between ticks>

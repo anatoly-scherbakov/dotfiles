@@ -1,6 +1,6 @@
 ---
 name: control-loop
-description: Create, review or run an agentic feedback loop described by a CONTROL-LOOP.md file, whose YAML-LD frontmatter is the loop's source of truth in control-theory terms (goal, set point, sensor, check, controller, actuator, work-in-progress limit, disturbance, supervisor). Use for "/control-loop create <directory>", "/control-loop review <file>", "/control-loop do <file>", or when asked to describe, audit or run a loop.
+description: Create, review or run an agentic feedback loop described by a CONTROL-LOOP.md file in a loop directory, whose YAML-LD frontmatter is the loop's source of truth in control-theory terms (goal, set point, sensor, check, controller, actuator, work-in-progress limit, disturbance, supervisor). Use for "/control-loop create <directory>", "/control-loop review <directory>", "/control-loop do <directory>", or when asked to describe, audit or run a loop.
 ---
 
 # Control loop
@@ -24,14 +24,13 @@ Create, review, and the `C18` check need [`sparqld`](https://crates.io/crates/sp
 
 ## Modes
 
-The first argument picks the mode; the second is a directory (`create`) or a
-`CONTROL-LOOP.md` path. Read the mode's file and follow it.
+The first argument picks the mode; the second is the loop directory. Read the mode's file and follow it.
 
 | Mode | Does | File |
 |---|---|---|
 | `create <directory>` | Writes a new `CONTROL-LOOP.md` from the loop's live definitions | [create.md](create.md) |
-| `review <file>` | Reports the file's breaches of the rules, its drift from the live definitions, and gaps in the loop's design | [review.md](review.md) |
-| `do <file>` | Runs the loop from this session: schedules itself, and each cycle a fresh agent senses, compares, records and returns the jobs to start | [do.md](do.md) |
+| `review <directory>` | Reports the loop's breaches of the rules, its drift from the live definitions, and gaps in the loop's design | [review.md](review.md) |
+| `do <directory>` | Runs the loop from this session: schedules itself, and each cycle a fresh agent senses, compares, records and returns the jobs to start | [do.md](do.md) |
 
 ## Shared resources
 
@@ -44,6 +43,6 @@ The first argument picks the mode; the second is a directory (`create`) or a
   (`jsonld:Context` + `schema:contentUrl`); sparqld resolves that URI from the
   local file and does not fetch it.
 - [template.md](template.md): the starting point for `create`.
-- [state-template.md](state-template.md): the shape of `loop-state.md`, which `do`
-  writes beside the loop file (gitignored).
+- [state-template.md](state-template.md): the shape of `STATE.md`, which `do`
+  writes beside the loop file (committed).
 - [check.rq](check.rq): the check (`C18`).

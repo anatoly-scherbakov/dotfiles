@@ -1,10 +1,11 @@
 # Mode: do
 
-Run the loop that a `CONTROL-LOOP.md` describes, from this session. `do` is
+Run the loop that a loop directory describes, from this session. `do` is
 idempotent: the first call starts the loop, and the scheduled job calls the same
 command for every later cycle. A second call never schedules a second job.
 
-The job's prompt is `/control-loop do <path to CONTROL-LOOP.md relative to the repo root>`.
+The job's prompt is `/control-loop do <directory relative to the repo root>`. The
+directory holds `CONTROL-LOOP.md` and `STATE.md`.
 The session runs from the repo root. Never write a machine-local path (home directory,
 scratchpad, config directory) into a loop file, a state file or a brief template.
 
@@ -41,7 +42,7 @@ turn and the turn its result arrives in) and a few lines of context.
    type (in Claude Code: `model: "sonnet"`), and the brief in
    [Cycle agent](#cycle-agent). At most one cycle agent runs at a time: while one
    runs, keep new reports for the next. Give it:
-   - the loop file's path and the state file's path, relative to the repo root;
+   - the loop directory, relative to the repo root;
    - the task ids of the agents the session started since the last cycle, each with
      the gap or sensor it serves;
    - the reports of agents that finished since the last cycle, verbatim.
@@ -67,7 +68,7 @@ turn and the turn its result arrives in) and a few lines of context.
   cycle agent's brief, or keep the report for the cycle agent that is running now.
   Do not handle it in the session.
 - **Every turn** of the session, whatever started it (a user message, a compaction
-  summary, a report), runs `CronList` first. When no one-shot job for this file is
+  summary, a report), runs `CronList` first. When no one-shot job for this loop is
   pending, run a cycle now. A compaction summary must carry the `do` command, this
   rule and the task ids not yet given to a cycle agent, or the next turn forgets the
   loop is running; the pending jobs are the backstop.
@@ -89,7 +90,7 @@ report; it starts no agents.
 
 1. **State.** Read the loop file and the state file. On the first cycle, create the
    state file from [state-template.md](state-template.md), with the loop file's
-   `"@base"` copied verbatim, and check that the repo's `.gitignore` lists it. It
+   `"@base"` copied verbatim, and commit it with the loop file. It
    holds each sensor's latest observation (with the task id of a sensor agent still
    running), each gap with the clauses it breaks and its actuation (the actuator, the
    `on-gap` taken, the owner: an agent's task id or a pull request URL, and the
@@ -114,8 +115,9 @@ report; it starts no agents.
 5. **Record.** Write the state file, then run [`check.rq`](check.rq) (`C18`) on it
    through the project's `control-loop` sparqld MCP server. If that server is not
    set up, set it up as [rules.md](rules.md) `C18` says, and report that the check
-   waits for the next session. Move each gap that is closed and reported to
-   `loop-state.archive.md` beside the state file. Keep only open gaps in the state file.
+   waits for the next session. Delete each gap that is closed and reported from the state
+   file; git history is the record. `STATE.md` is committed: ship it in one pull
+   request per cycle and merge it once checks pass, under the project's merge rule.
 6. **Return** two parts, and nothing else:
    - **Jobs**: each job's brief, ready to pass to an agent, and the gap or sensor it
      serves. Each brief ends with: "Any agent you start runs on the same model as

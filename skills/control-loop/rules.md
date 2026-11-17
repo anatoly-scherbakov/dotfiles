@@ -5,8 +5,9 @@ the `review` mode checks against them. Cite a rule by its number.
 
 ## Files
 
-- `C01` A `CONTROL-LOOP.md` describes one loop. It lives in the project root, or beside
-  the documents the loop works from (for example a runbook directory).
+- `C01` A `CONTROL-LOOP.md` describes one loop. It lives in a loop directory, in the
+  project root or beside the documents the loop works from (for example a runbook
+  directory). The directory holds `CONTROL-LOOP.md`, `STATE.md` and `contexts/`.
 - `C02` A `contexts/` directory sits beside it, holding a copy of this skill's
   `contexts/control-loop.jsonld`. It is JSON-LD, never YAML-LD: some knowledge-graph
   importers load every `.yamlld` file in a repository, whatever their file patterns
@@ -53,8 +54,9 @@ the `review` mode checks against them. Cite a rule by its number.
   (`<days> HH:MM-HH:MM UTC`) limits the ticks to those days and hours; a loop with no
   window ticks at all hours.
 - `C12` `memory` lists the durable records the loop reads and writes. `state` is
-  `loop-state.md`, the file beside `CONTROL-LOOP.md` that the `do` mode reads and
-  writes every cycle. The repo's `.gitignore` lists it, so it is never committed.
+  `STATE.md`, the file beside `CONTROL-LOOP.md` that the `do` mode reads and
+  writes every cycle. It is committed: the cycle agent writes it, and each cycle ships
+  it in one pull request that merges once checks pass, under the project's merge rule.
   It is Markdown-LD in the shape of [state-template.md](state-template.md): each
   sensor's latest `Observation` (SOSA), each `Gap` with the clauses it `breaks` and
   its `Actuation` (SOSA: the actuator, the `on-gap` taken, the `owner`, the
@@ -92,14 +94,14 @@ the `review` mode checks against them. Cite a rule by its number.
   value the context does not define, and each reference to a clause, sensor,
   actuator or loop that no file defines, and each open gap with `on-gap: Propose`
   whose clause no `Verified` check covers, and each gap whose status is `closed`
-  (a closed, reported gap moves to `loop-state.archive.md`). Run it with sparqld 0.1.7 or newer
+  (a closed, reported gap is deleted from the file). Run it with sparqld 0.1.7 or newer
   (see the skill's Prerequisite). If `sparqld` is missing or older, propose
   `cargo install sparqld` (with `--force` when upgrading) and do not treat the
   check as passed until that version is available. Run it only through the
   project's `control-loop` MCP server (the `sparqld` skill), set up in the local
   scope, so it is not committed:
-  `claude mcp add --scope local control-loop -- sparqld mcp --pattern '<directory>/CONTROL-LOOP.md' --pattern '<directory>/loop-state.md' --pattern '<directory>/contexts/**' <absolute project path>`,
-  where `<directory>` is the file's directory relative to the project root (no
+  `claude mcp add --scope local control-loop -- sparqld mcp --pattern '<directory>/CONTROL-LOOP.md' --pattern '<directory>/STATE.md' --pattern '<directory>/contexts/**' <absolute project path>`,
+  where `<directory>` is the loop directory relative to the project root (no
   prefix for the root). Its tool appears from the next session on. Where that
   server is not available (a worktree, or before the next session), report that
   the check waits for it.

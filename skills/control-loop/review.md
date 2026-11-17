@@ -1,6 +1,6 @@
 # Mode: review
 
-Review an existing `CONTROL-LOOP.md`. Follow [rules.md](rules.md). The review reads
+Review the `CONTROL-LOOP.md` in a loop directory. Follow [rules.md](rules.md). The review reads
 and reports; it edits the file only when the user asks for the fixes.
 
 0. Confirm `sparqld` 0.1.7 or newer (skill Prerequisite). Propose install or
