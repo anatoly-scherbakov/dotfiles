@@ -4,7 +4,9 @@ Run the loop that a `CONTROL-LOOP.md` describes, from this session. `do` is
 idempotent: the first call starts the loop, and the scheduled job calls the same
 command for every later cycle. A second call never schedules a second job.
 
-The job's prompt is `/control-loop do <absolute path to CONTROL-LOOP.md>`.
+The job's prompt is `/control-loop do <path to CONTROL-LOOP.md relative to the repo root>`.
+The session runs from the repo root. Never write a machine-local path (home directory,
+scratchpad, config directory) into a loop file, a state file or a brief template.
 
 The session keeps only the clock and starts agents. A cycle agent does the work of
 each cycle in its own fresh context, and the state file (`C12`) is its memory. Each
@@ -39,7 +41,7 @@ turn and the turn its result arrives in) and a few lines of context.
    type (in Claude Code: `model: "sonnet"`), and the brief in
    [Cycle agent](#cycle-agent). At most one cycle agent runs at a time: while one
    runs, keep new reports for the next. Give it:
-   - the absolute paths of the loop file and the state file;
+   - the loop file's path and the state file's path, relative to the repo root;
    - the task ids of the agents the session started since the last cycle, each with
      the gap or sensor it serves;
    - the reports of agents that finished since the last cycle, verbatim.
