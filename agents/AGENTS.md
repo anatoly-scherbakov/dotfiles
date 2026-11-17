@@ -150,6 +150,10 @@
   asks me whether to keep its worktree. This overrides any project doc that says
   to remove the worktree once its PR merges. Cleaning up what the session
   started (stacks, containers, images, scratch files) still applies.
+- Before removing another worktree (e.g. in a disk cleanup), require an empty
+  `git status --porcelain --ignored` except for regenerable ignored directories
+  (`.venv`, `node_modules`, caches), and HEAD on a remote. Ask the session that
+  owns the worktree whether it is in use; a process-cwd scan misses some.
 
 ## Python Project Environments
 
