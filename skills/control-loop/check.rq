@@ -30,5 +30,12 @@ SELECT DISTINCT ?problem ?subject ?detail WHERE {
     BIND("proposed gap without a verified check" AS ?problem)
     BIND(STR(?clause) AS ?detail)
   }
+  UNION
+  {
+    ?subject a control:Gap ; control:actuation ?actuation .
+    ?actuation control:status "closed" .
+    BIND("closed gap left in the state file" AS ?problem)
+    BIND("" AS ?detail)
+  }
 }
 ORDER BY ?problem ?subject

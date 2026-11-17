@@ -91,7 +91,8 @@ the `review` mode checks against them. Cite a rule by its number.
   sparqld could not load, with the parser's line and column, each key, class or
   value the context does not define, and each reference to a clause, sensor,
   actuator or loop that no file defines, and each open gap with `on-gap: Propose`
-  whose clause no `Verified` check covers. Run it with sparqld 0.1.7 or newer
+  whose clause no `Verified` check covers, and each gap whose status is `closed`
+  (a closed, reported gap moves to `loop-state.archive.md`). Run it with sparqld 0.1.7 or newer
   (see the skill's Prerequisite). If `sparqld` is missing or older, propose
   `cargo install sparqld` (with `--force` when upgrading) and do not treat the
   check as passed until that version is available. Run it only through the

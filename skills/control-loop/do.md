@@ -112,7 +112,8 @@ report; it starts no agents.
 5. **Record.** Write the state file, then run [`check.rq`](check.rq) (`C18`) on it
    through the project's `control-loop` sparqld MCP server. If that server is not
    set up, set it up as [rules.md](rules.md) `C18` says, and report that the check
-   waits for the next session.
+   waits for the next session. Move each gap that is closed and reported to
+   `loop-state.archive.md` beside the state file. Keep only open gaps in the state file.
 6. **Return** two parts, and nothing else:
    - **Jobs**: each job's brief, ready to pass to an agent, and the gap or sensor it
      serves. Each brief ends with: "Any agent you start runs on the same model as
