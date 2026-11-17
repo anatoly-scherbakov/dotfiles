@@ -44,5 +44,5 @@ The first argument picks the mode; the second is the loop directory. Read the mo
   local file and does not fetch it.
 - [template.md](template.md): the starting point for `create`.
 - [state-template.md](state-template.md): the shape of `STATE.md`, which `do`
-  writes beside the loop file (committed).
+  writes beside the loop file (committed when the loop directory is in a git repo).
 - [check.rq](check.rq): the check (`C18`).

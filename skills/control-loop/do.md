@@ -90,7 +90,7 @@ report; it starts no agents.
 
 1. **State.** Read the loop file and the state file. On the first cycle, create the
    state file from [state-template.md](state-template.md), with the loop file's
-   `"@base"` copied verbatim, and commit it with the loop file. It
+   `"@base"` copied verbatim, and, when the loop directory is in a git repo, commit it with the loop file. It
    holds each sensor's latest observation (with the task id of a sensor agent still
    running), each gap with the clauses it breaks and its actuation (the actuator, the
    `on-gap` taken, the owner: an agent's task id or a pull request URL, and the
@@ -120,6 +120,8 @@ report; it starts no agents.
    waits for the next session. Delete each gap that is closed and reported from the state
    file; git history is the record. `STATE.md` is committed: ship it in one pull
    request per cycle and merge it once checks pass, under the project's merge rule.
+   When the loop directory is not in a git repo, keep `STATE.md` beside the loop file
+   and skip the commit.
 6. **Return** two parts, and nothing else:
    - **Jobs**: each job's brief, ready to pass to an agent, and the gap or sensor it
      serves. Each brief ends with: "Any agent you start runs on the same model as

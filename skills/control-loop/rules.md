@@ -57,6 +57,7 @@ the `review` mode checks against them. Cite a rule by its number.
   `STATE.md`, the file beside `CONTROL-LOOP.md` that the `do` mode reads and
   writes every cycle. It is committed: the cycle agent writes it, and each cycle ships
   it in one pull request that merges once checks pass, under the project's merge rule.
+  A loop directory outside any git repo keeps `STATE.md` there uncommitted.
   It is Markdown-LD in the shape of [state-template.md](state-template.md): each
   sensor's latest `Observation` (SOSA), each `Gap` with the clauses it `breaks` and
   its `Actuation` (SOSA: the actuator, the `on-gap` taken, the `owner`, the
