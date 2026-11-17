@@ -45,7 +45,9 @@ turn and the turn its result arrives in) and a few lines of context.
    - the loop directory, relative to the repo root;
    - the task ids of the agents the session started since the last cycle, each with
      the gap or sensor it serves;
-   - the reports of agents that finished since the last cycle, verbatim.
+   - the reports of agents that finished since the last cycle, verbatim;
+   - the task ids of the agents still running now; every other task id in the state
+     file belongs to an agent that is gone.
    Extra items for one cycle are additions: the brief says that the agent still runs
    every sensor and every check.
    End the turn; the agent's result starts the next one.
@@ -108,7 +110,10 @@ report; it starts no agents.
    - `on-gap: Act`: return a job, one per gap, whose brief holds the facts already
      known, the actuator's gate, the clause's text and the gap's text. Record the gap
      with the status `starting`; the next cycle records its owner. A gap still
-     `starting` after one `sample-period`, with no task id, gets a new job.
+     `starting` after one `sample-period`, with no task id, gets a new job. A gap
+     whose owner is a task id not in the brief's running list, or that has no owner,
+     gets a new job in this cycle. "Waiting" is a valid status only when the gap
+     waits on a person's act that you checked this cycle.
    - `on-gap: Propose`: put in the report what to do and why, and record the gap as
      `proposed`.
    Never do a gated step yourself: the worker stops at its actuator's gate.
