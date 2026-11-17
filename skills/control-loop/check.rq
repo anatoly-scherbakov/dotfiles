@@ -16,7 +16,7 @@ SELECT DISTINCT ?problem ?subject ?detail WHERE {
   }
   UNION
   {
-    VALUES ?reference { control:covers control:breaks control:loop sosa:madeBySensor sosa:madeByActuator }
+    VALUES ?reference { control:covers control:breaks control:loop control:inner-loop sosa:madeBySensor sosa:madeByActuator }
     ?resource ?reference ?subject .
     FILTER NOT EXISTS { ?subject a ?type }
     BIND("dangling reference" AS ?problem)

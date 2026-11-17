@@ -4,7 +4,6 @@
     "control": "urn:control-loop:vocab/",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "ControlLoop": "control:ControlLoop",
-    "Goal": "control:Goal",
     "SetPoint": "control:SetPoint",
     "Clock": "control:Clock",
     "Sensor": "control:Sensor",
@@ -20,7 +19,15 @@
     "Supervisor": "control:Supervisor",
     "Termination": "control:Termination",
     "system": "control:system",
-    "goal": "control:goal",
+    "inner-loop": {
+      "@id": "control:inner-loop",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "reference-inputs": {
+      "@id": "control:reference-inputs",
+      "@container": "@set"
+    },
     "set-point": "control:set-point",
     "clock": "control:clock",
     "sensors": "control:sensors",

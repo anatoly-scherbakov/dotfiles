@@ -7,7 +7,7 @@ and reports; it edits the file only when the user asks for the fixes.
    upgrade if missing or outdated; do not run the check until that version is
    available (or the user declines—then report that the check could not run).
 1. Run the check (`C18`). Each row is a finding.
-2. Check the file against each rule `C01`–`C17`. Each breach is a finding, with its
+2. Check the file against each rule `C01`–`C17` and `C19`. Each breach is a finding, with its
    rule number.
 3. Read the live definitions again (`C15`) and compare. Each difference is a finding:
    a `definition` link to a file that is gone, a limit, gate or schedule that changed,

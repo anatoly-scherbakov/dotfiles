@@ -11,7 +11,7 @@ Write a new `CONTROL-LOOP.md` for a loop. Follow [rules.md](rules.md).
    that is the `review` mode's work.
 3. Copy [template.md](template.md) to `CONTROL-LOOP.md` there, and this skill's
    [contexts/](contexts/) files into a `contexts/` directory beside it (`C02`).
-4. Fill in the template by the rules `C03`–`C14`. Where a part is missing, add it with
+4. Fill in the template by the rules `C03`–`C14` and `C19` (an inner loop another loop sets is an `inner-loop` link, not a controller). Where a part is missing, add it with
    a `status` (`C14`); do not leave it out.
 5. Write the body (`C17`).
 6. Run the check (`C18`). Fix every row it returns.

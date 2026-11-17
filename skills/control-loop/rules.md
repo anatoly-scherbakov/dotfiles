@@ -29,8 +29,7 @@ the `review` mode checks against them. Cite a rule by its number.
 
 - `C05` The root node has `$id: "#loop"`, `$type: ControlLoop`, a `name` and a
   `system` that says in words what the loop controls.
-- `C06` The `goal` is reached once. The `set-point` is held on every tick on the way
-  there. Both are free text.
+- `C06` The `set-point` is held on every tick. It is free text.
 - `C07` The set point's conditions are `clauses`. Each is a `SetPoint` with
   `$id: "#set-point-<name>"`, a short `name` and a `text`. The text is the source of
   truth; a check refines a clause and never replaces its text.
@@ -73,6 +72,12 @@ the `review` mode checks against them. Cite a rule by its number.
   `limit`.
 - `C14` A part the loop lacks gets a node anyway, with a `status` that says it is
   missing. A limit left out on purpose says so in its `status`, with the decision.
+- `C19` A loop whose set point another loop sets is an inner loop of a cascade. The
+  outer file names it with an `inner-loop` link to a node of `$type: ControlLoop` with a
+  `name`, a `system` and a `definition` (its own file). The actuator that sets its
+  reference lists the triggers it fires as `reference-inputs` (plain strings). The outer
+  loop sets the inner loop's reference and never does the inner loop's step: the inner
+  loop senses, compares and acts on its own clock.
 
 ## Sources
 

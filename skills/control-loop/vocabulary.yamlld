@@ -8,6 +8,7 @@
   owl: http://www.w3.org/2002/07/owl#
   skos: http://www.w3.org/2004/02/skos/core#
   sosa: http://www.w3.org/ns/sosa/
+  ssn: http://www.w3.org/ns/ssn/
   wd: https://www.wikidata.org/entity/
   label: rdfs:label
   comment: rdfs:comment
@@ -35,13 +36,6 @@ $included:
       A loop that measures a system, compares the measurement with a set point, and
       acts to reduce the difference.
     exact-match: wd:Q48995591
-
-  - $id: Goal
-    $type: owl:Class
-    label: Goal
-    comment: >-
-      A condition the supervisor wants reached once. It moves the set point over
-      time; the loop holds the set point on the way there.
 
   - $id: SetPoint
     $type: owl:Class
@@ -125,7 +119,7 @@ $included:
     label: Gap
     comment: >-
       A difference between a set-point clause and what the sensors measured, or a
-      piece of work a sensor found that moves the loop toward its goal.
+      piece of work a sensor found that the loop should do.
 
   - $id: Controller
     $type: owl:Class
@@ -155,12 +149,12 @@ $included:
   - $id: Supervisor
     $type: owl:Class
     label: Supervisor
-    comment: The party that sets the goal and tunes the loop.
+    comment: The party that tunes the loop and decides what only a person can.
 
   - $id: Termination
     $type: owl:Class
     label: Termination
-    comment: When the loop has reached its goal, and who decides it.
+    comment: When the loop counts as done, and who decides it.
 
   # Properties of a control loop
 
@@ -170,17 +164,33 @@ $included:
     comment: The system the loop controls, in words.
     domain: ControlLoop
 
-  - $id: goal
+  - $id: inner-loop
     $type: rdf:Property
-    label: goal
+    label: inner loop
+    comment: >-
+      A loop nested in this one, as in cascade control: this outer loop sets the inner
+      loop's reference (its set point) through an actuator and never does the inner
+      loop's own step.
     domain: ControlLoop
-    range: Goal
+    range: ControlLoop
+    close-match:
+      - wd:Q1734984
+      - ssn:hasSubSystem
 
   - $id: set-point
     $type: rdf:Property
     label: set point
     domain: ControlLoop
     range: SetPoint
+
+  - $id: reference-inputs
+    $type: rdf:Property
+    label: reference inputs
+    comment: >-
+      The triggers or inputs through which an actuator sets an inner loop's reference
+      (for example the names of the manual triggers it fires), as plain strings.
+    domain: Actuator
+    close-match: wd:Q1752097
 
   - $id: clock
     $type: rdf:Property
@@ -258,7 +268,7 @@ $included:
   - $id: text
     $type: rdf:Property
     label: text
-    comment: The free-text statement of a goal, a set point, a noise or a disturbance.
+    comment: The free-text statement of a set point, a noise or a disturbance.
 
   - $id: clauses
     $type: rdf:Property

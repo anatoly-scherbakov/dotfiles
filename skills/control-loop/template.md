@@ -8,10 +8,6 @@ $type: ControlLoop
 name: <loop name>
 system: <what the loop controls>
 
-goal:
-  $type: Goal
-  text: <the condition the supervisor wants reached once>
-
 set-point:
   $type: SetPoint
   text: <what the loop holds true on every tick>
@@ -48,12 +44,19 @@ controllers:
   - $type: Controller
     role: <how it picks the next action>
 
+inner-loop:
+  - $type: ControlLoop
+    name: <inner loop name>
+    system: <what the inner loop controls>
+    definition: <the inner loop's own file>
+
 actuators:
   - $id: "#actuator-<name>"
     $type: Actuator
     output: <what it produces>
     gate: <what stands between the output and the system>
     on-gap: Act
+    reference-inputs: [<trigger that sets an inner loop's reference>]
 
 flow-control:
   - $type: WorkInProgressLimit
@@ -75,7 +78,7 @@ disturbances:
 
 termination:
   $type: Termination
-  met-when: <when the goal counts as reached>
+  met-when: <when the loop counts as done>
   inferred-only: <what happens to a clause that only inferred checks cover>
 ---
 

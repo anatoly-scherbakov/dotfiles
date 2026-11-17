@@ -1,6 +1,6 @@
 ---
 name: control-loop
-description: Create, review or run an agentic feedback loop described by a CONTROL-LOOP.md file in a loop directory, whose YAML-LD frontmatter is the loop's source of truth in control-theory terms (goal, set point, sensor, check, controller, actuator, work-in-progress limit, disturbance, supervisor). Use for "/control-loop create <directory>", "/control-loop review <directory>", "/control-loop do <directory>", or when asked to describe, audit or run a loop.
+description: Create, review or run an agentic feedback loop described by a CONTROL-LOOP.md file in a loop directory, whose YAML-LD frontmatter is the loop's source of truth in control-theory terms (set point, sensor, check, controller, actuator, inner loop, work-in-progress limit, disturbance, supervisor). Use for "/control-loop create <directory>", "/control-loop review <directory>", "/control-loop do <directory>", or when asked to describe, audit or run a loop.
 ---
 
 # Control loop
@@ -34,7 +34,7 @@ The first argument picks the mode; the second is the loop directory. Read the mo
 
 ## Shared resources
 
-- [rules.md](rules.md): the rules `C01`–`C18` for a correct file. `create` writes by
+- [rules.md](rules.md): the rules `C01`–`C19` for a correct file. `create` writes by
   them and `review` checks against them.
 - [vocabulary.yamlld](vocabulary.yamlld): the terms, their labels and comments, and
   their links to Wikidata and SOSA (`urn:control-loop:vocab/`).
