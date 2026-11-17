@@ -91,12 +91,6 @@ notice. Give it a precise title and avoid repeating the following paragraph.
 metadata macro to a supporting planning page merely because it sits beneath
 an ADR.
 
-**MK23**: When a site renders ADR status via macros or decision-log CSS, treat
-`living` as a first-class status: the chosen outcome is filled (no title
-ellipsis); the banner and decision-card styles must recognize it; comparison
-tables marked living are expected to gain rows when new alternatives appear.
-Review must check the status banner, decision cards, and status styles.
-
 **MK24**: In tables and diagrams, prefer relevant icons over yes/no text.
 Distinguish unknown from no, and provide accessible labels.
 
