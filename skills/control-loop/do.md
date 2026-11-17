@@ -123,8 +123,12 @@ report; it starts no agents.
    rows. Quote every `reported` line as a string. If that server is not
    set up, set it up as [rules.md](rules.md) `C18` says, and report that the check
    waits for the next session. Delete each gap that is closed and reported from the state
-   file; git history is the record. `STATE.md` is committed: ship it in one pull
-   request per cycle and merge it once checks pass, under the project's merge rule.
+   file; git history is the record. Commit `STATE.md` only when the record changes: a
+   gap opens or closes, a gap's status or owner changes, or the cycle reports news
+   (a `reported` line other than the one-line nothing-is-new report).
+   Ship that change in one pull request and merge it once checks pass, under the
+   project's merge rule. When only observations change, leave the file written and
+   uncommitted; the next pull request carries it.
    When the loop directory is not in a git repo, keep `STATE.md` beside the loop file
    and skip the commit.
 6. **Return** two parts, and nothing else:

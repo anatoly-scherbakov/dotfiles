@@ -55,8 +55,10 @@ the `review` mode checks against them. Cite a rule by its number.
   window ticks at all hours.
 - `C12` `memory` lists the durable records the loop reads and writes. `state` is
   `STATE.md`, the file beside `CONTROL-LOOP.md` that the `do` mode reads and
-  writes every cycle. It is committed: the cycle agent writes it, and each cycle ships
-  it in one pull request that merges once checks pass, under the project's merge rule.
+  writes every cycle. It is committed when the record changes (a gap opens or closes,
+  a gap's status or owner changes, or a `reported` line with news is added): that cycle ships it
+  in one pull request that merges once checks pass, under the project's merge rule. A
+  cycle that changes only observations leaves it uncommitted.
   A loop directory outside any git repo keeps `STATE.md` there uncommitted.
   It is Markdown-LD in the shape of [state-template.md](state-template.md): each
   sensor's latest `Observation` (SOSA), each `Gap` with the clauses it `breaks` and

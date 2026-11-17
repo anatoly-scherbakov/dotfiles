@@ -32,5 +32,5 @@ reported:
 
 # Loop state
 
-Written by the `control-loop` skill's `do` mode every cycle, and committed when the loop directory is in a git repo. A gap that
+Written by the `control-loop` skill's `do` mode every cycle, and committed when its record changes and the loop directory is in a git repo. A gap that
 is closed and reported is deleted.
