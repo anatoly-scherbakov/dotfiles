@@ -1,6 +1,7 @@
 PREFIX rlog: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#>
 PREFIX control: <urn:control-loop:vocab/>
 PREFIX sosa: <http://www.w3.org/ns/sosa/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 SELECT DISTINCT ?problem ?subject ?detail WHERE {
   {
     ?entry a rlog:Entry ; rlog:resource ?subject ; rlog:message ?detail .
@@ -29,6 +30,28 @@ SELECT DISTINCT ?problem ?subject ?detail WHERE {
     FILTER NOT EXISTS { ?check control:covers ?clause ; control:verdict control:Verified }
     BIND("proposed gap without a verified check" AS ?problem)
     BIND(STR(?clause) AS ?detail)
+  }
+  UNION
+  {
+    FILTER NOT EXISTS { ?loop a control:ControlLoop }
+    BIND("loop file not loaded" AS ?problem)
+    BIND("" AS ?detail)
+  }
+  UNION
+  {
+    ?subject control:reported ?value .
+    FILTER(!isLiteral(?value) || DATATYPE(?value) != xsd:string)
+    BIND("reported value is not a string" AS ?problem)
+    BIND(IF(isLiteral(?value), STR(DATATYPE(?value)), "not a literal") AS ?detail)
+  }
+  UNION
+  {
+    { SELECT (MAX(?seen) AS ?newest) WHERE { ?any a sosa:Observation ; sosa:resultTime ?seen } }
+    { SELECT ?subject (MAX(?seen) AS ?latest) WHERE { ?any a sosa:Observation ; sosa:madeBySensor ?subject ; sosa:resultTime ?seen } GROUP BY ?subject }
+    ?clock control:sample-period ?period .
+    FILTER(?newest - ?latest > xsd:dayTimeDuration(STR(?period)))
+    BIND("stale observation" AS ?problem)
+    BIND(STR(?latest) AS ?detail)
   }
   UNION
   {

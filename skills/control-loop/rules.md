@@ -94,7 +94,13 @@ the `review` mode checks against them. Cite a rule by its number.
   value the context does not define, and each reference to a clause, sensor,
   actuator or loop that no file defines, and each open gap with `on-gap: Propose`
   whose clause no `Verified` check covers, and each gap whose status is `closed`
-  (a closed, reported gap is deleted from the file). Run it with sparqld 0.1.7 or newer
+  (a closed, reported gap is deleted from the file). It also lists "loop file not loaded"
+  (a run that loaded no loop file, for example 0 files because a pattern matched
+  nothing), each `reported` value that is not a string literal (YAML reads an
+  unquoted `: ` as a map), and each sensor whose latest observation is older
+  than one `sample-period` before the newest observation. A run that loaded 0
+  files, or failed to load any file, is a FAIL: read sparqld's load report
+  (`N source files loaded; M source files failed`). Run it with sparqld 0.1.7 or newer
   (see the skill's Prerequisite). If `sparqld` is missing or older, propose
   `cargo install sparqld` (with `--force` when upgrading) and do not treat the
   check as passed until that version is available. Run it only through the

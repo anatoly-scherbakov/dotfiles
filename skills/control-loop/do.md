@@ -113,7 +113,9 @@ report; it starts no agents.
      `proposed`.
    Never do a gated step yourself: the worker stops at its actuator's gate.
 5. **Record.** Write the state file, then run [`check.rq`](check.rq) (`C18`) on it
-   through the project's `control-loop` sparqld MCP server. If that server is not
+   through the project's `control-loop` sparqld MCP server. Read sparqld's load report:
+   0 files loaded, or 1 or more failed, is a FAIL, even when the query returns no
+   rows. Quote every `reported` line as a string. If that server is not
    set up, set it up as [rules.md](rules.md) `C18` says, and report that the check
    waits for the next session. Delete each gap that is closed and reported from the state
    file; git history is the record. `STATE.md` is committed: ship it in one pull

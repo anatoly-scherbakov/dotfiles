@@ -27,7 +27,7 @@ gaps:
       status: <starting, running, waiting for review, proposed, done>
 
 reported:
-  - <time> <one line the supervisor was told>
+  - "<time> <one line the supervisor was told>"
 ---
 
 # Loop state
