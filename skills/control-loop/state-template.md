@@ -17,7 +17,7 @@ observations:
 gaps:
   - $type: Gap
     text: <the gap, in one sentence>
-    breaks: ["#set-point-<clause>"]
+    breaks: ["#set-point-<clause>"]  # omit when no clause covers the gap
     actuation:
       $type: Actuation
       actuator: "#actuator-<name>"

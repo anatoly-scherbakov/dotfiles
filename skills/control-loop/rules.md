@@ -60,7 +60,7 @@ the `review` mode checks against them. Cite a rule by its number.
   cycle that changes only observations leaves it uncommitted.
   A loop directory outside any git repo keeps `STATE.md` there uncommitted.
   It is Markdown-LD in the shape of [state-template.md](state-template.md): each
-  sensor's latest `Observation` (SOSA), each `Gap` with the clauses it `breaks` and
+  sensor's latest `Observation` (SOSA), each `Gap` with the clauses it `breaks` (none when no clause covers it) and
   its `Actuation` (SOSA: the actuator, the `on-gap` taken, the `owner`, the
   `status`), and what was `reported`. It has the same `"@base"` as the loop file, so
   its references (`"#set-point-…"`, `"#sensor-…"`, `"#actuator-…"`) are the loop

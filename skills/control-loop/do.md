@@ -117,6 +117,12 @@ report; it starts no agents.
    - `on-gap: Propose`: put in the report what to do and why, and record the gap as
      `proposed`.
    Never do a gated step yourself: the worker stops at its actuator's gate.
+
+   A concern that a party outside the loop raises (in a meeting note, a message the
+   sensors read, or a decision record) and that the loop promised to act on is a gap in
+   the same cycle. It stays open until the promised work is done and the party has
+   been told. When no clause covers the concern, record the gap with no `breaks` and
+   report the missing clause to the supervisor.
 5. **Record.** Write the state file, then run [`check.rq`](check.rq) (`C18`) on it
    through the project's `control-loop` sparqld MCP server. Read sparqld's load report:
    0 files loaded, or 1 or more failed, is a FAIL, even when the query returns no
