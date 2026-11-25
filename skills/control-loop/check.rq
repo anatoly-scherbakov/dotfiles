@@ -25,7 +25,7 @@ SELECT DISTINCT ?problem ?subject ?detail WHERE {
   UNION
   {
     ?subject a control:Gap ; control:breaks ?clause ; control:actuation ?actuation .
-    ?actuation control:on-gap control:Propose .
+    ?actuation control:action control:propose .
     FILTER NOT EXISTS { ?actuation control:status "done" }
     FILTER NOT EXISTS { ?check control:covers ?clause ; control:verdict control:Verified }
     BIND("proposed gap without a verified check" AS ?problem)
