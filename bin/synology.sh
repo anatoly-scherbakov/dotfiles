@@ -7,6 +7,13 @@ MOUNT_POINT="$HOME/synology"
 REMOTE="${SYNOLOGY_REMOTE:-synology.local:/}"
 PASSWORD_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/synology/password"
 
+# A killed or crashed sshfs leaves its mount entry behind, and every stat
+# on it fails with "Transport endpoint is not connected".
+if findmnt -n "$MOUNT_POINT" >/dev/null && ! stat "$MOUNT_POINT" >/dev/null 2>&1; then
+    echo "Removing stale mount at $MOUNT_POINT" >&2
+    fusermount3 -uz "$MOUNT_POINT"
+fi
+
 mkdir -p "$MOUNT_POINT"
 
 if mountpoint -q "$MOUNT_POINT"; then
