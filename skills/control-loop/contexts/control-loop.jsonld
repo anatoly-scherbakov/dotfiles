@@ -53,6 +53,19 @@
       "@type": "xsd:duration"
     },
     "lifetime": "control:lifetime",
+    "trigger": "control:trigger",
+    "retry-limit": {
+      "@id": "control:retry-limit",
+      "@type": "xsd:integer"
+    },
+    "attempts": {
+      "@id": "control:attempts",
+      "@type": "xsd:integer"
+    },
+    "retry-after": {
+      "@id": "control:retry-after",
+      "@type": "xsd:dateTime"
+    },
     "window": "control:window",
     "reads": "control:reads",
     "mitigation": "control:mitigation",
@@ -77,10 +90,10 @@
     "met-when": "control:met-when",
     "inferred-only": "control:inferred-only",
     "GapAction": "control:GapAction",
-    "Act": "control:Act",
-    "Propose": "control:Propose",
-    "on-gap": {
-      "@id": "control:on-gap",
+    "act": "control:act",
+    "propose": "control:propose",
+    "action": {
+      "@id": "control:action",
       "@type": "@vocab"
     },
     "state": {
