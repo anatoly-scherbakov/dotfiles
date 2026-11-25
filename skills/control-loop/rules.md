@@ -41,17 +41,22 @@ the `review` mode checks against them. Cite a rule by its number.
   `command` (a command, query or validation) gives the same answer on the same state.
   `Inferred`: a `judge` model reads the text. A clause that only inferred checks cover
   is closed by the supervisor, never by the loop.
-- `C10` Every actuator has an `output`, a `gate` and an `on-gap`. `gate` says in words
+- `C10` Every actuator has an `output`, a `gate` and an `action`. `gate` says in words
   what stands between the output and the system: a review, a merge rule, a person's
-  yes, or the standing approval that removed it. `on-gap` says what the loop does when
-  a gap needs this actuator: `Act` when the loop may start the work now, because the
+  yes, or the standing approval that removed it. `action` says what the loop does when
+  a gap needs this actuator: `act` when the loop may start the work now, because the
   gate comes later (an agent opens a pull request and the review is the gate);
-  `Propose` when a person must decide before anything starts.
+  `propose` when a person must decide before anything starts.
 - `C11` The `clock` has a `sample-period` (an `xsd:duration`, such as `PT45M`) and a
   `mechanism`. When the `do` mode runs the loop, the mechanism says so, and the
   sample period is the interval it schedules. An optional `window`
   (`<days> HH:MM-HH:MM UTC`) limits the ticks to those days and hours; a loop with no
-  window ticks at all hours.
+  window ticks at all hours. An optional `trigger: gaps` makes a finished agent or a gap
+  that opens or closes start a dispatch (`do.md`, *Gap trigger*): the schedule is then
+  the 3-hour timer alone, which runs every sensor and check, and the `sample-period` is
+  the base of each gap's retry wait. An optional `retry-limit` (an integer, 3 when absent)
+  is the number of failed attempts after which a gap is `stuck`. A clock without
+  `trigger` works as before.
 - `C12` `memory` lists the durable records the loop reads and writes. `state` is
   `STATE.md`, the file beside `CONTROL-LOOP.md` that the `do` mode reads and
   writes every cycle. It is committed when the record changes (a gap opens or closes,
@@ -61,8 +66,8 @@ the `review` mode checks against them. Cite a rule by its number.
   A loop directory outside any git repo keeps `STATE.md` there uncommitted.
   It is Markdown-LD in the shape of [state-template.md](state-template.md): each
   sensor's latest `Observation` (SOSA), each `Gap` with the clauses it `breaks` (none when no clause covers it) and
-  its `Actuation` (SOSA: the actuator, the `on-gap` taken, the `owner`, the
-  `status`), and what was `reported`. It has the same `"@base"` as the loop file, so
+  its `Actuation` (SOSA: the actuator, the `action` taken, the `owner`, the
+  `status`, and under `trigger: gaps` the `attempts` and `retry-after`), and what was `reported`. It has the same `"@base"` as the loop file, so
   its references (`"#set-point-…"`, `"#sensor-…"`, `"#actuator-…"`) are the loop
   file's IRIs.
 - `C13` A sensor `reads` something concrete: a command, an API call, a query, or an
@@ -100,7 +105,7 @@ the `review` mode checks against them. Cite a rule by its number.
   [`check.rq`](check.rq) returns no rows. It lists each file
   sparqld could not load, with the parser's line and column, each key, class or
   value the context does not define, and each reference to a clause, sensor,
-  actuator or loop that no file defines, and each open gap with `on-gap: Propose`
+  actuator or loop that no file defines, and each open gap with `action: propose`
   whose clause no `Verified` check covers, and each gap whose status is `closed`
   (a closed, reported gap is deleted from the file). It also lists "loop file not loaded"
   (a run that loaded no loop file, for example 0 files because a pattern matched
