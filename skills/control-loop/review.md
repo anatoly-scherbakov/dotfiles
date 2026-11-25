@@ -15,9 +15,11 @@ and reports; it edits the file only when the user asks for the fixes.
 4. Compare the project's `contexts/` with this skill's. An older copy is a finding.
 5. Look for gaps in the loop's design. Each is a finding:
    - a clause with no verified check;
-   - an actuator whose `on-gap` is `Propose` although its gate comes after the work
+   - an actuator whose `action` is `propose` although its gate comes after the work
      starts (the loop waits for a person it does not need);
    - no work-in-progress limit on an actuator whose output waits for people;
+   - `trigger: gaps` without a `WorkInProgressLimit` that bounds gap workers (the
+     dispatch has no bound);
    - no `state` file, so the loop forgets what it reported when its session is
      compacted or closed.
 
