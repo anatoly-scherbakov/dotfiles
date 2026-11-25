@@ -21,6 +21,8 @@ clock:
   $type: Clock
   mechanism: <what fires each tick>
   sample-period: PT45M
+  trigger: <optional: `gaps`, so that a finished agent or a gap change starts a dispatch and the 3-hour timer runs the sensors>
+  retry-limit: 3  # optional: failed attempts before a gap is stuck
   window: <optional: the days and UTC hours the clock ticks in, such as Mon-Fri 05:00-16:00 UTC>
   lifetime: <what keeps the clock alive, and what stops it>
 
@@ -55,7 +57,7 @@ actuators:
     $type: Actuator
     output: <what it produces>
     gate: <what stands between the output and the system>
-    on-gap: Act
+    action: act
     reference-inputs: [<trigger that sets an inner loop's reference>]
 
 flow-control:
