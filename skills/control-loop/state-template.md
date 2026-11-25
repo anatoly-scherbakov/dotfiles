@@ -14,6 +14,8 @@ observations:
     result: <the latest value the sensor saw, or its finding>
     owner: <task id while an agent sensor runs; omit otherwise>
 
+# Omit `gaps:` when the loop file's `memory` names a query that finds the gaps elsewhere (a
+# knowledge graph): the cycle agent runs that query and writes gaps where `memory` says.
 gaps:
   - $type: Gap
     text: <the gap, in one sentence>
@@ -21,10 +23,12 @@ gaps:
     actuation:
       $type: Actuation
       actuator: "#actuator-<name>"
-      on-gap: Act
+      action: act
       owner: <agent task id or pull request URL; empty while a person decides>
       time: 2026-01-01T00:00:00Z
-      status: <starting, running, waiting for review, proposed, done>
+      status: <starting, running, waiting for review, proposed, stuck, done>
+      attempts: 0  # with `trigger: gaps`: failed attempts
+      retry-after: 2026-01-01T00:00:00Z  # with `trigger: gaps`: no new job before this time
 
 reported:
   - "<time> <one line the supervisor was told>"
