@@ -94,16 +94,16 @@ $included:
     label: Gap action
     comment: What the loop does when a gap needs an actuator.
 
-  - $id: Act
+  - $id: act
     $type: GapAction
-    label: Act
+    label: act
     comment: >-
       The loop starts the work now, because the actuator's gate comes later (an agent
       opens a pull request, and the review is the gate).
 
-  - $id: Propose
+  - $id: propose
     $type: GapAction
-    label: Propose
+    label: propose
     comment: The loop asks a person, because a person must decide before anything starts.
 
   - $id: State
@@ -309,6 +309,35 @@ $included:
     domain: Clock
     close-match: wd:Q5001881
 
+  - $id: trigger
+    $type: rdf:Property
+    label: trigger
+    comment: >-
+      What besides the timer starts a cycle. `gaps`: a finished agent, or a gap that opens
+      or closes, starts a dispatch that picks unblocked gaps; the timer then runs the sensors
+      and checks. Without it, the timer starts every cycle.
+    domain: Clock
+
+  - $id: retry-limit
+    $type: rdf:Property
+    label: retry limit
+    comment: >-
+      How many failed attempts a gap gets before its status becomes `stuck` (3 when absent).
+      The wait doubles with each failure, from one sample period.
+    domain: Clock
+
+  - $id: attempts
+    $type: rdf:Property
+    label: attempts
+    comment: The number of failed attempts to close a gap.
+    domain: Actuation
+
+  - $id: retry-after
+    $type: rdf:Property
+    label: retry after
+    comment: The time before which no new job starts for the gap.
+    domain: Actuation
+
   - $id: reads
     $type: rdf:Property
     label: reads
@@ -362,9 +391,9 @@ $included:
     comment: The human approval between the actuator's output and the system, or why there is none.
     domain: Actuator
 
-  - $id: on-gap
+  - $id: action
     $type: rdf:Property
-    label: on gap
+    label: action
     comment: What the loop does when a gap needs this actuator.
     domain: Actuator
     range: GapAction
