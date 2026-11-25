@@ -16,5 +16,5 @@ Write a new `CONTROL-LOOP.md` for a loop. Follow [rules.md](rules.md).
 5. Write the body (`C17`).
 6. Run the check (`C18`). Fix every row it returns.
 
-Completion criterion: the check returns no rows, and every actuator has an `on-gap`.
+Completion criterion: the check returns no rows, and every actuator has an `action`.
 Report the file's path, the clauses, and the Coverage section.
