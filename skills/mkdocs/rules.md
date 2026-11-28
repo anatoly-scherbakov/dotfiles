@@ -14,7 +14,9 @@ parent an index. Adding an idea must not rewrite the page for an existing idea.
 **MK03**: Give runnable examples the execution context they require: prerequisites,
 filenames, working directory, complete flags, and whether a command keeps
 running or needs a second terminal. Distinguish user-created inputs from
-generated outputs; output directory previews show generated files only.
+generated outputs; output directory previews show generated files only. Apply these checks
+to commands in prose, tables, and diagrams. Use reader-created paths, bundled
+examples, or defined placeholders instead of author-specific paths.
 
 **MK04**: Never hand-write a generated document into a page. Include the file the
 command wrote, through the project's renderer.
