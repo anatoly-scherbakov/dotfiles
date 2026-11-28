@@ -187,6 +187,9 @@
   for CDP on port 9223.
 - **Never** substitute Chrome, naked Playwright, raw HTTP output, HTML/source
   inspection, or `curl` for browser validation.
+- The Playwright Chromium is signed in only to DriveTime systems. Never ask
+  me to sign in to anything else there. Validate a claude.ai page by serving
+  its file locally with a stubbed runtime.
 
 ## Tables and placeholders
 
