@@ -23,6 +23,24 @@
         force: true
         path: skills/control-loop
 
+    "~/.claude/skills/roadmap":
+        relink: true
+        create: true
+        force: true
+        path: skills/roadmap
+
+    "~/.codex/skills/roadmap":
+        relink: true
+        create: true
+        force: true
+        path: skills/roadmap
+
+    "~/.gemini/config/skills/roadmap":
+        relink: true
+        create: true
+        force: true
+        path: skills/roadmap
+
     "~/.claude/skills/sparqld":
         relink: true
         create: true
