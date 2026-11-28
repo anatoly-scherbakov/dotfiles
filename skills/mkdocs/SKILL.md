@@ -17,6 +17,11 @@ resolves), the MkDocs review **includes** a Vale review of the changed
 documentation paths—same engagement, not a separate optional pass. Do not use
 this skill for a generic Markdown document that is not built with MkDocs.
 
+## Theme
+
+Use the MkDocs Material theme when creating or configuring a MkDocs site,
+unless the user explicitly requests a different theme.
+
 ## Explicit review
 
 When the user asks `$mkdocs review` for a page or site, delegate the review to
