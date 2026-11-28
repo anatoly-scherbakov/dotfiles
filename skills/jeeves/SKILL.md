@@ -21,6 +21,19 @@ Keep each task's implementation in the package. A module that exists to back a `
 
 Importing a command with the same name as its submodule replaces that package attribute with the command object. Import the implementation submodule by its module path (`import jeeves.runner`).
 
+## External commands and linting
+
+Invoke external commands from Jeeves tasks with `sh`, using `sh.<program>` for
+programs on PATH. Declare `sh` as a project dependency.
+
+When setting up or changing Jeeves tasks, configure Ruff to select `TID251` and
+ban `subprocess` with a message directing authors to `sh`. Merge these settings
+into the project's existing Ruff configuration and dependency manager. The
+banned API setting applies to every file checked with `TID251`; avoid changing
+lint behavior for unrelated files by limiting the check or using appropriate
+per-file configuration. Run the lint check on the Jeeves task files and verify
+that it rejects `import subprocess` and `from subprocess import ...`.
+
 ## One module
 
 A root `jeeves.py` fits a project whose tasks are the public functions of that single module. When a task needs another project module, replace the file with the package above.
