@@ -178,12 +178,12 @@ unblocked gaps in step 4; its report names each gap that opened or closed.
    set up, set it up as [rules.md](rules.md) `C18` says, and report that the check
    waits for the next session. Delete each gap that is closed and reported from the state
    file (a gap kept elsewhere is closed where `memory` says); git history is the record.
-   Commit `STATE.md` only when the record changes: a gap opens or closes, a gap's status
+   Commit `STATE.md` every cycle; open a pull request only when the record changes: a gap opens or closes, a gap's status
    or owner changes (wherever the gap is kept), or the cycle reports news
    (a `reported` line other than the one-line nothing-is-new report).
    Ship that change in one pull request and merge it once checks pass, under the
-   project's merge rule. When only observations change, leave the file written and
-   uncommitted; the next pull request carries it.
+   project's merge rule. When only observations change, commit them without a pull
+   request; the next pull request carries them.
    When the loop directory is not in a git repo, keep `STATE.md` beside the loop file
    and skip the commit.
 6. **Return** two parts, and nothing else:
